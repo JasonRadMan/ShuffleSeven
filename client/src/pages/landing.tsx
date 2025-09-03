@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -18,14 +19,19 @@ const loginSchema = z.object({
 const signupSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirmPassword: z.string().min(1, 'Please confirm your password'),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 type LoginData = z.infer<typeof loginSchema>;
 type SignupData = z.infer<typeof signupSchema>;
 
 export default function Landing() {
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const { toast } = useToast();
 
@@ -36,7 +42,7 @@ export default function Landing() {
 
   const signupForm = useForm<SignupData>({
     resolver: zodResolver(signupSchema),
-    defaultValues: { email: '', password: '', firstName: '', lastName: '' },
+    defaultValues: { email: '', password: '', confirmPassword: '', firstName: '', lastName: '' },
   });
 
   const loginMutation = useMutation({
@@ -46,6 +52,7 @@ export default function Landing() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
+      setIsAuthOpen(false);
     },
     onError: (error: Error) => {
       toast({
@@ -63,6 +70,7 @@ export default function Landing() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
+      setIsAuthOpen(false);
     },
     onError: (error: Error) => {
       toast({
@@ -119,153 +127,199 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* Auth Forms */}
+          {/* Auth Buttons */}
           <div className="space-y-4 mb-8">
-            <div className="flex gap-2 p-1 bg-muted rounded-lg">
-              <button
-                onClick={() => setIsSignup(false)}
-                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
-                  !isSignup 
-                    ? 'bg-background text-foreground shadow-sm' 
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-                data-testid="button-switch-login"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => setIsSignup(true)}
-                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
-                  isSignup 
-                    ? 'bg-background text-foreground shadow-sm' 
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-                data-testid="button-switch-signup"
-              >
-                Sign Up
-              </button>
-            </div>
-
-            {!isSignup ? (
-              // Login Form
-              <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
-                <div>
-                  <Label htmlFor="login-email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="login-email"
-                      type="email"
-                      placeholder="your@email.com"
-                      className="pl-10"
-                      data-testid="input-login-email"
-                      {...loginForm.register('email')}
-                    />
-                  </div>
-                  {loginForm.formState.errors.email && (
-                    <p className="text-xs text-destructive mt-1">{loginForm.formState.errors.email.message}</p>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="login-password">Password</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="login-password"
-                      type="password"
-                      placeholder="Enter your password"
-                      className="pl-10"
-                      data-testid="input-login-password"
-                      {...loginForm.register('password')}
-                    />
-                  </div>
-                  {loginForm.formState.errors.password && (
-                    <p className="text-xs text-destructive mt-1">{loginForm.formState.errors.password.message}</p>
-                  )}
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full py-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
-                  disabled={loginMutation.isPending}
-                  data-testid="button-submit-login"
-                >
-                  {loginMutation.isPending ? 'Logging in...' : 'Login'}
-                </Button>
-              </form>
-            ) : (
-              // Signup Form
-              <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="signup-firstName">First Name</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signup-firstName"
-                        type="text"
-                        placeholder="John"
-                        className="pl-10"
-                        data-testid="input-signup-firstName"
-                        {...signupForm.register('firstName')}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="signup-lastName">Last Name</Label>
-                    <Input
-                      id="signup-lastName"
-                      type="text"
-                      placeholder="Doe"
-                      data-testid="input-signup-lastName"
-                      {...signupForm.register('lastName')}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="signup-email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      placeholder="your@email.com"
-                      className="pl-10"
-                      data-testid="input-signup-email"
-                      {...signupForm.register('email')}
-                    />
-                  </div>
-                  {signupForm.formState.errors.email && (
-                    <p className="text-xs text-destructive mt-1">{signupForm.formState.errors.email.message}</p>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="signup-password">Password</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      placeholder="At least 8 characters"
-                      className="pl-10"
-                      data-testid="input-signup-password"
-                      {...signupForm.register('password')}
-                    />
-                  </div>
-                  {signupForm.formState.errors.password && (
-                    <p className="text-xs text-destructive mt-1">{signupForm.formState.errors.password.message}</p>
-                  )}
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full py-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
-                  disabled={signupMutation.isPending}
-                  data-testid="button-submit-signup"
-                >
-                  {signupMutation.isPending ? 'Creating Account...' : 'Create Account'}
-                </Button>
-              </form>
-            )}
+            <button 
+              onClick={() => {
+                setIsSignup(false);
+                setIsAuthOpen(true);
+              }}
+              className="w-full py-4 px-6 bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+              data-testid="button-login"
+            >
+              Login
+            </button>
+            <button 
+              onClick={() => {
+                setIsSignup(true);
+                setIsAuthOpen(true);
+              }}
+              className="w-full py-4 px-6 bg-secondary text-secondary-foreground border border-border rounded-lg hover:bg-muted transition-all duration-300"
+              data-testid="button-signup"
+            >
+              Create Free Account
+            </button>
           </div>
+
+          {/* Auth Modal */}
+          <Dialog open={isAuthOpen} onOpenChange={setIsAuthOpen}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="text-center font-serif text-2xl text-primary">
+                  {isSignup ? 'Create Account' : 'Welcome Back'}
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-4">
+                {!isSignup ? (
+                  // Login Form
+                  <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
+                    <div>
+                      <Label htmlFor="login-email">Email</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="login-email"
+                          type="email"
+                          placeholder="your@email.com"
+                          className="pl-10"
+                          data-testid="input-login-email"
+                          {...loginForm.register('email')}
+                        />
+                      </div>
+                      {loginForm.formState.errors.email && (
+                        <p className="text-xs text-destructive mt-1">{loginForm.formState.errors.email.message}</p>
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="login-password">Password</Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="login-password"
+                          type="password"
+                          placeholder="Enter your password"
+                          className="pl-10"
+                          data-testid="input-login-password"
+                          {...loginForm.register('password')}
+                        />
+                      </div>
+                      {loginForm.formState.errors.password && (
+                        <p className="text-xs text-destructive mt-1">{loginForm.formState.errors.password.message}</p>
+                      )}
+                    </div>
+                    <Button
+                      type="submit"
+                      className="w-full py-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold"
+                      disabled={loginMutation.isPending}
+                      data-testid="button-submit-login"
+                    >
+                      {loginMutation.isPending ? 'Logging in...' : 'Login'}
+                    </Button>
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        onClick={() => setIsSignup(true)}
+                        className="text-sm text-muted-foreground hover:text-primary"
+                        data-testid="button-switch-to-signup"
+                      >
+                        Don't have an account? Sign up
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  // Signup Form
+                  <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="signup-firstName">First Name</Label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="signup-firstName"
+                            type="text"
+                            placeholder="John"
+                            className="pl-10"
+                            data-testid="input-signup-firstName"
+                            {...signupForm.register('firstName')}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="signup-lastName">Last Name</Label>
+                        <Input
+                          id="signup-lastName"
+                          type="text"
+                          placeholder="Doe"
+                          data-testid="input-signup-lastName"
+                          {...signupForm.register('lastName')}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="signup-email">Email</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="signup-email"
+                          type="email"
+                          placeholder="your@email.com"
+                          className="pl-10"
+                          data-testid="input-signup-email"
+                          {...signupForm.register('email')}
+                        />
+                      </div>
+                      {signupForm.formState.errors.email && (
+                        <p className="text-xs text-destructive mt-1">{signupForm.formState.errors.email.message}</p>
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="signup-password">Password</Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="signup-password"
+                          type="password"
+                          placeholder="At least 8 characters"
+                          className="pl-10"
+                          data-testid="input-signup-password"
+                          {...signupForm.register('password')}
+                        />
+                      </div>
+                      {signupForm.formState.errors.password && (
+                        <p className="text-xs text-destructive mt-1">{signupForm.formState.errors.password.message}</p>
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="signup-confirmPassword">Confirm Password</Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="signup-confirmPassword"
+                          type="password"
+                          placeholder="Confirm your password"
+                          className="pl-10"
+                          data-testid="input-signup-confirmPassword"
+                          {...signupForm.register('confirmPassword')}
+                        />
+                      </div>
+                      {signupForm.formState.errors.confirmPassword && (
+                        <p className="text-xs text-destructive mt-1">{signupForm.formState.errors.confirmPassword.message}</p>
+                      )}
+                    </div>
+                    <Button
+                      type="submit"
+                      className="w-full py-3 bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold"
+                      disabled={signupMutation.isPending}
+                      data-testid="button-submit-signup"
+                    >
+                      {signupMutation.isPending ? 'Creating Account...' : 'Create Account'}
+                    </Button>
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        onClick={() => setIsSignup(false)}
+                        className="text-sm text-muted-foreground hover:text-primary"
+                        data-testid="button-switch-to-login"
+                      >
+                        Already have an account? Login
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
 
           {/* App Description */}
           <div className="text-left space-y-4 mb-8">
