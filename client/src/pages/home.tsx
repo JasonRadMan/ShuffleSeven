@@ -74,7 +74,7 @@ export default function Home() {
               className={`py-3 px-4 rounded-lg border transition-all flex items-center justify-center gap-2 font-semibold ${
                 lifelinesRemaining <= 0
                   ? 'bg-muted text-muted-foreground border-border cursor-not-allowed'
-                  : 'bg-gradient-to-r from-accent/80 to-primary/80 text-primary-foreground border-primary hover:from-accent hover:to-primary'
+                  : 'bg-gradient-to-r from-accent to-primary text-primary-foreground border-primary hover:shadow-lg hover:scale-105'
               }`}
               data-testid="button-lifeline"
             >
