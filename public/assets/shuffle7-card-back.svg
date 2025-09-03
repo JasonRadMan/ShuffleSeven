@@ -1,0 +1,21 @@
+<svg width="80" height="120" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="120" rx="8" fill="url(#gradient)"/>
+  <rect x="8" y="8" width="64" height="104" rx="4" stroke="rgba(15, 23, 42, 0.3)" stroke-width="1"/>
+  
+  <!-- Ornate border design -->
+  <path d="M20 20 L60 20 M20 100 L60 100 M20 20 L20 100 M60 20 L60 100" stroke="rgba(15, 23, 42, 0.2)" stroke-width="0.5"/>
+  
+  <!-- Center "7" -->
+  <text x="40" y="70" font-family="Cinzel, serif" font-size="24" font-weight="600" fill="rgba(15, 23, 42, 0.8)" text-anchor="middle">7</text>
+  
+  <!-- Decorative elements -->
+  <circle cx="40" cy="30" r="3" fill="rgba(15, 23, 42, 0.2)"/>
+  <circle cx="40" cy="90" r="3" fill="rgba(15, 23, 42, 0.2)"/>
+  
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+</svg>
