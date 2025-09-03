@@ -1,4 +1,4 @@
-import { Calendar, Settings } from 'lucide-react';
+import { Calendar, Settings, Bell } from 'lucide-react';
 import { useLocation } from 'wouter';
 
 export default function Header() {
@@ -22,7 +22,15 @@ export default function Header() {
         For mindset support only. Not prophecy. Never harmful or selfish guidance.
       </p>
       
-      <div className="absolute right-4 top-6">
+      <div className="absolute right-4 top-6 flex gap-2">
+        <button 
+          className="p-3 rounded-full bg-secondary border border-border hover:bg-muted transition-all relative"
+          data-testid="button-notifications"
+        >
+          <Bell className="w-6 h-6" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"></div>
+          <div className="text-xs mt-1 text-muted-foreground">Alerts</div>
+        </button>
         <button 
           onClick={() => setLocation('/settings')}
           className="p-3 rounded-full bg-secondary border border-border hover:bg-muted transition-all"

@@ -1,4 +1,4 @@
-import { Copy, Heart, Star, Users } from 'lucide-react';
+import { Copy, Heart, Star, Users, User, History } from 'lucide-react';
 import { useLocation } from 'wouter';
 import Header from '@/components/header';
 import Carousel from '@/components/carousel';
@@ -46,10 +46,10 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-4">
             <button 
               className="py-3 px-4 bg-secondary text-secondary-foreground rounded-lg border border-border hover:bg-muted transition-all flex items-center justify-center gap-2"
-              data-testid="button-browse-decks"
+              data-testid="button-past-cards"
             >
-              <Copy className="w-5 h-5" />
-              Browse Decks
+              <History className="w-5 h-5" />
+              Past Cards
             </button>
             <button 
               className="py-3 px-4 bg-secondary text-secondary-foreground rounded-lg border border-border hover:bg-muted transition-all flex items-center justify-center gap-2"
@@ -62,11 +62,12 @@ export default function Home() {
 
           <div className="grid grid-cols-2 gap-4">
             <button 
+              onClick={() => setLocation('/about')}
               className="py-3 px-4 bg-secondary text-secondary-foreground rounded-lg border border-border hover:bg-muted transition-all flex items-center justify-center gap-2"
-              data-testid="button-like"
+              data-testid="button-my-account"
             >
-              <Heart className="w-5 h-5" />
-              Invite a Friend
+              <User className="w-5 h-5" />
+              My Account
             </button>
             <button 
               onClick={handleLifeline}
