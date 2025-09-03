@@ -1,0 +1,70 @@
+Build a PWA called Shuffle 7 — a mindset support app with a daily card draw and monthly lifelines.
+Create a static frontend (HTML/CSS/JS, no build tools). Use localStorage for state. Ship as an installable PWA with offline support.
+
+Requirements
+
+Pages & UI
+
+Header with app name + short disclaimer (mindset support only; not prophecy; never harmful/selfish).
+
+Main area with a 3D CSS carousel ring of card backs that auto-rotates. Tapping/clicking stops the carousel.
+
+Two buttons:
+
+“Draw Today’s Card” (once per day; show same card if revisiting that day)
+
+“Lifeline (X left)” (up to 5 per month)
+
+Result view shows: card image, category, short message, and a “Back to Carousel” button.
+
+Data
+
+cards.json with 7 categories: Wisdom, Health, Challenge, Leadership, Tongue N Cheek, Possibilities, Knowledge.
+
+Each entry has { "category", "image", "message" }. Use placeholder images from /assets.
+
+State rules
+
+Daily draw lock (keyed by YYYY-MM-DD).
+
+Lifeline usage tracked per month (max 5; resets each new month).
+
+Persist via localStorage.
+
+PWA
+
+manifest.webmanifest with name, theme, icons.
+
+sw.js caching: index.html, style.css, script.js, cards.json, icons, and card-back placeholder.
+
+Register service worker in script.js. App should work offline after first load.
+
+Styling/Animation
+
+Modern, dark UI.
+
+CSS 3D ring: 10 panels around a circle using transform: rotateY(calc(var(--i)*angle)) translateZ(...).
+
+Spinning class via @keyframes rotateY; toggle spin on stage click.
+
+Create this file structure and fill with working starter code (minimal but functional):
+
+index.html – layout, buttons, result section, includes style.css, script.js, manifest link, meta theme color.
+
+style.css – dark theme, centered layout, carousel/ring styles, flip animation for reveal.
+
+script.js – load cards.json, implement daily draw + lifeline logic with localStorage, toggle views, ring spin toggle, SW registration.
+
+cards.json – 7 starter cards with category, placeholder image paths (assets/wisdom.png, assets/health.png, assets/challenge.png, assets/leadership.png, assets/tongue.png, assets/possibilities.png, assets/knowledge.png).
+
+manifest.webmanifest – PWA config, icons.
+
+sw.js – cache-first service worker with version bump for updates.
+
+/assets/ – add placeholders:
+
+shuffle7-card-back.png (used on carousel panels)
+
+icon-192.png, icon-512.png
+
+wisdom.png, health.png, challenge.png, leadership.png, tongue.png, possibilities.png, knowledge.png
