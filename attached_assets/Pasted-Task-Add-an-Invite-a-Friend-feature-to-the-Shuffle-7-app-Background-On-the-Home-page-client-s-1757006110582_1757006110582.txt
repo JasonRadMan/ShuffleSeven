@@ -1,0 +1,31 @@
+Task: Add an “Invite a Friend” feature to the Shuffle 7 app.
+
+Background: On the Home page (client/src/pages/home.tsx), there is currently a button labeled “Invite + a Friend.” Right now, the button doesn’t do anything. We need to make it open a modal popup when clicked.
+
+Requirements:
+
+Popup (Modal): Create a modal component (e.g. InviteFriendModal.tsx) using the existing UI style—similar to other modals in the app (check Landing.tsx for an example using <Dialog> from @/components/ui/dialog).
+
+Trigger: In home.tsx, import this component and add an onClick handler to the “Invite + a Friend” button. Manage a new state variable (e.g. isInviteModalOpen) to open and close the modal.
+
+Contents of the Modal:
+
+A read-only text field or area showing a placeholder invite link (e.g., https://shuffle7.app/invite/placeholder). Include a Copy button next to it. When the button is clicked, copy this link to the clipboard.
+
+Below the link, provide an input field where the user can enter an email address or phone number of the person they’d like to invite. Use appropriate HTML input types (type="email" and/or type="tel"). Add basic validation (e.g. required, must match email/phone format).
+
+An “Invite” or “Send” button that, for now, simply closes the modal or triggers a toast message saying “Invitation sent!” (we’ll integrate actual sending later).
+
+A Cancel button or an X icon to close the popup without action.
+
+Placeholder Link: Use a constant like const inviteLink = "https://shuffle7.app/invite/placeholder"; for now. We will update this when the app is hosted outside Replit.
+
+Styling & Tests: Match the styling of existing modals (padding, borders, colors) and add data-testid attributes where appropriate (e.g. data-testid="invite-modal", data-testid="invite-link", data-testid="invite-input").
+
+Deliverables:
+
+Updated home.tsx with the new state and onClick.
+
+New or updated component (e.g. InviteFriendModal.tsx).
+
+Any necessary CSS/Tailwind classes to style the modal consistently with the rest of the app.
