@@ -1,11 +1,14 @@
 import { Copy, Heart, Star, Users, User, History } from 'lucide-react';
+import { useState } from 'react';
 import { useLocation } from 'wouter';
 import Header from '@/components/header';
 import Carousel from '@/components/carousel';
+import InviteFriendModal from '@/components/InviteFriendModal';
 import { useShuffleState } from '@/hooks/use-shuffle-state';
 
 export default function Home() {
   const [, setLocation] = useLocation();
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const { drawDailyCard, useLifelineCard, lifelinesRemaining, hasDrawnToday } = useShuffleState();
 
   const handleDailyDraw = () => {
@@ -52,6 +55,7 @@ export default function Home() {
               Past Cards
             </button>
             <button 
+              onClick={() => setIsInviteModalOpen(true)}
               className="py-3 px-4 bg-secondary text-secondary-foreground rounded-lg border border-border hover:bg-muted transition-all flex items-center justify-center gap-2"
               data-testid="button-invite-friend"
             >
@@ -93,6 +97,11 @@ export default function Home() {
           </p>
         </div>
       </main>
+
+      <InviteFriendModal
+        open={isInviteModalOpen}
+        onOpenChange={setIsInviteModalOpen}
+      />
     </div>
   );
 }
