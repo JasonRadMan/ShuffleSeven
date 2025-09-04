@@ -11,30 +11,30 @@ export default function Header() {
         For mindset support only. Not prophecy. Never harmful or selfish guidance.
       </p>
       
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center gap-2">
         <button 
           onClick={() => setLocation('/about')}
-          className="p-2 rounded-full bg-secondary border border-border hover:bg-muted transition-all"
+          className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
           data-testid="button-schedule"
         >
-          <Calendar className="w-4 h-4" />
-          <div className="text-xs mt-1 text-muted-foreground">Schedule</div>
+          <Calendar className="w-4 h-4 text-slate-300" />
+          <span className="text-xs text-slate-400 font-medium">Schedule</span>
         </button>
         <button 
-          className="p-2 rounded-full bg-secondary border border-border hover:bg-muted transition-all relative"
+          className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105 relative"
           data-testid="button-notifications"
         >
-          <Bell className="w-4 h-4" />
-          <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-accent rounded-full"></div>
-          <div className="text-xs mt-1 text-muted-foreground">Alerts</div>
+          <Bell className="w-4 h-4 text-slate-300" />
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+          <span className="text-xs text-slate-400 font-medium">Alerts</span>
         </button>
         <button 
           onClick={() => setLocation('/settings')}
-          className="p-2 rounded-full bg-secondary border border-border hover:bg-muted transition-all"
+          className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
           data-testid="button-settings"
         >
-          <Settings className="w-4 h-4" />
-          <div className="text-xs mt-1 text-muted-foreground">Settings</div>
+          <Settings className="w-4 h-4 text-slate-300" />
+          <span className="text-xs text-slate-400 font-medium">Settings</span>
         </button>
       </div>
     </header>
