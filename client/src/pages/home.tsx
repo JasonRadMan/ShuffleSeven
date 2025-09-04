@@ -48,18 +48,18 @@ export default function Home() {
 
           <div className="grid grid-cols-2 gap-4">
             <button 
-              className="py-3 px-4 bg-secondary text-secondary-foreground rounded-lg border border-border hover:bg-muted transition-all flex items-center justify-center gap-2"
+              className="py-4 px-6 bg-slate-800/50 text-white rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-3 font-medium"
               data-testid="button-past-cards"
             >
               <History className="w-5 h-5" />
-              Past Cards
+              Browse Decks
             </button>
             <button 
               onClick={() => setIsInviteModalOpen(true)}
-              className="py-3 px-4 bg-secondary text-secondary-foreground rounded-lg border border-border hover:bg-muted transition-all flex items-center justify-center gap-2"
+              className="py-4 px-6 bg-slate-800/50 text-white rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-3 font-medium"
               data-testid="button-invite-friend"
             >
-              <Users className="w-5 h-5" />
+              <Users className="w-5 h-5 text-cyan-400" />
               Invite + a Friend
             </button>
           </div>
@@ -67,7 +67,7 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-4">
             <button 
               onClick={() => setLocation('/about')}
-              className="py-3 px-4 bg-secondary text-secondary-foreground rounded-lg border border-border hover:bg-muted transition-all flex items-center justify-center gap-2"
+              className="py-4 px-6 bg-slate-800/50 text-white rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-3 font-medium"
               data-testid="button-my-account"
             >
               <User className="w-5 h-5" />
@@ -76,16 +76,16 @@ export default function Home() {
             <button 
               onClick={handleLifeline}
               disabled={lifelinesRemaining <= 0}
-              className={`py-3 px-4 rounded-lg border transition-all flex items-center justify-center gap-2 font-semibold ${
+              className={`py-4 px-6 rounded-2xl border transition-all flex items-center justify-center gap-3 font-medium ${
                 lifelinesRemaining <= 0
-                  ? 'bg-muted text-muted-foreground border-border cursor-not-allowed'
-                  : 'bg-gradient-to-r from-accent to-primary text-primary-foreground border-primary hover:shadow-lg hover:scale-105'
+                  ? 'bg-slate-800/30 text-slate-500 border-slate-700/30 cursor-not-allowed'
+                  : 'bg-slate-800/50 text-white border-slate-700/50 hover:bg-slate-700/50'
               }`}
               data-testid="button-lifeline"
             >
-              <Star className="w-5 h-5" />
+              <Star className={`w-5 h-5 ${lifelinesRemaining <= 0 ? 'text-slate-500' : 'text-yellow-500'}`} />
               <span data-testid="text-lifelines-remaining">
-                Lifeline ({lifelinesRemaining} left)
+                Lifeline
               </span>
             </button>
           </div>
