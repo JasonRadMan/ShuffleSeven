@@ -52,7 +52,7 @@ export default function Home() {
               data-testid="button-past-cards"
             >
               <History className="w-5 h-5" />
-              Browse Decks
+              My Cards
             </button>
             <button 
               onClick={() => setIsInviteModalOpen(true)}
