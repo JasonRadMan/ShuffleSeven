@@ -22,9 +22,6 @@ export default function Carousel() {
           </div>
         ))}
       </div>
-      <p className="text-center text-muted-foreground text-sm mt-4">
-        Tap the carousel to pause the rotation
-      </p>
     </div>
   );
 }
