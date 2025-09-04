@@ -10,7 +10,6 @@ import About from "@/pages/about";
 import CardReveal from "@/pages/card-reveal";
 import Landing from "@/pages/landing";
 import NotFound from "@/pages/not-found";
-import { useEffect } from "react";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -33,21 +32,6 @@ function Router() {
 }
 
 function App() {
-  useEffect(() => {
-    // Register service worker for PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function(registration) {
-            console.log('ServiceWorker registration successful');
-          })
-          .catch(function(error) {
-            console.log('ServiceWorker registration failed');
-          });
-      });
-    }
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

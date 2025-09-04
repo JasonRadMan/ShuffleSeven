@@ -5,6 +5,8 @@ import {
   pgTable,
   timestamp,
   varchar,
+  text,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -33,6 +35,21 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Push notification subscriptions table
+export const notificationSubscriptions = pgTable("notification_subscriptions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
+  endpoint: text("endpoint").notNull(),
+  p256dhKey: text("p256dh_key").notNull(),
+  authKey: text("auth_key").notNull(),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("IDX_notification_subscriptions_user_id").on(table.userId),
+  index("IDX_notification_subscriptions_endpoint").on(table.endpoint),
+]);
+
 export const signupSchema = z.object({
   email: z.string().email().transform(v => v.toLowerCase()),
   password: z.string().min(8).max(72),
@@ -45,6 +62,17 @@ export const loginSchema = z.object({
   password: z.string().min(1),
 });
 
+export const notificationSubscriptionSchema = z.object({
+  userId: z.string(),
+  subscription: z.object({
+    endpoint: z.string(),
+    keys: z.object({
+      p256dh: z.string(),
+      auth: z.string(),
+    }),
+  }),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   passwordHash: true,
@@ -52,7 +80,16 @@ export const insertUserSchema = createInsertSchema(users).omit({
   updatedAt: true,
 });
 
+export const insertNotificationSubscriptionSchema = createInsertSchema(notificationSubscriptions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type SignupData = z.infer<typeof signupSchema>;
 export type LoginData = z.infer<typeof loginSchema>;
+export type NotificationSubscriptionData = z.infer<typeof notificationSubscriptionSchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
+export type InsertNotificationSubscription = z.infer<typeof insertNotificationSubscriptionSchema>;
 export type User = Omit<typeof users.$inferSelect, 'passwordHash'>;
+export type NotificationSubscription = typeof notificationSubscriptions.$inferSelect;

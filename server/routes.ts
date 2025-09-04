@@ -1,11 +1,32 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import passport from "passport";
+import path from "path";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, hashPassword } from "./localAuth";
-import { signupSchema, loginSchema } from "@shared/schema";
+import { signupSchema, loginSchema, notificationSubscriptionSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Serve cards.json API endpoint
+  app.get('/api/cards', (req, res) => {
+    try {
+      const cardsPath = path.resolve(import.meta.dirname, '../public/cards.json');
+      res.sendFile(cardsPath);
+    } catch (error) {
+      res.status(500).json({ error: 'Could not load cards' });
+    }
+  });
+  
+  // Legacy support for direct cards.json requests
+  app.get('/cards.json', (req, res) => {
+    try {
+      const cardsPath = path.resolve(import.meta.dirname, '../public/cards.json');
+      res.sendFile(cardsPath);
+    } catch (error) {
+      res.status(500).json({ error: 'Could not load cards' });
+    }
+  });
+
   // Auth middleware
   setupAuth(app);
 
@@ -85,6 +106,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/auth/me', isAuthenticated, (req, res) => {
     res.json(req.user);
+  });
+
+  // Notification subscription routes
+  app.post('/api/notifications/subscribe', isAuthenticated, async (req, res) => {
+    try {
+      const result = notificationSubscriptionSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ message: "Invalid input", errors: result.error.issues });
+      }
+
+      const { userId, subscription } = result.data;
+      
+      // Verify that the authenticated user matches the userId
+      if (!req.user || (req.user as any).id !== userId) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      // Create subscription record in database
+      const subscriptionRecord = await storage.createNotificationSubscription({
+        userId,
+        endpoint: subscription.endpoint,
+        p256dhKey: subscription.keys.p256dh,
+        authKey: subscription.keys.auth,
+        isActive: true,
+      });
+
+      res.json({ ok: true, subscription: subscriptionRecord });
+    } catch (error) {
+      console.error("Notification subscription error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.post('/api/notifications/unsubscribe', isAuthenticated, async (req, res) => {
+    try {
+      const { userId } = req.body;
+      
+      // Verify that the authenticated user matches the userId
+      if (!req.user || (req.user as any).id !== userId) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      // Delete all subscriptions for this user
+      await storage.deleteNotificationSubscriptionsByUserId(userId);
+
+      res.json({ ok: true });
+    } catch (error) {
+      console.error("Notification unsubscribe error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get('/api/notifications/subscriptions', isAuthenticated, async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const subscriptions = await storage.getNotificationSubscriptionsByUserId((req.user as any).id);
+      res.json({ subscriptions });
+    } catch (error) {
+      console.error("Get subscriptions error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
   });
 
   const httpServer = createServer(app);

@@ -7,7 +7,7 @@ export interface Card {
 
 export async function loadCards(): Promise<Card[]> {
   try {
-    const response = await fetch('/cards.json');
+    const response = await fetch('/api/cards');
     if (!response.ok) {
       throw new Error('Failed to load cards');
     }
