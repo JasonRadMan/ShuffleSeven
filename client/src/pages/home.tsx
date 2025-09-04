@@ -91,11 +91,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="text-center mt-8 px-4">
-          <p className="text-muted-foreground text-sm italic">
-            Believe in yourself and all that you are.
-          </p>
-        </div>
       </main>
 
       <InviteFriendModal
