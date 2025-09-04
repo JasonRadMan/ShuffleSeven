@@ -1,0 +1,96 @@
+Implement the infrastructure for requesting and managing push notification permissions from users’ devices (Android and iOS) in the Shuffle 7 app.
+
+Context:
+
+The project is a React + Vite app (client/ folder).
+
+A Notifications button and notification options already exist in the user settings (settings.tsx).
+
+We want to add real infrastructure that requests permissions on the client side and stores user preferences server-side (Express + Postgres).
+
+Requirements:
+
+Browser Push Permissions (Client Side):
+
+In a new React hook useNotifications.ts, implement logic using the Web Notifications API and Service Workers:
+
+export function useNotifications() {
+  const requestPermission = async () => {
+    if ('Notification' in window) {
+      const result = await Notification.requestPermission();
+      return result; // 'granted', 'denied', or 'default'
+    }
+    return 'unsupported';
+  };
+}
+
+
+Update the Notifications button in settings.tsx to call requestPermission() when tapped.
+
+Store the result (granted/denied) in local state and also send it to the server.
+
+Service Worker Setup:
+
+In public/, create sw.js that listens for incoming push events and displays notifications:
+
+self.addEventListener('push', event => {
+  const data = event.data?.json() || {};
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'Shuffle 7', {
+      body: data.body || 'New message!',
+      icon: '/icons/icon-192x192.png'
+    })
+  );
+});
+
+
+Register the service worker inside main.tsx.
+
+Push Subscription (Web Push):
+
+Use the Push API to subscribe the user to push notifications (with a VAPID public key placeholder).
+
+Example:
+
+const registerPush = async () => {
+  const reg = await navigator.serviceWorker.ready;
+  return await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: "<PLACEHOLDER_VAPID_KEY>"
+  });
+};
+
+
+Save the subscription object to the backend via /api/notifications/subscribe.
+
+Server Side (Express + Postgres):
+
+Add a new route in server/routes.ts:
+
+app.post('/api/notifications/subscribe', async (req, res) => {
+  const { userId, subscription } = req.body;
+  // store subscription in DB against the user
+  res.json({ ok: true });
+});
+
+
+Prepare to later send push notifications via a library like web-push.
+
+Device Support (Android/iPhone via PWA):
+
+Ensure the app is installable as a Progressive Web App (PWA) by having a manifest.json and icons.
+
+Modern Android and iOS (iOS 16.4+) support push notifications for PWAs installed on the home screen.
+
+Add placeholders in manifest.json if not present:
+
+{
+  "name": "Shuffle 7",
+  "short_name": "Shuffle7",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    { "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
