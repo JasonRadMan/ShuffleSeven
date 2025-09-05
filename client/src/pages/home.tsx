@@ -17,12 +17,13 @@ export default function Home() {
     const card = drawDailyCard();
     if (card) {
       setIsDrawAnimationPlaying(true);
-      // Animation will play for a few seconds before navigating
-      setTimeout(() => {
-        setIsDrawAnimationPlaying(false);
-        setLocation('/card-reveal');
-      }, 3000); // 3 second animation duration
+      // Animation will loop until user clicks it
     }
+  };
+
+  const handleAnimationClick = () => {
+    setIsDrawAnimationPlaying(false);
+    setLocation('/card-reveal');
   };
 
   const handleLifeline = () => {
@@ -42,7 +43,7 @@ export default function Home() {
       <Header />
       
       <main className="flex-1 px-4 py-8">
-        <Carousel isAnimationPlaying={isDrawAnimationPlaying} />
+        <Carousel isAnimationPlaying={isDrawAnimationPlaying} onAnimationClick={handleAnimationClick} />
 
         <div className="max-w-md mx-auto space-y-4 mt-[60px]">
           <button 
