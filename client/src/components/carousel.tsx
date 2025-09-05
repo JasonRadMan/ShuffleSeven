@@ -17,7 +17,11 @@ export default function Carousel() {
         {Array.from({ length: 10 }, (_, i) => (
           <div key={i} className="card-panel" data-testid={`card-panel-${i}`}>
             <div className="card-back-design">
-              7
+              <img 
+                src="@assets/Screenshot 2025-09-05 at 1.15.01 PM_1757092520932.png" 
+                alt="Shuffle 7 Card Back" 
+                className="card-back-image"
+              />
             </div>
           </div>
         ))}
