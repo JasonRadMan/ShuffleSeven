@@ -36,7 +36,7 @@ export default function Home() {
           <button 
             onClick={handleDailyDraw}
             disabled={hasDrawnToday}
-            className={`w-full pt-[25px] pb-4 px-6 font-semibold rounded-full shadow-lg transform transition-all duration-300 border-[3px] ${
+            className={`w-full pt-[50px] pb-4 px-6 font-semibold rounded-full shadow-lg transform transition-all duration-300 border-[3px] ${
               hasDrawnToday 
                 ? 'bg-amber-300 text-amber-800 border-amber-400 cursor-not-allowed'
                 : 'bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 text-white border-amber-600 hover:shadow-xl hover:scale-105'
