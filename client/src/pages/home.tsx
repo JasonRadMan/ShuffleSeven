@@ -1,30 +1,55 @@
 import { Copy, Heart, Star, Users, User, History } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import Header from '@/components/header';
 import Carousel from '@/components/carousel';
 import InviteFriendModal from '@/components/InviteFriendModal';
 import { useShuffleState } from '@/hooks/use-shuffle-state';
 import drawAnimationGif from '@assets/SHuffle front page_1_1757096240479.gif';
+import shuffleAudio from '@assets/SHuffle front page_1757097826767.mp3';
 
 export default function Home() {
   const [, setLocation] = useLocation();
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const { drawDailyCard, useLifelineCard, lifelinesRemaining, hasDrawnToday } = useShuffleState();
 
   const handleDailyDraw = () => {
     const card = drawDailyCard();
     if (card) {
       setIsDrawAnimationPlaying(true);
-      // Animation will loop until user clicks it
+      // Play shuffle audio when animation starts
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(console.error);
+      }
     }
   };
 
   const handleAnimationClick = () => {
+    // Stop audio when user clicks to proceed
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
     setIsDrawAnimationPlaying(false);
     setLocation('/card-reveal');
   };
+
+  // Effect to handle audio looping
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio && isDrawAnimationPlaying) {
+      audio.loop = true;
+    }
+    return () => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    };
+  }, [isDrawAnimationPlaying]);
 
   const handleLifeline = () => {
     const card = useLifelineCard();
@@ -114,6 +139,11 @@ export default function Home() {
         </div>
 
       </main>
+
+      {/* Audio element for shuffle sound */}
+      <audio ref={audioRef} preload="auto">
+        <source src={shuffleAudio} type="audio/mpeg" />
+      </audio>
 
       <InviteFriendModal
         open={isInviteModalOpen}
