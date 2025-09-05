@@ -7,9 +7,6 @@ export default function Header() {
   return (
     <header className="py-4 px-3 text-center border-b border-border">
       <h1 className="font-serif text-3xl font-bold text-primary mb-2">SHUFFLE 7</h1>
-      <p className="text-muted-foreground text-xs max-w-xs mx-auto px-2 mb-4">
-        For mindset support only. Not prophecy. Never harmful or selfish guidance.
-      </p>
       
       <div className="flex justify-center gap-2">
         <button 
