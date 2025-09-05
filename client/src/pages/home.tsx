@@ -49,16 +49,10 @@ export default function Home() {
   // Effect to handle audio looping
   useEffect(() => {
     const audio = audioRef.current;
-    if (audio && isDrawAnimationPlaying) {
+    if (audio) {
       audio.loop = true;
     }
-    return () => {
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-    };
-  }, [isDrawAnimationPlaying]);
+  }, []);
 
   const handleLifeline = () => {
     const card = useLifelineCard();
