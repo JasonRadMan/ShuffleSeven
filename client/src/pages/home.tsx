@@ -22,7 +22,16 @@ export default function Home() {
       // Play shuffle audio when animation starts
       if (audioRef.current) {
         audioRef.current.currentTime = 0;
-        audioRef.current.play().catch(console.error);
+        audioRef.current.volume = 0.7;
+        audioRef.current.play()
+          .then(() => {
+            console.log('Audio playing successfully');
+          })
+          .catch((error) => {
+            console.error('Audio playback failed:', error);
+            // Try to enable audio with user interaction
+            alert('Click OK to enable audio, then try drawing again');
+          });
       }
     }
   };
@@ -141,8 +150,14 @@ export default function Home() {
       </main>
 
       {/* Audio element for shuffle sound */}
-      <audio ref={audioRef} preload="auto">
+      <audio 
+        ref={audioRef} 
+        preload="auto"
+        onLoadedData={() => console.log('Audio loaded successfully')}
+        onError={(e) => console.error('Audio load error:', e)}
+      >
         <source src={shuffleAudio} type="audio/mpeg" />
+        Your browser does not support the audio element.
       </audio>
 
       <InviteFriendModal
