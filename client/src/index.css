@@ -43,56 +43,11 @@
 
 @layer components {
   .carousel-container {
-    perspective: 1000px;
     height: 300px;
     position: relative;
     margin: 2rem 0;
   }
 
-  .carousel-ring {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin: 50px auto;
-    transform-style: preserve-3d;
-    animation: spin 20s linear infinite;
-  }
-
-  .carousel-ring.paused {
-    animation-play-state: paused;
-  }
-
-  .card-panel {
-    position: absolute;
-    width: 120px;
-    height: 180px;
-    border: 2px solid var(--primary);
-    border-radius: 12px;
-    background: linear-gradient(145deg, hsl(220, 35%, 12%), hsl(220, 30%, 8%));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(251, 191, 36, 0.2);
-  }
-
-  .card-panel:hover {
-    border-color: var(--accent);
-    transform: translateZ(10px);
-    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3), inset 0 1px 0 rgba(251, 191, 36, 0.3);
-  }
-
-  .card-panel:nth-child(1) { transform: rotateY(0deg) translateZ(150px); }
-  .card-panel:nth-child(2) { transform: rotateY(36deg) translateZ(150px); }
-  .card-panel:nth-child(3) { transform: rotateY(72deg) translateZ(150px); }
-  .card-panel:nth-child(4) { transform: rotateY(108deg) translateZ(150px); }
-  .card-panel:nth-child(5) { transform: rotateY(144deg) translateZ(150px); }
-  .card-panel:nth-child(6) { transform: rotateY(180deg) translateZ(150px); }
-  .card-panel:nth-child(7) { transform: rotateY(216deg) translateZ(150px); }
-  .card-panel:nth-child(8) { transform: rotateY(252deg) translateZ(150px); }
-  .card-panel:nth-child(9) { transform: rotateY(288deg) translateZ(150px); }
-  .card-panel:nth-child(10) { transform: rotateY(324deg) translateZ(150px); }
 
   .card-back-design {
     width: 80px;
@@ -225,10 +180,6 @@
   }
 }
 
-@keyframes spin {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
 
 @keyframes flip {
   0% { transform: rotateY(0deg); }
