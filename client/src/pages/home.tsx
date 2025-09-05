@@ -32,7 +32,7 @@ export default function Home() {
       <main className="flex-1 px-4 py-8">
         <Carousel />
 
-        <div className="max-w-md mx-auto space-y-4 -mt-[50px]">
+        <div className="max-w-md mx-auto space-y-4 -mt-[30px]">
           <button 
             onClick={handleDailyDraw}
             disabled={hasDrawnToday}
