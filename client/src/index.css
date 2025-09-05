@@ -45,7 +45,8 @@
   .carousel-container {
     height: 300px;
     position: relative;
-    margin: 2rem 0;
+    margin: 2rem 0 2rem 0;
+    margin-top: calc(2rem - 50px);
   }
 
 
