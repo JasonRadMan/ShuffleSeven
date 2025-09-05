@@ -1,4 +1,4 @@
-import cardBackImage from '@/assets/shuffle7-card-back.svg';
+import cardBackImage from '@/assets/shuffle7-card-back.png';
 
 export default function Carousel() {
   return (
