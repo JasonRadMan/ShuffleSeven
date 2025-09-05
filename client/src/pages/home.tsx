@@ -32,6 +32,11 @@ export default function Home() {
     }
   };
 
+  const handleReset = () => {
+    localStorage.removeItem('shuffle7_daily_draw');
+    window.location.reload();
+  };
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -96,6 +101,15 @@ export default function Home() {
               </span>
             </button>
           </div>
+          
+          {/* Temporary reset button for testing */}
+          <button 
+            onClick={handleReset}
+            className="w-full py-2 px-4 bg-red-600 text-white rounded-lg border-2 border-red-700 hover:bg-red-700 transition-all font-medium mt-4"
+            data-testid="button-reset-test"
+          >
+            🔄 RESET FOR TESTING
+          </button>
         </div>
 
       </main>
