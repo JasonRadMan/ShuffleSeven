@@ -49,7 +49,7 @@
 
 @layer components {
   .carousel-container {
-    height: 200px;
+    height: 350px;
     position: relative;
     margin: 1rem 0;
   }
