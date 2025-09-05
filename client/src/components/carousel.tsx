@@ -1,4 +1,4 @@
-import cardBackImage from '@assets/Screenshot 2025-09-05 at 1.15.01 PM_1757092602755.png';
+import cardBackImage from '@assets/Screenshot 2025-09-05 at 1.15.01 PM_1757092520932.png';
 
 export default function Carousel() {
   return (
