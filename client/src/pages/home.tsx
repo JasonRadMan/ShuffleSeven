@@ -5,16 +5,23 @@ import Header from '@/components/header';
 import Carousel from '@/components/carousel';
 import InviteFriendModal from '@/components/InviteFriendModal';
 import { useShuffleState } from '@/hooks/use-shuffle-state';
+import drawAnimationGif from '@assets/SHuffle front page_1_1757096240479.gif';
 
 export default function Home() {
   const [, setLocation] = useLocation();
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
   const { drawDailyCard, useLifelineCard, lifelinesRemaining, hasDrawnToday } = useShuffleState();
 
   const handleDailyDraw = () => {
     const card = drawDailyCard();
     if (card) {
-      setLocation('/card-reveal');
+      setIsDrawAnimationPlaying(true);
+      // Animation will play for a few seconds before navigating
+      setTimeout(() => {
+        setIsDrawAnimationPlaying(false);
+        setLocation('/card-reveal');
+      }, 3000); // 3 second animation duration
     }
   };
 
@@ -30,7 +37,7 @@ export default function Home() {
       <Header />
       
       <main className="flex-1 px-4 py-8">
-        <Carousel />
+        <Carousel isAnimationPlaying={isDrawAnimationPlaying} />
 
         <div className="max-w-md mx-auto space-y-4 mt-[60px]">
           <button 

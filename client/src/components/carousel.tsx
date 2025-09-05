@@ -1,6 +1,11 @@
 import cardBackImage from '@/assets/shuffle7-card-back.png';
+import drawAnimationGif from '@assets/SHuffle front page_1_1757096240479.gif';
 
-export default function Carousel() {
+interface CarouselProps {
+  isAnimationPlaying?: boolean;
+}
+
+export default function Carousel({ isAnimationPlaying = false }: CarouselProps) {
   return (
     <div className="carousel-container">
       <div className="static-card-background" data-testid="static-card-background">
@@ -10,6 +15,15 @@ export default function Carousel() {
           className="card-back-image"
         />
       </div>
+      {isAnimationPlaying && (
+        <div className="animation-overlay" data-testid="animation-overlay">
+          <img 
+            src={drawAnimationGif} 
+            alt="Drawing animation" 
+            className="draw-animation-gif"
+          />
+        </div>
+      )}
     </div>
   );
 }
