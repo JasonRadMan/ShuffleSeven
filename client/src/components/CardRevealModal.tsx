@@ -7,7 +7,9 @@ import {
 } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import type { Card } from '@/lib/cards';
+import cardBackImage from '@assets/card back_1757444079274.png';
 
 interface CardRevealModalProps {
   open: boolean;
@@ -17,10 +19,26 @@ interface CardRevealModalProps {
 }
 
 export default function CardRevealModal({ open, onOpenChange, card, onClose }: CardRevealModalProps) {
+  const [showCardFront, setShowCardFront] = useState(false);
+
   const handleClose = () => {
     onClose();
     onOpenChange(false);
+    // Reset to card back when modal closes
+    setShowCardFront(false);
   };
+
+  // Reset to show card back when modal opens
+  useEffect(() => {
+    if (open) {
+      setShowCardFront(false);
+      // After a brief delay, start the flip animation
+      const timer = setTimeout(() => {
+        setShowCardFront(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
 
   if (!card) {
     return null;
@@ -33,48 +51,66 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
         <motion.div 
-          className="revealed-card mystical-border p-6"
-          initial={{ rotateY: 180, scale: 0.8 }}
-          animate={{ rotateY: 0, scale: 1 }}
+          className="revealed-card mystical-border p-6 min-h-[400px] flex flex-col justify-center"
+          initial={{ scale: 0.8 }}
+          animate={{ 
+            scale: showCardFront ? 1 : 0.9,
+            rotateY: showCardFront ? 180 : 0
+          }}
           transition={{ 
-            rotateY: { duration: 0.6, ease: "easeOut" },
-            scale: { duration: 0.4, delay: 0.3, ease: "easeOut" }
+            scale: { duration: 0.3 },
+            rotateY: { duration: 0.8, ease: "easeInOut" }
           }}
           style={{ transformStyle: "preserve-3d" }}
         >
-          <div className="relative mb-4">
-            <img 
-              src={card.image} 
-              alt="Card inspiration image" 
-              className="w-full h-48 object-cover rounded-lg mb-4"
-              data-testid="img-card-image"
-            />
-            <div className="absolute top-4 right-4">
-              <span 
-                className="category-badge"
-                data-testid="text-card-category"
-              >
-                {card.category}
-              </span>
+          {!showCardFront ? (
+            // Card Back
+            <div className="flex items-center justify-center">
+              <img 
+                src={cardBackImage} 
+                alt="Card back design" 
+                className="w-full max-w-[280px] h-auto object-contain"
+                data-testid="img-card-back"
+              />
             </div>
-          </div>
-          
-          <div className="text-center space-y-4">
-            {card.title && (
-              <h3 
-                className="font-serif text-xl font-semibold text-primary"
-                data-testid="text-card-title"
-              >
-                {card.title}
-              </h3>
-            )}
-            <p 
-              className="text-foreground leading-relaxed"
-              data-testid="text-card-message"
-            >
-              {card.message}
-            </p>
-          </div>
+          ) : (
+            // Card Front
+            <>
+              <div className="relative mb-4">
+                <img 
+                  src={card.image} 
+                  alt="Card inspiration image" 
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                  data-testid="img-card-image"
+                />
+                <div className="absolute top-4 right-4">
+                  <span 
+                    className="category-badge"
+                    data-testid="text-card-category"
+                  >
+                    {card.category}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="text-center space-y-4">
+                {card.title && (
+                  <h3 
+                    className="font-serif text-xl font-semibold text-primary"
+                    data-testid="text-card-title"
+                  >
+                    {card.title}
+                  </h3>
+                )}
+                <p 
+                  className="text-foreground leading-relaxed"
+                  data-testid="text-card-message"
+                >
+                  {card.message}
+                </p>
+              </div>
+            </>
+          )}
         </motion.div>
 
         <div className="p-6 pt-0">
