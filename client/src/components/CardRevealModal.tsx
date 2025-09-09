@@ -4,7 +4,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
-import type { Card } from '@shared/schema';
+import type { Card } from '@/lib/cards';
 
 interface CardRevealModalProps {
   open: boolean;

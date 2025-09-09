@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import Header from '@/components/header';
 import Carousel from '@/components/carousel';
 import InviteFriendModal from '@/components/InviteFriendModal';
+import CardRevealModal from '@/components/CardRevealModal';
 import { useShuffleState } from '@/hooks/use-shuffle-state';
 import drawAnimationGif from '@assets/SHuffle front page_1_1757096240479.gif';
 import shuffleAudio from '@assets/SHuffle front page_1757097826767.mp3';
@@ -11,9 +12,10 @@ import shuffleAudio from '@assets/SHuffle front page_1757097826767.mp3';
 export default function Home() {
   const [, setLocation] = useLocation();
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [isCardRevealModalOpen, setIsCardRevealModalOpen] = useState(false);
   const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { drawDailyCard, useLifelineCard, lifelinesRemaining, hasDrawnToday } = useShuffleState();
+  const { drawDailyCard, useLifelineCard, lifelinesRemaining, hasDrawnToday, currentCard, clearCurrentCard } = useShuffleState();
 
   const handleDailyDraw = () => {
     const card = drawDailyCard();
@@ -43,7 +45,7 @@ export default function Home() {
       audioRef.current.currentTime = 0;
     }
     setIsDrawAnimationPlaying(false);
-    setLocation('/card-reveal');
+    setIsCardRevealModalOpen(true);
   };
 
   // Effect to handle audio looping
@@ -57,8 +59,13 @@ export default function Home() {
   const handleLifeline = () => {
     const card = useLifelineCard();
     if (card) {
-      setLocation('/card-reveal');
+      setIsCardRevealModalOpen(true);
     }
+  };
+
+  const handleCloseCardModal = () => {
+    clearCurrentCard();
+    setIsCardRevealModalOpen(false);
   };
 
   const handleReset = () => {
@@ -157,6 +164,13 @@ export default function Home() {
       <InviteFriendModal
         open={isInviteModalOpen}
         onOpenChange={setIsInviteModalOpen}
+      />
+
+      <CardRevealModal
+        open={isCardRevealModalOpen}
+        onOpenChange={setIsCardRevealModalOpen}
+        card={currentCard}
+        onClose={handleCloseCardModal}
       />
     </div>
   );
