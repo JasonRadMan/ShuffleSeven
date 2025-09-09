@@ -50,21 +50,21 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
-        <motion.div 
-          className="revealed-card mystical-border p-6 min-h-[400px] flex flex-col justify-center"
-          initial={{ scale: 0.8 }}
-          animate={{ 
-            scale: showCardFront ? 1 : 0.9,
-            rotateY: showCardFront ? 180 : 0
-          }}
-          transition={{ 
-            scale: { duration: 0.3 },
-            rotateY: { duration: 0.8, ease: "easeInOut" }
-          }}
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          {!showCardFront ? (
-            // Card Back
+        <div className="relative revealed-card mystical-border min-h-[400px]" style={{ transformStyle: "preserve-3d" }}>
+          {/* Card Back */}
+          <motion.div 
+            className="absolute inset-0 p-6 flex flex-col justify-center backface-hidden"
+            initial={{ rotateY: 0, scale: 0.8 }}
+            animate={{ 
+              rotateY: showCardFront ? 180 : 0,
+              scale: 1
+            }}
+            transition={{ 
+              rotateY: { duration: 0.6, ease: "easeInOut" },
+              scale: { duration: 0.3 }
+            }}
+            style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
+          >
             <div className="flex items-center justify-center">
               <img 
                 src={cardBackImage} 
@@ -73,45 +73,57 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
                 data-testid="img-card-back"
               />
             </div>
-          ) : (
-            // Card Front
-            <>
-              <div className="relative mb-4">
-                <img 
-                  src={card.image} 
-                  alt="Card inspiration image" 
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                  data-testid="img-card-image"
-                />
-                <div className="absolute top-4 right-4">
-                  <span 
-                    className="category-badge"
-                    data-testid="text-card-category"
-                  >
-                    {card.category}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="text-center space-y-4">
-                {card.title && (
-                  <h3 
-                    className="font-serif text-xl font-semibold text-primary"
-                    data-testid="text-card-title"
-                  >
-                    {card.title}
-                  </h3>
-                )}
-                <p 
-                  className="text-foreground leading-relaxed"
-                  data-testid="text-card-message"
+          </motion.div>
+
+          {/* Card Front */}
+          <motion.div 
+            className="absolute inset-0 p-6 flex flex-col justify-center backface-hidden"
+            initial={{ rotateY: -180, scale: 0.8 }}
+            animate={{ 
+              rotateY: showCardFront ? 0 : -180,
+              scale: showCardFront ? 1 : 0.8
+            }}
+            transition={{ 
+              rotateY: { duration: 0.6, ease: "easeInOut" },
+              scale: { duration: 0.3, delay: showCardFront ? 0.3 : 0 }
+            }}
+            style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
+          >
+            <div className="relative mb-4">
+              <img 
+                src={card.image} 
+                alt="Card inspiration image" 
+                className="w-full h-48 object-cover rounded-lg mb-4"
+                data-testid="img-card-image"
+              />
+              <div className="absolute top-4 right-4">
+                <span 
+                  className="category-badge"
+                  data-testid="text-card-category"
                 >
-                  {card.message}
-                </p>
+                  {card.category}
+                </span>
               </div>
-            </>
-          )}
-        </motion.div>
+            </div>
+            
+            <div className="text-center space-y-4">
+              {card.title && (
+                <h3 
+                  className="font-serif text-xl font-semibold text-primary"
+                  data-testid="text-card-title"
+                >
+                  {card.title}
+                </h3>
+              )}
+              <p 
+                className="text-foreground leading-relaxed"
+                data-testid="text-card-message"
+              >
+                {card.message}
+              </p>
+            </div>
+          </motion.div>
+        </div>
 
         <div className="p-6 pt-0">
           <button 
