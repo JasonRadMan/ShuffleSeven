@@ -2,8 +2,11 @@ import {
   Dialog,
   DialogContent,
   DialogClose,
+  DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import type { Card } from '@/lib/cards';
 
 interface CardRevealModalProps {
@@ -26,7 +29,19 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md mx-auto p-0 bg-background border-border">
-        <div className="revealed-card mystical-border p-6">
+        <DialogTitle className="sr-only">Card Revealed</DialogTitle>
+        <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
+        
+        <motion.div 
+          className="revealed-card mystical-border p-6"
+          initial={{ rotateY: 180, scale: 0.8 }}
+          animate={{ rotateY: 0, scale: 1 }}
+          transition={{ 
+            rotateY: { duration: 0.6, ease: "easeOut" },
+            scale: { duration: 0.4, delay: 0.3, ease: "easeOut" }
+          }}
+          style={{ transformStyle: "preserve-3d" }}
+        >
           <div className="relative mb-4">
             <img 
               src={card.image} 
@@ -60,7 +75,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
               {card.message}
             </p>
           </div>
-        </div>
+        </motion.div>
 
         <div className="p-6 pt-0">
           <button 
