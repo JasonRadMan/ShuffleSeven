@@ -69,17 +69,16 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
         <div className="relative revealed-card mystical-border min-h-[400px]" style={{ transformStyle: "preserve-3d" }}>
           {/* Card Back */}
           <motion.div 
-            className="absolute inset-0 p-6 flex flex-col justify-center backface-hidden"
-            initial={{ opacity: 0, rotateY: 0, scale: 0.8 }}
+            className="absolute inset-0 p-6 flex flex-col justify-center"
+            initial={{ opacity: 0, scale: 1 }}
             animate={{ 
-              opacity: animationStage >= 1 ? 1 : 0,
+              opacity: animationStage === 1 ? 1 : (animationStage >= 2 ? 0 : 0),
               rotateY: animationStage >= 2 ? 180 : 0,
-              scale: animationStage >= 1 ? 1 : 0.8
+              scale: 1
             }}
             transition={{ 
               opacity: { duration: 0.5, ease: "easeOut" },
-              rotateY: { duration: 0.6, ease: "easeInOut" },
-              scale: { duration: 0.3 }
+              rotateY: { duration: 0.6, ease: "easeInOut" }
             }}
             style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
           >
@@ -95,19 +94,18 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
 
           {/* Card Front */}
           <motion.div 
-            className="absolute inset-0 p-6 flex flex-col justify-center backface-hidden"
-            initial={{ opacity: 0, rotateY: -180, scale: 0.8 }}
+            className="absolute inset-0 p-6 flex flex-col justify-center"
+            initial={{ opacity: 0, rotateY: 0, scale: 1 }}
             animate={{ 
               opacity: animationStage >= 2 ? 1 : 0,
-              rotateY: animationStage >= 2 ? 0 : -180,
-              scale: animationStage >= 3 ? 1.05 : 0.9
+              rotateY: 0,
+              scale: animationStage >= 3 ? 1.05 : 1
             }}
             transition={{ 
-              opacity: { duration: 0.3, ease: "easeOut" },
-              rotateY: { duration: 0.6, ease: "easeInOut" },
+              opacity: { duration: 0.4, ease: "easeOut", delay: animationStage >= 2 ? 0.3 : 0 },
               scale: { duration: 0.4, ease: "easeOut" }
             }}
-            style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
+            style={{ transformStyle: "preserve-3d" }}
           >
             <div className="relative mb-4">
               <img 
