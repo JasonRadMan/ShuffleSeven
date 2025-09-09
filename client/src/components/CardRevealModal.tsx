@@ -19,24 +19,40 @@ interface CardRevealModalProps {
 }
 
 export default function CardRevealModal({ open, onOpenChange, card, onClose }: CardRevealModalProps) {
-  const [showCardFront, setShowCardFront] = useState(false);
+  const [animationStage, setAnimationStage] = useState(0); // 0: hidden, 1: fade in, 2: flip, 3: enlarge
 
   const handleClose = () => {
     onClose();
     onOpenChange(false);
-    // Reset to card back when modal closes
-    setShowCardFront(false);
+    // Reset animation
+    setAnimationStage(0);
   };
 
-  // Reset to show card back when modal opens
+  // Coordinate the three-stage animation
   useEffect(() => {
     if (open) {
-      setShowCardFront(false);
-      // After a brief delay, start the flip animation
-      const timer = setTimeout(() => {
-        setShowCardFront(true);
-      }, 500);
-      return () => clearTimeout(timer);
+      setAnimationStage(0);
+      
+      // Stage 1: Fade in card back (after 200ms)
+      const fadeInTimer = setTimeout(() => {
+        setAnimationStage(1);
+      }, 200);
+      
+      // Stage 2: Flip to front (after 1000ms total)
+      const flipTimer = setTimeout(() => {
+        setAnimationStage(2);
+      }, 1000);
+      
+      // Stage 3: Enlarge (after 1600ms total)
+      const enlargeTimer = setTimeout(() => {
+        setAnimationStage(3);
+      }, 1600);
+      
+      return () => {
+        clearTimeout(fadeInTimer);
+        clearTimeout(flipTimer);
+        clearTimeout(enlargeTimer);
+      };
     }
   }, [open]);
 
@@ -54,12 +70,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
           {/* Card Back */}
           <motion.div 
             className="absolute inset-0 p-6 flex flex-col justify-center backface-hidden"
-            initial={{ rotateY: 0, scale: 0.8 }}
+            initial={{ opacity: 0, rotateY: 0, scale: 0.8 }}
             animate={{ 
-              rotateY: showCardFront ? 180 : 0,
-              scale: 1
+              opacity: animationStage >= 1 ? 1 : 0,
+              rotateY: animationStage >= 2 ? 180 : 0,
+              scale: animationStage >= 1 ? 1 : 0.8
             }}
             transition={{ 
+              opacity: { duration: 0.5, ease: "easeOut" },
               rotateY: { duration: 0.6, ease: "easeInOut" },
               scale: { duration: 0.3 }
             }}
@@ -78,14 +96,16 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
           {/* Card Front */}
           <motion.div 
             className="absolute inset-0 p-6 flex flex-col justify-center backface-hidden"
-            initial={{ rotateY: -180, scale: 0.8 }}
+            initial={{ opacity: 0, rotateY: -180, scale: 0.8 }}
             animate={{ 
-              rotateY: showCardFront ? 0 : -180,
-              scale: showCardFront ? 1 : 0.8
+              opacity: animationStage >= 2 ? 1 : 0,
+              rotateY: animationStage >= 2 ? 0 : -180,
+              scale: animationStage >= 3 ? 1.05 : 0.9
             }}
             transition={{ 
+              opacity: { duration: 0.3, ease: "easeOut" },
               rotateY: { duration: 0.6, ease: "easeInOut" },
-              scale: { duration: 0.3, delay: showCardFront ? 0.3 : 0 }
+              scale: { duration: 0.4, ease: "easeOut" }
             }}
             style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
           >
