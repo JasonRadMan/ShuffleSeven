@@ -31,6 +31,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve public card images from App Storage
   app.get("/public-objects/:filePath(*)", async (req, res) => {
     const filePath = req.params.filePath;
+    console.log(`🔍 Searching for public object: ${filePath}`);
     const objectStorageService = new ObjectStorageService();
     try {
       const file = await objectStorageService.searchPublicObject(filePath);

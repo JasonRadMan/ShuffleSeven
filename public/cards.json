@@ -2,43 +2,43 @@
   "cards": [
     {
       "category": "Wisdom",
-      "image": "/public-objects/wisdom/mountain-wisdom.jpg",
+      "image": "/public-objects/wisdom/W0001.png",
       "message": "The mountains teach us that true strength comes from standing firm through every storm while remaining open to the light that breaks through the clouds.",
       "title": "Mountain Wisdom"
     },
     {
       "category": "Health",
-      "image": "/public-objects/health/body-temple.jpg",
+      "image": "/public-objects/health/H0001.png",
       "message": "Your body is your temple. Honor it with movement, nourish it with care, and listen to its wisdom.",
       "title": "Body Temple"
     },
     {
       "category": "Challenge",
-      "image": "/public-objects/challenge/hidden-strength.jpg",
+      "image": "/public-objects/challenge/C0001.png",
       "message": "Every challenge is an opportunity in disguise. Embrace the difficulty and discover your hidden strength.",
       "title": "Hidden Strength"
     },
     {
       "category": "Leadership",
-      "image": "/public-objects/leadership/lead-by-example.jpg",
+      "image": "/public-objects/leadership/L0001.png",
       "message": "True leadership begins with leading yourself. Be the example you wish to see in the world.",
       "title": "Lead by Example"
     },
     {
       "category": "Tongue N Cheek",
-      "image": "/public-objects/tongue-n-cheek/lighthearted-wisdom.jpg",
+      "image": "/public-objects/tongue-n-cheek/T0001.png",
       "message": "Life is too important to be taken seriously all the time. Find joy in the absurd and wisdom in laughter.",
       "title": "Lighthearted Wisdom"
     },
     {
       "category": "Possibilities",
-      "image": "/public-objects/possibilities/infinite-canvas.jpg",
+      "image": "/public-objects/possibilities/P0001.png",
       "message": "Every sunrise brings infinite possibilities. Today is a blank canvas waiting for your unique masterpiece.",
       "title": "Infinite Canvas"
     },
     {
       "category": "Knowledge",
-      "image": "/public-objects/knowledge/wisdom-over-knowledge.jpg",
+      "image": "/public-objects/knowledge/K0001.png",
       "message": "Knowledge is power, but wisdom is knowing how to use that power with compassion and understanding.",
       "title": "Wisdom Over Knowledge"
     }
