@@ -17,6 +17,7 @@ export interface ShuffleState {
   lifelinesRemaining: number;
   hasDrawnToday: boolean;
   settings: Record<string, boolean>;
+  cardsLoading: boolean;
 }
 
 export function useShuffleState() {
@@ -24,7 +25,8 @@ export function useShuffleState() {
     currentCard: null,
     lifelinesRemaining: 5,
     hasDrawnToday: false,
-    settings: {}
+    settings: {},
+    cardsLoading: true
   });
 
   const [cards, setCards] = useState<Card[]>([]);
@@ -43,7 +45,8 @@ export function useShuffleState() {
         currentCard: todaysDraw,
         lifelinesRemaining: lifelines,
         hasDrawnToday: !!todaysDraw,
-        settings
+        settings,
+        cardsLoading: false
       });
     };
 
@@ -51,7 +54,7 @@ export function useShuffleState() {
   }, []);
 
   const drawDailyCard = () => {
-    if (state.hasDrawnToday || cards.length === 0) return null;
+    if (state.hasDrawnToday || state.cardsLoading || cards.length === 0) return null;
 
     // Use smart card selection with proper fallback logic
     const { card: selectedCard, deckReset } = selectSmartCard(cards);
@@ -75,7 +78,7 @@ export function useShuffleState() {
   };
 
   const useLifelineCard = () => {
-    if (state.lifelinesRemaining <= 0 || cards.length === 0) return null;
+    if (state.lifelinesRemaining <= 0 || state.cardsLoading || cards.length === 0) return null;
 
     // Use smart card selection for lifelines too
     const { card: selectedCard, deckReset } = selectSmartCard(cards);

@@ -1,0 +1,43 @@
+I dug through the updated repository using the GitHub API and traced how a card is selected and displayed. The card reveal modal itself is fine – it simply renders whatever Card object you pass in (it uses card.image, card.category, card.title and card.message)
+raw.githubusercontent.com
+. The problem originates upstream in the draw logic and storage.
+
+Here’s what I found:
+
+The draw function returns null until cards finish loading.
+In the useShuffleState hook, cards are loaded asynchronously via loadCards() in a useEffect. The drawDailyCard function bails out early if either a card has already been drawn or if the card array is empty
+raw.githubusercontent.com
+. On a fresh page load, cards.length is 0 until the fetch('/api/cards') request resolves
+raw.githubusercontent.com
+. If the user clicks the “Draw Today’s Card” button immediately, drawDailyCard() returns null, so currentCard is never set and the reveal modal displays nothing.
+
+Date tracking is UTC‑based, which can misfire locally.
+The getTodaysDraw function stores and compares the draw date using new Date().toISOString().split('T')[0]
+raw.githubusercontent.com
+. This yields a UTC date; late‑night draws in Jacksonville (UTC‑5) can spill into the next day locally but still register as the same UTC day, making hasDrawnToday stay true and silently blocking a new draw.
+
+Category tracking never resets with the date.
+To avoid giving the same category two days in a row, the app stores the last drawn category in local storage. However, getLastDrawnCategory simply returns the stored category string without checking when it was drawn
+raw.githubusercontent.com
+. As a result, the “avoid repeating categories” rule persists indefinitely instead of only skipping yesterday’s category. This can prematurely exhaust categories and, together with the empty‑cards check above, make the draw logic return no card even though cards exist.
+
+Card images use the /public‑objects/* paths.
+The images defined in public/cards.json use paths like "/public-objects/wisdom/mountain-wisdom.jpg"
+raw.githubusercontent.com
+. These are served by the /public-objects/:filePath route. If the Replit object‑storage environment variables are missing or misconfigured, these images will 404, leaving a blank card even though the title and message fields exist.
+
+Why your card didn’t appear: The most likely culprit is the first issue—users can click the draw button before the cards have loaded. When that happens, drawDailyCard returns null and the modal never receives a card to display. Less commonly, the UTC date bug can leave hasDrawnToday flagged on a new local day, making drawDailyCard() exit early. Either way, the result is the same: the reveal animation opens with currentCard still null, so nothing is shown.
+
+Suggested fixes:
+
+Add a “cards loaded” flag in useShuffleState. Don’t enable the draw button until loadCards() has resolved, or have drawDailyCard() wait for loadCards() if cards is empty.
+
+Use local dates (e.g. build YYYY‑MM‑DD from new Date().getFullYear(), getMonth() + 1, getDate()) rather than toISOString() when determining whether the user has already drawn today
+raw.githubusercontent.com
+.
+
+Include the draw date in the “last drawn category” record and only skip the category if the last draw was yesterday, not indefinitely.
+
+Validate your Replit object‑storage configuration so the /public-objects/… paths resolve, or provide a graceful fallback image in the CardRevealModal if the image 404s.
+
+Applying these fixes will ensure the app doesn’t silently return null on the first click and will only enforce the “no same category two days in a row” rule on consecutive days.
