@@ -74,11 +74,11 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-0 bg-background border-border">
+      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-0 bg-transparent border-none shadow-none">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
-        <div className="relative revealed-card mystical-border w-full h-full" style={{ transformStyle: "preserve-3d" }}>
+        <div className="relative w-full h-full" style={{ transformStyle: "preserve-3d" }}>
           {/* Card Back */}
           <motion.div 
             className="absolute inset-0 flex items-center justify-center"
