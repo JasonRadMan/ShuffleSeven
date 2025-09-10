@@ -51,7 +51,7 @@ export function useShuffleState() {
   }, []);
 
   const drawDailyCard = () => {
-    if (state.hasDrawnToday) return null;
+    if (state.hasDrawnToday || cards.length === 0) return null;
 
     // Use smart card selection with proper fallback logic
     const { card: selectedCard, deckReset } = selectSmartCard(cards);
@@ -75,18 +75,27 @@ export function useShuffleState() {
   };
 
   const useLifelineCard = () => {
-    if (state.lifelinesRemaining <= 0) return null;
+    if (state.lifelinesRemaining <= 0 || cards.length === 0) return null;
 
-    const randomCard = cards[Math.floor(Math.random() * cards.length)];
+    // Use smart card selection for lifelines too
+    const { card: selectedCard, deckReset } = selectSmartCard(cards);
     const remaining = useLifeline();
+    
+    if (deckReset) {
+      console.info('Deck was reset during lifeline draw - all cards are now available again');
+    }
+    
+    // Track the lifeline card draw (but don't update today's draw storage)
+    addDrawnCard(selectedCard);
+    setLastDrawnCategory(selectedCard.category);
     
     setState(prev => ({
       ...prev,
-      currentCard: randomCard,
+      currentCard: selectedCard,
       lifelinesRemaining: remaining
     }));
 
-    return randomCard;
+    return selectedCard;
   };
 
   const updateSetting = (key: string, value: boolean) => {
