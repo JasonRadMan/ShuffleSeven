@@ -6,7 +6,10 @@ import {
   getLifelinesRemaining, 
   useLifeline, 
   getSettings, 
-  updateSettings 
+  updateSettings,
+  selectSmartCard,
+  addDrawnCard,
+  setLastDrawnCategory
 } from '@/lib/storage';
 
 export interface ShuffleState {
@@ -50,16 +53,25 @@ export function useShuffleState() {
   const drawDailyCard = () => {
     if (state.hasDrawnToday) return null;
 
-    const randomCard = cards[Math.floor(Math.random() * cards.length)];
-    setTodaysDraw(randomCard);
+    // Use smart card selection with proper fallback logic
+    const { card: selectedCard, deckReset } = selectSmartCard(cards);
+    
+    if (deckReset) {
+      console.info('Deck was reset - all cards are now available again');
+    }
+    
+    // Update storage
+    setTodaysDraw(selectedCard);
+    addDrawnCard(selectedCard);
+    setLastDrawnCategory(selectedCard.category);
     
     setState(prev => ({
       ...prev,
-      currentCard: randomCard,
+      currentCard: selectedCard,
       hasDrawnToday: true
     }));
 
-    return randomCard;
+    return selectedCard;
   };
 
   const useLifelineCard = () => {
