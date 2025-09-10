@@ -34,13 +34,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.log(`🔍 Searching for public object: ${filePath}`);
     const objectStorageService = new ObjectStorageService();
     try {
-      const file = await objectStorageService.searchPublicObject(filePath);
-      if (!file) {
+      const objectPath = await objectStorageService.searchPublicObject(filePath);
+      console.log(`🔍 Search result: ${objectPath ? `Found at "${objectPath}"` : 'Not found'}`);
+      
+      if (!objectPath) {
+        console.log(`❌ No object path returned for: ${filePath}`);
         return res.status(404).json({ error: "File not found" });
       }
-      objectStorageService.downloadObject(file, res);
+      
+      console.log(`🚀 Starting download for: ${objectPath}`);
+      await objectStorageService.downloadObject(objectPath, res);
+      console.log(`✅ Download completed for: ${objectPath}`);
     } catch (error) {
-      console.error("Error searching for public object:", error);
+      console.error(`💥 Error in route handler for ${filePath}:`, error);
       return res.status(500).json({ error: "Internal server error" });
     }
   });

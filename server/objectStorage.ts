@@ -1,5 +1,5 @@
-// Object Storage integration from blueprint:javascript_object_storage
-import { Storage, File } from "@google-cloud/storage";
+// Object Storage integration using Replit client
+import { Client } from "@replit/object-storage";
 import { Response } from "express";
 import { randomUUID } from "crypto";
 import {
@@ -10,26 +10,8 @@ import {
   setObjectAclPolicy,
 } from "./objectAcl";
 
-const REPLIT_SIDECAR_ENDPOINT = "http://127.0.0.1:1106";
-
 // The object storage client is used to interact with the object storage service.
-export const objectStorageClient = new Storage({
-  credentials: {
-    audience: "replit",
-    subject_token_type: "access_token",
-    token_url: `${REPLIT_SIDECAR_ENDPOINT}/token`,
-    type: "external_account",
-    credential_source: {
-      url: `${REPLIT_SIDECAR_ENDPOINT}/credential`,
-      format: {
-        type: "json",
-        subject_token_field_name: "access_token",
-      },
-    },
-    universe_domain: "googleapis.com",
-  },
-  projectId: "",
-});
+export const objectStorageClient = new Client();
 
 export class ObjectNotFoundError extends Error {
   constructor() {
@@ -75,68 +57,141 @@ export class ObjectStorageService {
     return dir;
   }
 
-  // Search for a public object from the search paths.
-  async searchPublicObject(filePath: string): Promise<File | null> {
-    console.log(`🔍 Starting search for: ${filePath}`);
-    for (const searchPath of this.getPublicObjectSearchPaths()) {
-      const fullPath = `${searchPath}/${filePath}`;
-      console.log(`📂 Search path: ${searchPath}`);
-      console.log(`📄 Full path: ${fullPath}`);
-
-      // Full path format: /<bucket_name>/<object_name>
-      const { bucketName, objectName } = parseObjectPath(fullPath);
-      console.log(`🪣 Bucket name: ${bucketName}`);
-      console.log(`📁 Object name: ${objectName}`);
-      
-      const bucket = objectStorageClient.bucket(bucketName);
-      const file = bucket.file(objectName);
-
-      // Check if file exists
-      const [exists] = await file.exists();
-      console.log(`✅ File exists: ${exists}`);
-      
-      if (exists) {
-        console.log(`🎉 Found file at: ${objectName}`);
-        return file;
+  // Debug: List all objects in the bucket
+  async listBucketContents(): Promise<void> {
+    try {
+      console.log(`📋 Listing bucket contents...`);
+      const result = await objectStorageClient.list();
+      if (result.ok) {
+        console.log(`📂 Found ${result.value.length} objects:`);
+        result.value.forEach(obj => console.log(`   - ${obj.name}`));
+      } else {
+        console.log(`❌ Failed to list bucket: ${result.error?.message}`);
       }
+    } catch (error) {
+      console.log(`❌ Error listing bucket: ${error.message}`);
     }
+  }
+
+  // Search for a public object from the search paths.
+  async searchPublicObject(filePath: string): Promise<string | null> {
+    console.log(`🔍 Starting search for: ${filePath}`);
     
-    console.log(`❌ File not found: ${filePath}`);
-    return null;
+    try {
+      // Get all objects in bucket first - safer than downloadAsStream
+      const listResult = await objectStorageClient.list();
+      if (!listResult.ok) {
+        console.log(`❌ Failed to list bucket: ${listResult.error?.message}`);
+        return null;
+      }
+      
+      // Build search patterns based on the file path
+      const capitalizedPath = filePath.replace(/^(\w+)\//, (match, category) => {
+        const categoryMap = {
+          'wisdom': 'Wisdom',
+          'challenge': 'Challenge', 
+          'knowledge': 'Knowledge',
+          'leadership': 'Leadership',
+          'possibilities': 'Possibilities',
+          'tongue n cheek': 'Tongue N Cheek',
+          'health': 'Healing'  // Note: Health -> Healing in bucket
+        };
+        return `${categoryMap[category.toLowerCase()] || category}/`;
+      });
+      
+      const searchPatterns = [
+        `Cards/${capitalizedPath}`,   // Cards/Wisdom/W0001.png
+        `objects/cards/${filePath}`,  // objects/cards/wisdom/W0001.png
+        `cards/${filePath}`,          // cards/wisdom/W0001.png  
+        `${filePath}`                 // wisdom/W0001.png
+      ];
+      
+      // Look for exact matches in bucket listing
+      for (const pattern of searchPatterns) {
+        console.log(`📁 Looking for: ${pattern}`);
+        const found = listResult.value.find(obj => obj.name === pattern);
+        if (found) {
+          console.log(`🎉 Found exact match: ${found.name}`);
+          return found.name;
+        }
+      }
+      
+      // If no exact match, try partial matches (for debugging)
+      console.log(`🔍 No exact match found, checking partial matches for filename...`);
+      const filename = filePath.split('/').pop(); // Get W0001.png from wisdom/W0001.png
+      
+      if (filename) {
+        const partialMatches = listResult.value.filter(obj => obj.name.endsWith(filename));
+        if (partialMatches.length > 0) {
+          console.log(`🔍 Found ${partialMatches.length} files ending with ${filename}:`);
+          partialMatches.forEach(match => console.log(`   - ${match.name}`));
+          // Return the first match
+          console.log(`🎯 Using first match: ${partialMatches[0].name}`);
+          return partialMatches[0].name;
+        }
+      }
+      
+      console.log(`❌ File not found: ${filePath}`);
+      return null;
+      
+    } catch (error) {
+      console.error('Error searching for public object:', error);
+      return null;
+    }
   }
 
   // Downloads an object to the response.
-  async downloadObject(file: File, res: Response, cacheTtlSec: number = 3600) {
+  async downloadObject(objectPath: string, res: Response, cacheTtlSec: number = 3600) {
     try {
-      // Get file metadata
-      const [metadata] = await file.getMetadata();
-      // Get the ACL policy for the object.
-      const aclPolicy = await getObjectAclPolicy(file);
-      const isPublic = aclPolicy?.visibility === "public";
-      // Set appropriate headers
+      console.log(`📥 Attempting to download: ${objectPath}`);
+      
+      // Use Replit client to download as stream - returns stream directly
+      const stream = await objectStorageClient.downloadAsStream(objectPath);
+      console.log(`📊 Stream created:`, typeof stream, stream?.readable, stream?.destroyed);
+      
+      if (!stream) {
+        console.error(`❌ No stream returned for ${objectPath}`);
+        res.status(404).json({ error: 'File not found' });
+        return;
+      }
+      
+      console.log(`✅ Stream created successfully for ${objectPath}`);
+      console.log(`📋 Stream readable: ${stream.readable}, destroyed: ${stream.destroyed}`);
+      
+      // Set appropriate headers - assume images are PNG for now
       res.set({
-        "Content-Type": metadata.contentType || "application/octet-stream",
-        "Content-Length": metadata.size,
-        "Cache-Control": `${
-          isPublic ? "public" : "private"
-        }, max-age=${cacheTtlSec}`,
+        "Content-Type": "image/png",
+        "Cache-Control": `public, max-age=${cacheTtlSec}`,
       });
-
-      // Stream the file to the response
-      const stream = file.createReadStream();
-
-      stream.on("error", (err) => {
-        console.error("Stream error:", err);
+      
+      // Handle stream errors immediately to prevent unhandled errors
+      stream.on('error', (error) => {
+        console.error('Stream error:', error);
         if (!res.headersSent) {
-          res.status(500).json({ error: "Error streaming file" });
+          res.status(500).json({ error: 'Failed to stream file' });
         }
       });
-
+      
+      // Handle response errors to prevent unhandled errors
+      res.on('error', (error) => {
+        console.error('Response stream error:', error);
+      });
+      
+      // Handle response close/finish to clean up stream
+      res.on('close', () => {
+        if (stream.destroy) {
+          stream.destroy();
+        }
+      });
+      
+      // Pipe the stream to the response
       stream.pipe(res);
+      console.log(`🚀 Stream piped to response for ${objectPath}`);
+      
     } catch (error) {
-      console.error("Error downloading file:", error);
+      console.error('Download error:', error);
       if (!res.headersSent) {
-        res.status(500).json({ error: "Error downloading file" });
+        res.status(500).json({ error: 'Failed to download file' });
       }
     }
   }
