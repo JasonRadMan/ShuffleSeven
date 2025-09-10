@@ -1,5 +1,32 @@
 import { Card } from './cards';
 
+// Helper function to get local date string (YYYY-MM-DD)
+function getLocalDateString(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Helper function to get local month string (YYYY-MM)
+function getLocalMonthString(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  return `${year}-${month}`;
+}
+
+// Helper function to get yesterday's date string (YYYY-MM-DD)
+function getYesterdayDateString(): string {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const year = yesterday.getFullYear();
+  const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+  const day = String(yesterday.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 const STORAGE_KEYS = {
   DAILY_DRAW: 'shuffle7_daily_draw',
   LIFELINES: 'shuffle7_lifelines',
@@ -24,12 +51,13 @@ interface DrawnCardsHistory {
 
 interface LastDrawnCategory {
   category: string;
+  date: string;
   timestamp: number;
 }
 
 // Daily Draw Functions
 export function getTodaysDraw(): Card | null {
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const today = getLocalDateString();
   const stored = localStorage.getItem(STORAGE_KEYS.DAILY_DRAW);
   
   if (!stored) return null;
@@ -43,14 +71,14 @@ export function getTodaysDraw(): Card | null {
 }
 
 export function setTodaysDraw(card: Card): void {
-  const today = new Date().toISOString().split('T')[0];
+  const today = getLocalDateString();
   const data: DailyDraw = { date: today, card };
   localStorage.setItem(STORAGE_KEYS.DAILY_DRAW, JSON.stringify(data));
 }
 
 // Lifeline Functions
 export function getLifelinesRemaining(): number {
-  const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+  const currentMonth = getLocalMonthString();
   const stored = localStorage.getItem(STORAGE_KEYS.LIFELINES);
   
   if (!stored) return 5;
@@ -68,7 +96,7 @@ export function getLifelinesRemaining(): number {
 }
 
 export function useLifeline(): number {
-  const currentMonth = new Date().toISOString().slice(0, 7);
+  const currentMonth = getLocalMonthString();
   const remaining = getLifelinesRemaining();
   
   if (remaining <= 0) return 0;
@@ -170,7 +198,15 @@ export function getLastDrawnCategory(): string | null {
   
   try {
     const data: LastDrawnCategory = JSON.parse(stored);
-    return data.category;
+    const yesterday = getYesterdayDateString();
+    
+    // Only return the category if it was drawn yesterday
+    // This prevents indefinite category avoidance
+    if (data.date === yesterday) {
+      return data.category;
+    }
+    
+    return null;
   } catch {
     return null;
   }
@@ -178,7 +214,8 @@ export function getLastDrawnCategory(): string | null {
 
 export function setLastDrawnCategory(category: string): void {
   const data: LastDrawnCategory = { 
-    category, 
+    category,
+    date: getLocalDateString(),
     timestamp: Date.now() 
   };
   localStorage.setItem(STORAGE_KEYS.LAST_DRAWN_CATEGORY, JSON.stringify(data));
