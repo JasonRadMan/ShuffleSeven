@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { X } from 'lucide-react';
+import { X, ImageOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import type { Card } from '@/lib/cards';
@@ -20,18 +20,30 @@ interface CardRevealModalProps {
 
 export default function CardRevealModal({ open, onOpenChange, card, onClose }: CardRevealModalProps) {
   const [animationStage, setAnimationStage] = useState(0); // 0: hidden, 1: fade in, 2: flip, 3: enlarge
+  const [imageError, setImageError] = useState(false);
 
   const handleClose = () => {
     onClose();
     onOpenChange(false);
-    // Reset animation
+    // Reset animation and image error state
     setAnimationStage(0);
+    setImageError(false);
   };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  // Reset image error when card changes
+  useEffect(() => {
+    setImageError(false);
+  }, [card?.image]);
 
   // Coordinate the three-stage animation
   useEffect(() => {
     if (open) {
       setAnimationStage(0);
+      setImageError(false); // Reset image error state when modal opens
       
       // Stage 1: Fade in card back (after 200ms)
       const fadeInTimer = setTimeout(() => {
@@ -108,12 +120,26 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
             style={{ transformStyle: "preserve-3d" }}
           >
             <div className="relative mb-4">
-              <img 
-                src={card.image} 
-                alt="Card inspiration image" 
-                className="w-full h-48 object-cover rounded-lg mb-4"
-                data-testid="img-card-image"
-              />
+              {!imageError ? (
+                <img 
+                  src={card.image} 
+                  alt="Card inspiration image" 
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                  onError={handleImageError}
+                  data-testid="img-card-image"
+                />
+              ) : (
+                <div 
+                  className="w-full h-48 bg-muted rounded-lg mb-4 flex flex-col items-center justify-center text-muted-foreground"
+                  data-testid="status-image-unavailable"
+                >
+                  <ImageOff className="w-12 h-12 mb-2" />
+                  <p className="text-sm text-center px-4" data-testid="text-image-fallback">
+                    Image not available<br />
+                    <span className="text-xs opacity-75">Content loads from your App Storage</span>
+                  </p>
+                </div>
+              )}
               <div className="absolute top-4 right-4">
                 <span 
                   className="category-badge"
