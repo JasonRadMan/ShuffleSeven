@@ -77,21 +77,31 @@ export class ObjectStorageService {
 
   // Search for a public object from the search paths.
   async searchPublicObject(filePath: string): Promise<File | null> {
+    console.log(`🔍 Starting search for: ${filePath}`);
     for (const searchPath of this.getPublicObjectSearchPaths()) {
       const fullPath = `${searchPath}/${filePath}`;
+      console.log(`📂 Search path: ${searchPath}`);
+      console.log(`📄 Full path: ${fullPath}`);
 
       // Full path format: /<bucket_name>/<object_name>
       const { bucketName, objectName } = parseObjectPath(fullPath);
+      console.log(`🪣 Bucket name: ${bucketName}`);
+      console.log(`📁 Object name: ${objectName}`);
+      
       const bucket = objectStorageClient.bucket(bucketName);
       const file = bucket.file(objectName);
 
       // Check if file exists
       const [exists] = await file.exists();
+      console.log(`✅ File exists: ${exists}`);
+      
       if (exists) {
+        console.log(`🎉 Found file at: ${objectName}`);
         return file;
       }
     }
-
+    
+    console.log(`❌ File not found: ${filePath}`);
     return null;
   }
 
