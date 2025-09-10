@@ -74,14 +74,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md mx-auto p-0 bg-background border-border">
+      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-0 bg-background border-border">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
-        <div className="relative revealed-card mystical-border min-h-[400px]" style={{ transformStyle: "preserve-3d" }}>
+        <div className="relative revealed-card mystical-border w-full h-full" style={{ transformStyle: "preserve-3d" }}>
           {/* Card Back */}
           <motion.div 
-            className="absolute inset-0 p-6 flex flex-col justify-center"
+            className="absolute inset-0 flex items-center justify-center"
             initial={{ opacity: 0, scale: 1 }}
             animate={{ 
               opacity: animationStage === 1 ? 1 : (animationStage >= 2 ? 0 : 0),
@@ -94,100 +94,54 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
             }}
             style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
           >
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center w-full h-full">
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
-                className="w-full max-w-[280px] h-auto object-contain"
+                className="max-w-full max-h-full object-contain"
                 data-testid="img-card-back"
               />
             </div>
           </motion.div>
 
-          {/* Card Front */}
+          {/* Card Front - Only Image */}
           <motion.div 
-            className="absolute inset-0 p-6 flex flex-col justify-center"
+            className="absolute inset-0 flex items-center justify-center"
             initial={{ opacity: 0, rotateY: 0, scale: 1 }}
             animate={{ 
               opacity: animationStage >= 2 ? 1 : 0,
               rotateY: 0,
-              scale: animationStage >= 3 ? 1.05 : 1
+              scale: animationStage >= 3 ? 1.02 : 1
             }}
             transition={{ 
               opacity: { duration: 0.4, ease: "easeOut", delay: animationStage >= 2 ? 0.3 : 0 },
               scale: { duration: 0.4, ease: "easeOut" }
             }}
             style={{ transformStyle: "preserve-3d" }}
+            onClick={handleClose}
           >
-            <div className="relative mb-4">
-              {!imageError ? (
-                <img 
-                  src={card.image} 
-                  alt="Card inspiration image" 
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                  onError={handleImageError}
-                  data-testid="img-card-image"
-                />
-              ) : (
-                <div 
-                  className="w-full h-48 bg-muted rounded-lg mb-4 flex flex-col items-center justify-center text-muted-foreground"
-                  data-testid="status-image-unavailable"
-                >
-                  <ImageOff className="w-12 h-12 mb-2" />
-                  <p className="text-sm text-center px-4" data-testid="text-image-fallback">
-                    Image not available<br />
-                    <span className="text-xs opacity-75">Content loads from your App Storage</span>
-                  </p>
-                </div>
-              )}
-              <div className="absolute top-4 right-4">
-                <span 
-                  className="category-badge"
-                  data-testid="text-card-category"
-                >
-                  {card.category}
-                </span>
-              </div>
-            </div>
-            
-            <div className="text-center space-y-4">
-              {card.title && (
-                <h3 
-                  className="font-serif text-xl font-semibold text-primary"
-                  data-testid="text-card-title"
-                >
-                  {card.title}
-                </h3>
-              )}
-              <p 
-                className="text-foreground leading-relaxed"
-                data-testid="text-card-message"
+            {!imageError ? (
+              <img 
+                src={card.image} 
+                alt="Card inspiration image" 
+                className="max-w-full max-h-full object-contain cursor-pointer"
+                onError={handleImageError}
+                data-testid="img-card-image"
+              />
+            ) : (
+              <div 
+                className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground cursor-pointer"
+                data-testid="status-image-unavailable"
               >
-                {card.message}
-              </p>
-            </div>
+                <ImageOff className="w-16 h-16 mb-4" />
+                <p className="text-lg text-center px-8" data-testid="text-image-fallback">
+                  Image not available<br />
+                  <span className="text-sm opacity-75">Content loads from your App Storage</span>
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
-
-        <div className="p-6 pt-0">
-          <button 
-            onClick={handleClose}
-            className="w-full py-3 px-6 bg-secondary text-secondary-foreground rounded-lg border border-border hover:bg-muted transition-all"
-            data-testid="button-close-modal"
-          >
-            Close
-          </button>
-        </div>
-
-        <DialogClose asChild>
-          <button 
-            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-10"
-            data-testid="button-close-x"
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </button>
-        </DialogClose>
       </DialogContent>
     </Dialog>
   );
