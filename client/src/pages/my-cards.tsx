@@ -368,7 +368,7 @@ export default function MyCards() {
 
       {/* Card Expansion Modal */}
       <Dialog open={isCardModalOpen} onOpenChange={setIsCardModalOpen}>
-        <DialogContent className="max-w-2xl w-[90vw] max-h-[90vh] overflow-y-auto" data-testid="modal-card-expansion">
+        <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] overflow-y-auto" data-testid="modal-card-expansion">
           <DialogClose asChild>
             <Button
               variant="ghost"
@@ -393,7 +393,7 @@ export default function MyCards() {
             return (
               <div className="pt-6">
                 {/* Card Image */}
-                <div className="aspect-[3/4] max-w-sm mx-auto mb-6 bg-muted rounded-lg overflow-hidden">
+                <div className="aspect-[3/4] max-w-lg mx-auto mb-6 bg-muted rounded-lg overflow-hidden">
                   {!imageError ? (
                     <img
                       src={card?.image || '/assets/shuffle7-card-back.svg'}
