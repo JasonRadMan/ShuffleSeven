@@ -50,6 +50,22 @@ export const notificationSubscriptions = pgTable("notification_subscriptions", {
   index("IDX_notification_subscriptions_endpoint").on(table.endpoint),
 ]);
 
+// User drawn cards table
+export const drawnCards = pgTable("drawn_cards", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
+  cardId: varchar("card_id").notNull(),
+  cardData: jsonb("card_data").notNull(),
+  drawnAt: timestamp("drawn_at").defaultNow(),
+  cardType: varchar("card_type").notNull(), // 'daily' or 'lifeline'
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("IDX_drawn_cards_user_id").on(table.userId),
+  index("IDX_drawn_cards_card_type").on(table.cardType),
+  index("IDX_drawn_cards_drawn_at").on(table.drawnAt),
+]);
+
 export const signupSchema = z.object({
   email: z.string().email().transform(v => v.toLowerCase()),
   password: z.string().min(8).max(72),
@@ -86,10 +102,18 @@ export const insertNotificationSubscriptionSchema = createInsertSchema(notificat
   updatedAt: true,
 });
 
+export const insertDrawnCardSchema = createInsertSchema(drawnCards).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type SignupData = z.infer<typeof signupSchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type NotificationSubscriptionData = z.infer<typeof notificationSubscriptionSchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertNotificationSubscription = z.infer<typeof insertNotificationSubscriptionSchema>;
+export type InsertDrawnCard = z.infer<typeof insertDrawnCardSchema>;
 export type User = Omit<typeof users.$inferSelect, 'passwordHash'>;
 export type NotificationSubscription = typeof notificationSubscriptions.$inferSelect;
+export type DrawnCard = typeof drawnCards.$inferSelect;
