@@ -1,22 +1,142 @@
 {
   "cards": [
     {
-      "category": "Wisdom",
-      "image": "/public-objects/wisdom/W0001.png",
-      "message": "The mountains teach us that true strength comes from standing firm through every storm while remaining open to the light that breaks through the clouds.",
-      "title": "Mountain Wisdom"
-    },
-    {
       "category": "Health",
-      "image": "/public-objects/health/H0001.png",
+      "image": "/public-objects/healing/H0001.png",
       "message": "Your body is your temple. Honor it with movement, nourish it with care, and listen to its wisdom.",
       "title": "Body Temple"
     },
     {
-      "category": "Challenge",
-      "image": "/public-objects/challenge/C0001.png",
-      "message": "Every challenge is an opportunity in disguise. Embrace the difficulty and discover your hidden strength.",
-      "title": "Hidden Strength"
+      "category": "Health",
+      "image": "/public-objects/healing/H0002.png",
+      "message": "Breath is the bridge between your body and soul. Take a moment to breathe deeply and reconnect.",
+      "title": "Sacred Breath"
+    },
+    {
+      "category": "Health",
+      "image": "/public-objects/healing/H0003.png",
+      "message": "Sleep is not a luxury but a necessity. Rest deeply to restore your mind, body, and spirit.",
+      "title": "Restorative Sleep"
+    },
+    {
+      "category": "Health",
+      "image": "/public-objects/healing/H0004.png",
+      "message": "Water flows through you, cleansing and renewing. Stay hydrated to maintain your inner river of life.",
+      "title": "Flow of Life"
+    },
+    {
+      "category": "Health",
+      "image": "/public-objects/healing/H0005.png",
+      "message": "Your heart beats with the rhythm of the universe. Exercise to strengthen this sacred drum.",
+      "title": "Heart's Rhythm"
+    },
+    {
+      "category": "Health",
+      "image": "/public-objects/healing/H0006.png",
+      "message": "Nourish your body with foods that come from the earth. Let nature fuel your vitality.",
+      "title": "Earth's Bounty"
+    },
+    {
+      "category": "Health",
+      "image": "/public-objects/healing/H0007.png",
+      "message": "Stretch beyond your comfort zone, both physically and mentally. Flexibility brings freedom.",
+      "title": "Flexible Freedom"
+    },
+    {
+      "category": "Health",
+      "image": "/public-objects/healing/H0008.png",
+      "message": "Your posture speaks before you do. Stand tall and let your confidence shine through.",
+      "title": "Stand Tall"
+    },
+    {
+      "category": "Health",
+      "image": "/public-objects/healing/H0009.png",
+      "message": "Mental health is just as important as physical health. Tend to both with equal care.",
+      "title": "Mind-Body Balance"
+    },
+    {
+      "category": "Health",
+      "image": "/public-objects/healing/H010.png",
+      "message": "Healing happens in moments of stillness. Create space for your body's natural restoration.",
+      "title": "Natural Restoration"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0001.png",
+      "message": "Knowledge is power, but wisdom is knowing how to use that power with compassion and understanding.",
+      "title": "Wisdom Over Knowledge"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0002.png",
+      "message": "Every book is a doorway to new worlds. Open one today and step through to adventure.",
+      "title": "Doorways to Worlds"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0003.png",
+      "message": "Questions are more powerful than answers. Cultivate curiosity and let it guide your learning.",
+      "title": "Power of Questions"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0004.png",
+      "message": "Experience is the greatest teacher. Embrace both successes and failures as valuable lessons.",
+      "title": "Experience Teacher"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0005.png",
+      "message": "Share your knowledge freely, for it multiplies when given away rather than diminishing.",
+      "title": "Knowledge Multiplied"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0006.png",
+      "message": "Listen more than you speak. The wisest among us are often the best listeners.",
+      "title": "Wisdom Through Listening"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0007.png",
+      "message": "Embrace being a beginner. Every expert was once a novice who refused to give up.",
+      "title": "Beginner's Mind"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0008.png",
+      "message": "Knowledge without action is merely trivia. Apply what you learn to create real change.",
+      "title": "Knowledge in Action"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0009.png",
+      "message": "The internet connects minds across the globe. Use this power to learn and grow together.",
+      "title": "Connected Learning"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0010.png",
+      "message": "Mistakes are not failures but stepping stones. Each error brings you closer to mastery.",
+      "title": "Stepping Stones"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0011.png",
+      "message": "Teach someone else what you've learned. Teaching deepens understanding for both student and teacher.",
+      "title": "Learning Through Teaching"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0012.png",
+      "message": "Stay humble in your learning. The more you know, the more you realize how much you don't know.",
+      "title": "Humble Learning"
+    },
+    {
+      "category": "Knowledge",
+      "image": "/public-objects/knowledge/K0013.png",
+      "message": "Innovation comes from connecting different fields of knowledge. Be a bridge between disciplines.",
+      "title": "Knowledge Bridges"
     },
     {
       "category": "Leadership",
@@ -25,10 +145,40 @@
       "title": "Lead by Example"
     },
     {
-      "category": "Tongue N Cheek",
-      "image": "/public-objects/tongue-n-cheek/T0001.png",
-      "message": "Life is too important to be taken seriously all the time. Find joy in the absurd and wisdom in laughter.",
-      "title": "Lighthearted Wisdom"
+      "category": "Leadership",
+      "image": "/public-objects/leadership/L0002.png",
+      "message": "A great leader creates more leaders, not followers. Empower others to find their own strength.",
+      "title": "Creating Leaders"
+    },
+    {
+      "category": "Leadership",
+      "image": "/public-objects/leadership/L0003.png",
+      "message": "Listen first, speak second. Understanding your team's needs is the foundation of effective leadership.",
+      "title": "Leadership Through Listening"
+    },
+    {
+      "category": "Leadership",
+      "image": "/public-objects/leadership/L0004.png",
+      "message": "Courage is not the absence of fear, but action in spite of it. Lead with courage when it matters most.",
+      "title": "Courageous Leadership"
+    },
+    {
+      "category": "Leadership",
+      "image": "/public-objects/leadership/L0007.png",
+      "message": "Integrity is doing the right thing when no one is watching. Let your character guide your leadership.",
+      "title": "Integrity First"
+    },
+    {
+      "category": "Leadership",
+      "image": "/public-objects/leadership/L0008.png",
+      "message": "Vulnerability is not weakness but the birthplace of courage, creativity, and change.",
+      "title": "Vulnerable Strength"
+    },
+    {
+      "category": "Leadership",
+      "image": "/public-objects/leadership/L0009.png",
+      "message": "Great leaders serve others, not themselves. Find ways to lift others up and watch everyone rise.",
+      "title": "Servant Leadership"
     },
     {
       "category": "Possibilities",
@@ -37,10 +187,154 @@
       "title": "Infinite Canvas"
     },
     {
-      "category": "Knowledge",
-      "image": "/public-objects/knowledge/K0001.png",
-      "message": "Knowledge is power, but wisdom is knowing how to use that power with compassion and understanding.",
-      "title": "Wisdom Over Knowledge"
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0002.png",
+      "message": "Your dreams are not too big; your thinking is too small. Expand your vision and watch possibilities unfold.",
+      "title": "Expanded Vision"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0003.png",
+      "message": "What seems impossible today may be inevitable tomorrow. Keep pushing the boundaries of what's possible.",
+      "title": "Tomorrow's Inevitable"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0004.png",
+      "message": "Every 'no' brings you closer to a 'yes'. Persistence transforms possibilities into realities.",
+      "title": "Persistence Pays"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0005.png",
+      "message": "The universe is conspiring to help you succeed. Align your actions with your highest possibilities.",
+      "title": "Universe Conspires"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0006.png",
+      "message": "Innovation begins where comfort zones end. Step into uncertainty to discover new possibilities.",
+      "title": "Beyond Comfort"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0007.png",
+      "message": "Seeds of greatness lie within every moment of struggle. Water them with persistence and watch them grow.",
+      "title": "Seeds of Greatness"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0008.png",
+      "message": "Your next breakthrough is hiding behind your next attempt. Keep trying, keep exploring, keep believing.",
+      "title": "Next Breakthrough"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0009.png",
+      "message": "Collaboration multiplies possibilities exponentially. Together we can achieve what none of us could alone.",
+      "title": "Collaborative Power"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0010.png",
+      "message": "Time is the canvas, imagination is the paint. Create something beautiful with the moments you have.",
+      "title": "Time Canvas"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0011.png",
+      "message": "Every ending contains the seeds of a new beginning. Look for the opportunities hidden in closure.",
+      "title": "New Beginnings"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0012.png",
+      "message": "Your potential is infinite, but it requires action to manifest. Take the first step toward your greatest possibility.",
+      "title": "Infinite Potential"
+    },
+    {
+      "category": "Possibilities",
+      "image": "/public-objects/possibilities/P0013.png",
+      "message": "The future belongs to those who see possibilities where others see obstacles. Be a possibility thinker.",
+      "title": "Possibility Thinker"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0001.png",
+      "message": "The mountains teach us that true strength comes from standing firm through every storm while remaining open to the light that breaks through the clouds.",
+      "title": "Mountain Wisdom"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0002.png",
+      "message": "Like a tree that bends but does not break, wisdom teaches us when to stand firm and when to be flexible.",
+      "title": "Flexible Strength"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0003.png",
+      "message": "The ocean's depth is silent, while the surface makes noise. True wisdom often speaks in whispers.",
+      "title": "Silent Depths"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0004.png",
+      "message": "A candle loses nothing by lighting another candle. Share your light and brighten the world.",
+      "title": "Shared Light"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W005.png",
+      "message": "The wise person learns from the mistakes of others. The fool insists on making their own mistakes first.",
+      "title": "Learning from Others"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0006.png",
+      "message": "Patience is not the ability to wait, but how you behave while waiting. Cultivate grace in all circumstances.",
+      "title": "Graceful Patience"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0007.png",
+      "message": "The river that flows slowly carves the deepest canyons. Persistence shapes the landscape of achievement.",
+      "title": "River's Persistence"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0008.png",
+      "message": "In the garden of life, wisdom is knowing which thoughts to water and which to let wither.",
+      "title": "Garden of Thoughts"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0009.png",
+      "message": "The master has failed more times than the beginner has even tried. Embrace failure as wisdom's teacher.",
+      "title": "Failure's Lessons"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0010.png",
+      "message": "True wealth is not measured in gold but in the richness of your relationships and experiences.",
+      "title": "True Wealth"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0011.png",
+      "message": "The butterfly doesn't look back at its caterpillar stage with regret. Embrace your transformation journey.",
+      "title": "Transformation Journey"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0012.png",
+      "message": "Wisdom is knowing what to overlook. Choose your battles carefully and save your energy for what matters.",
+      "title": "Choosing Battles"
+    },
+    {
+      "category": "Wisdom",
+      "image": "/public-objects/wisdom/W0013.png",
+      "message": "The moon teaches us that even in darkness, there is beauty. Find grace in life's challenging phases.",
+      "title": "Beauty in Darkness"
     }
   ]
 }
