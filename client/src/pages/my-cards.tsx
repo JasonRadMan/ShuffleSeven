@@ -393,12 +393,12 @@ export default function MyCards() {
             return (
               <div className="pt-6">
                 {/* Card Image */}
-                <div className="aspect-[3/4] max-w-lg mx-auto mb-6 bg-muted rounded-lg overflow-hidden">
+                <div className="max-w-lg mx-auto mb-6 bg-muted rounded-lg p-4">
                   {!imageError ? (
                     <img
                       src={card?.image || '/assets/shuffle7-card-back.svg'}
                       alt={card?.title || card?.message || 'Card'}
-                      className="w-full h-full object-cover"
+                      className="w-full h-auto object-contain rounded"
                       onError={() => setImageError(true)}
                       data-testid="img-expanded-card"
                     />
