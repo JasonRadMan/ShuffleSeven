@@ -10,8 +10,21 @@ import {
   setObjectAclPolicy,
 } from "./objectAcl";
 
+// Get REPLIT_SIDECAR_ENDPOINT from environment
+const REPLIT_SIDECAR_ENDPOINT = process.env.REPLIT_SIDECAR_ENDPOINT || 'https://production-sidecar.replit.com';
+
 // The object storage client is used to interact with the object storage service.
-export const objectStorageClient = new Client();
+let objectStorageClient: Client;
+
+try {
+  objectStorageClient = new Client();
+  console.log('✅ Object storage client initialized successfully');
+} catch (error) {
+  console.error('❌ Failed to initialize object storage client:', error);
+  throw new Error('Object storage client initialization failed');
+}
+
+export { objectStorageClient };
 
 export class ObjectNotFoundError extends Error {
   constructor() {
@@ -69,7 +82,56 @@ export class ObjectStorageService {
         console.log(`❌ Failed to list bucket: ${result.error?.message}`);
       }
     } catch (error) {
-      console.log(`❌ Error listing bucket: ${error.message}`);
+      console.log(`❌ Error listing bucket: ${(error as Error).message}`);
+    }
+  }
+
+  // List and organize card files by category
+  async listCardFiles(): Promise<{ [category: string]: string[] }> {
+    try {
+      const result = await objectStorageClient.list();
+      if (!result.ok) {
+        throw new Error(`Failed to list storage: ${result.error?.message}`);
+      }
+      
+      // Filter and organize card files by category
+      const cardFiles: { [category: string]: string[] } = {};
+      
+      result.value.forEach((obj: any) => {
+        // Look for card image patterns
+        const cardPatterns = [
+          /^Cards\/(\w+)\/([A-Z]\d+\.png)$/i,           // Cards/Wisdom/W0001.png
+          /^objects\/cards\/(\w+)\/([A-Z]\d+\.png)$/i,  // objects/cards/wisdom/W0001.png
+          /^cards\/(\w+)\/([A-Z]\d+\.png)$/i,           // cards/wisdom/W0001.png
+          /^(\w+)\/([A-Z]\d+\.png)$/i                   // wisdom/W0001.png
+        ];
+        
+        for (const pattern of cardPatterns) {
+          const match = obj.name.match(pattern);
+          if (match) {
+            const category = match[1].toLowerCase();
+            const filename = match[2];
+            
+            if (!cardFiles[category]) {
+              cardFiles[category] = [];
+            }
+            if (!cardFiles[category].includes(filename)) {
+              cardFiles[category].push(filename);
+            }
+            break;
+          }
+        }
+      });
+      
+      // Sort files within each category
+      Object.keys(cardFiles).forEach(category => {
+        cardFiles[category].sort();
+      });
+      
+      return cardFiles;
+    } catch (error) {
+      console.error('Error listing card files:', error);
+      throw error;
     }
   }
 

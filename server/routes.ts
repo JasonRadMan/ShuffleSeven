@@ -28,6 +28,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // List all available card files in object storage
+  app.get('/api/cards/list', async (req, res) => {
+    try {
+      const objectStorageService = new ObjectStorageService();
+      const cardFiles = await objectStorageService.listCardFiles();
+      
+      console.log('📁 Found card files:', cardFiles);
+      res.json({ cardFiles });
+    } catch (error) {
+      console.error('Error listing card files:', error);
+      res.status(500).json({ error: 'Failed to list card files' });
+    }
+  });
+
   // Serve public card images from App Storage
   app.get("/public-objects/:filePath(*)", async (req, res) => {
     const filePath = req.params.filePath;
