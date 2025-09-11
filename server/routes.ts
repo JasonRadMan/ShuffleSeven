@@ -4,7 +4,8 @@ import passport from "passport";
 import path from "path";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, hashPassword } from "./localAuth";
-import { signupSchema, loginSchema, notificationSubscriptionSchema } from "@shared/schema";
+import { signupSchema, loginSchema, notificationSubscriptionSchema, insertDrawnCardSchema } from "@shared/schema";
+import { z } from "zod";
 import { ObjectStorageService, objectStorageClient } from "./objectStorage";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -201,6 +202,78 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ subscriptions });
     } catch (error) {
       console.error("Get subscriptions error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Drawn cards routes
+  const saveDrawnCardSchema = insertDrawnCardSchema.extend({
+    cardType: z.enum(['daily', 'lifeline']),
+  }).omit({
+    userId: true,
+    drawnAt: true,
+  });
+
+  app.post('/api/drawn-cards', isAuthenticated, async (req, res) => {
+    try {
+      const result = saveDrawnCardSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ message: "Invalid input", errors: result.error.issues });
+      }
+
+      if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const userId = (req.user as any).id;
+      const drawnCard = await storage.saveDrawnCard(userId, {
+        ...result.data,
+        userId, // This will be overridden by the storage method, but satisfies TypeScript
+      });
+
+      res.status(201).json(drawnCard);
+    } catch (error) {
+      console.error("Save drawn card error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get('/api/drawn-cards', isAuthenticated, async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const userId = (req.user as any).id;
+      const { cardType, limit = '50', offset = '0' } = req.query;
+
+      // Parse and validate query parameters
+      const limitNum = parseInt(limit as string, 10);
+      const offsetNum = parseInt(offset as string, 10);
+
+      if (isNaN(limitNum) || limitNum < 0 || limitNum > 100) {
+        return res.status(400).json({ message: "Invalid limit parameter. Must be a number between 0 and 100" });
+      }
+
+      if (isNaN(offsetNum) || offsetNum < 0) {
+        return res.status(400).json({ message: "Invalid offset parameter. Must be a non-negative number" });
+      }
+
+      // Validate cardType if provided
+      if (cardType && cardType !== 'daily' && cardType !== 'lifeline') {
+        return res.status(400).json({ message: "Invalid cardType. Must be 'daily' or 'lifeline'" });
+      }
+
+      const drawnCards = await storage.getUserDrawnCards(
+        userId,
+        cardType as string | undefined,
+        limitNum,
+        offsetNum
+      );
+
+      res.json({ drawnCards });
+    } catch (error) {
+      console.error("Get drawn cards error:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
