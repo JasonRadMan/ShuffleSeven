@@ -414,24 +414,6 @@ export default function MyCards() {
                 
                 {/* Card Details */}
                 <div className="space-y-4">
-                  <div className="text-center">
-                    <h2 className="text-2xl font-serif font-bold text-primary mb-2" data-testid={`text-expanded-title-${selectedCard.id}`}>
-                      {card?.title || card?.message || 'Untitled Card'}
-                    </h2>
-                    <p className="text-lg text-muted-foreground" data-testid={`text-expanded-category-${selectedCard.id}`}>
-                      {card?.category || 'Uncategorized'}
-                    </p>
-                  </div>
-                  
-                  {card?.message && card.message !== card.title && (
-                    <div className="bg-muted/50 rounded-lg p-4">
-                      <p className="text-sm text-muted-foreground font-medium mb-2">Message:</p>
-                      <p className="text-foreground" data-testid={`text-expanded-message-${selectedCard.id}`}>
-                        {card.message}
-                      </p>
-                    </div>
-                  )}
-                  
                   <div className="flex items-center justify-between pt-4 border-t border-border">
                     <div>
                       <p className="text-sm text-muted-foreground" data-testid={`text-expanded-date-${selectedCard.id}`}>
