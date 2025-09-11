@@ -369,18 +369,6 @@ export default function MyCards() {
       {/* Card Expansion Modal */}
       <Dialog open={isCardModalOpen} onOpenChange={setIsCardModalOpen}>
         <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] overflow-y-auto" data-testid="modal-card-expansion">
-          <DialogClose asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-4 top-4 z-10"
-              onClick={handleCloseModal}
-              data-testid="button-close-modal"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </DialogClose>
-          
           <DialogTitle className="sr-only">Expanded Card View</DialogTitle>
           <DialogDescription className="sr-only">Full details of your drawn card</DialogDescription>
           
