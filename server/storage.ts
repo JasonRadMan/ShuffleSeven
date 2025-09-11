@@ -1,13 +1,16 @@
 import {
   users,
   notificationSubscriptions,
+  drawnCards,
   type User,
   type SignupData,
   type NotificationSubscription,
   type InsertNotificationSubscription,
+  type DrawnCard,
+  type InsertDrawnCard,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 
 // Interface for storage operations
 export interface IStorage {
@@ -22,6 +25,11 @@ export interface IStorage {
   updateNotificationSubscription(id: string, isActive: boolean): Promise<NotificationSubscription | undefined>;
   deleteNotificationSubscriptionsByUserId(userId: string): Promise<void>;
   getActiveNotificationSubscriptions(): Promise<NotificationSubscription[]>;
+  
+  // Drawn cards operations
+  saveDrawnCard(userId: string, insertDrawnCard: InsertDrawnCard): Promise<DrawnCard>;
+  getUserDrawnCards(userId: string, cardType?: string, limitCount?: number, offsetCount?: number): Promise<DrawnCard[]>;
+  getDrawnCardsByUser(userId: string): Promise<DrawnCard[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -110,6 +118,52 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(notificationSubscriptions)
       .where(eq(notificationSubscriptions.isActive, true));
+  }
+
+  // Drawn cards operations
+  async saveDrawnCard(userId: string, insertDrawnCard: InsertDrawnCard): Promise<DrawnCard> {
+    const [drawnCard] = await db
+      .insert(drawnCards)
+      .values({
+        ...insertDrawnCard,
+        userId,
+      })
+      .returning();
+    
+    return drawnCard;
+  }
+
+  async getUserDrawnCards(userId: string, cardType?: string, limitCount?: number, offsetCount?: number): Promise<DrawnCard[]> {
+    const conditions = [eq(drawnCards.userId, userId)];
+    
+    if (cardType) {
+      conditions.push(eq(drawnCards.cardType, cardType));
+    }
+
+    const baseQuery = db
+      .select()
+      .from(drawnCards)
+      .where(and(...conditions))
+      .orderBy(desc(drawnCards.drawnAt));
+
+    // Apply limit and offset using SQL when needed
+    if (limitCount !== undefined && offsetCount !== undefined) {
+      return await baseQuery.limit(limitCount).offset(offsetCount);
+    } else if (limitCount !== undefined) {
+      return await baseQuery.limit(limitCount);
+    } else if (offsetCount !== undefined) {
+      return await baseQuery.offset(offsetCount);
+    } else {
+      return await baseQuery;
+    }
+  }
+
+  async getDrawnCardsByUser(userId: string): Promise<DrawnCard[]> {
+    return await db
+      .select()
+      .from(drawnCards)
+      .where(eq(drawnCards.userId, userId))
+      .orderBy(desc(drawnCards.drawnAt));
   }
 }
 
