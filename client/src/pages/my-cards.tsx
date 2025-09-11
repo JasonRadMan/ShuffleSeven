@@ -154,7 +154,7 @@ function groupCardsByDate(cards: DrawnCard[]): { [key: string]: DrawnCard[] } {
 
 export default function MyCards() {
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<'all' | 'daily' | 'lifeline'>('all');
+  const [activeTab, setActiveTab] = useState<'daily' | 'lifeline'>('daily');
   const [selectedCard, setSelectedCard] = useState<DrawnCard | null>(null);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -174,7 +174,7 @@ export default function MyCards() {
       const params = new URLSearchParams({
         limit: ITEMS_PER_PAGE.toString(),
         offset: (page * ITEMS_PER_PAGE).toString(),
-        ...(activeTab !== 'all' && { cardType: activeTab })
+        cardType: activeTab
       });
       
       return fetch(`/api/drawn-cards?${params}`, {
@@ -195,7 +195,7 @@ export default function MyCards() {
     retry: 1,
   });
 
-  const handleTabChange = (tab: 'all' | 'daily' | 'lifeline') => {
+  const handleTabChange = (tab: 'daily' | 'lifeline') => {
     setActiveTab(tab);
   };
 
@@ -246,74 +246,11 @@ export default function MyCards() {
 
         {/* Filter Tabs */}
         <Tabs value={activeTab} onValueChange={(value) => handleTabChange(value as any)} className="mb-8">
-          <TabsList className="grid w-full grid-cols-3" data-testid="tabs-card-filter">
-            <TabsTrigger value="all" data-testid="tab-all-cards">All Cards</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2" data-testid="tabs-card-filter">
             <TabsTrigger value="daily" data-testid="tab-daily-cards">Daily Draws</TabsTrigger>
             <TabsTrigger value="lifeline" data-testid="tab-lifeline-cards">Lifelines</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="mt-6">
-            <div data-testid="content-all-cards">
-              {isLoading && <LoadingSkeleton />}
-              
-              {error && (
-                <Alert className="mb-6">
-                  <AlertDescription>
-                    Failed to load your cards. 
-                    <Button 
-                      variant="link" 
-                      className="p-0 ml-1 h-auto" 
-                      onClick={() => refetch()}
-                      data-testid="button-retry-all"
-                    >
-                      Try again
-                    </Button>
-                  </AlertDescription>
-                </Alert>
-              )}
-              
-              {!isLoading && !error && allDrawnCards.length === 0 && (
-                <div className="text-center py-12" data-testid="empty-state-all">
-                  <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-primary mb-2">No cards drawn yet</h3>
-                  <p className="text-muted-foreground">Start drawing your daily cards to see them here.</p>
-                  <Button 
-                    onClick={() => setLocation('/')} 
-                    className="mt-4"
-                    data-testid="button-start-drawing"
-                  >
-                    Draw Your First Card
-                  </Button>
-                </div>
-              )}
-              
-              {!isLoading && !error && allDrawnCards.length > 0 && (
-                <>
-                  {groupKeys.map((groupKey) => (
-                    <CardGroup
-                      key={groupKey}
-                      groupTitle={groupKey}
-                      cards={groupedCards[groupKey]}
-                      onCardClick={handleCardClick}
-                    />
-                  ))}
-                  
-                  {hasNextPage && (
-                    <div className="text-center mt-8">
-                      <Button 
-                        onClick={handleLoadMore}
-                        variant="outline"
-                        disabled={isFetchingNextPage}
-                        data-testid="button-load-more-all"
-                      >
-                        {isFetchingNextPage ? 'Loading...' : 'Load More Cards'}
-                      </Button>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </TabsContent>
 
           <TabsContent value="daily" className="mt-6">
             <div data-testid="content-daily-cards">
