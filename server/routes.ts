@@ -34,7 +34,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const objectStorageService = new ObjectStorageService();
       const cardFiles = await objectStorageService.listCardFiles();
       
-      console.log('📁 Found card files:', cardFiles);
       res.json({ cardFiles });
     } catch (error) {
       console.error('Error listing card files:', error);
@@ -42,46 +41,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Debug endpoint to see raw bucket contents
-  app.get('/api/debug/bucket', async (req, res) => {
-    try {
-      const result = await objectStorageClient.list();
-      if (result.ok) {
-        const objects = result.value.map((obj: any) => obj.name);
-        res.json({ 
-          total: objects.length,
-          objects: objects.sort(),
-          challengeFiles: objects.filter((name: string) => name.toLowerCase().includes('challenge')),
-          cardDirectories: [...new Set(objects.filter((name: string) => name.includes('/')).map((name: string) => name.split('/')[0]))]
-        });
-      } else {
-        res.status(500).json({ error: result.error?.message || 'Failed to list bucket' });
-      }
-    } catch (error) {
-      console.error('Error listing bucket contents:', error);
-      res.status(500).json({ error: 'Failed to list bucket contents' });
-    }
-  });
 
   // Serve public card images from App Storage
   app.get("/public-objects/:filePath(*)", async (req, res) => {
     const filePath = req.params.filePath;
-    console.log(`🔍 Searching for public object: ${filePath}`);
     const objectStorageService = new ObjectStorageService();
     try {
       const objectPath = await objectStorageService.searchPublicObject(filePath);
-      console.log(`🔍 Search result: ${objectPath ? `Found at "${objectPath}"` : 'Not found'}`);
       
       if (!objectPath) {
-        console.log(`❌ No object path returned for: ${filePath}`);
         return res.status(404).json({ error: "File not found" });
       }
       
-      console.log(`🚀 Starting download for: ${objectPath}`);
       await objectStorageService.downloadObject(objectPath, res);
-      console.log(`✅ Download completed for: ${objectPath}`);
     } catch (error) {
-      console.error(`💥 Error in route handler for ${filePath}:`, error);
+      console.error(`Error serving public object ${filePath}:`, error);
       return res.status(500).json({ error: "Internal server error" });
     }
   });

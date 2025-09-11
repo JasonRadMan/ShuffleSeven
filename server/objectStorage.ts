@@ -70,21 +70,6 @@ export class ObjectStorageService {
     return dir;
   }
 
-  // Debug: List all objects in the bucket
-  async listBucketContents(): Promise<void> {
-    try {
-      console.log(`📋 Listing bucket contents...`);
-      const result = await objectStorageClient.list();
-      if (result.ok) {
-        console.log(`📂 Found ${result.value.length} objects:`);
-        result.value.forEach(obj => console.log(`   - ${obj.name}`));
-      } else {
-        console.log(`❌ Failed to list bucket: ${result.error?.message}`);
-      }
-    } catch (error) {
-      console.log(`❌ Error listing bucket: ${(error as Error).message}`);
-    }
-  }
 
   // List and organize card files by category
   async listCardFiles(): Promise<{ [category: string]: string[] }> {
@@ -94,48 +79,24 @@ export class ObjectStorageService {
         throw new Error(`Failed to list storage: ${result.error?.message}`);
       }
       
-      console.log(`🔍 Listing ${result.value.length} objects in bucket for card analysis...`);
-      
       // Filter and organize card files by category
       const cardFiles: { [category: string]: string[] } = {};
-      let matchedFiles = 0;
-      let unmatchedFiles: string[] = [];
       
       result.value.forEach((obj: any) => {
-        // Log all files that might be related to cards
-        if (obj.name.toLowerCase().includes('challenge') || obj.name.toLowerCase().includes('card') || obj.name.includes('.png')) {
-          console.log(`🔍 Analyzing file: ${obj.name}`);
-        }
-        
-        // Look for card image patterns - updated to handle multi-character prefixes and variable numbering
+        // Look for card image patterns
         const cardPatterns = [
-          /^Cards\/([^\/]+)\/([A-Z]{1,3}\d+\.png)$/i,           // Cards/Wisdom/W0001.png, Cards/Challenge/CH00001.png, Cards/Tongue N Cheek/T0001.png
+          /^Cards\/([^\/]+)\/([A-Z]{1,3}\d+\.png)$/i,           // Cards/Wisdom/W0001.png, Cards/Challenge/CH00001.png
           /^Cards\/([^\/]+)\/([A-Z]{1,3}[0-9]+\.png)$/,         // Case-sensitive version  
           /^objects\/cards\/([^\/]+)\/([A-Z]{1,3}[0-9]+\.png)$/i, // objects/cards/wisdom/W0001.png
           /^cards\/([^\/]+)\/([A-Z]{1,3}[0-9]+\.png)$/i,        // cards/wisdom/W0001.png
           /^([^\/]+)\/([A-Z]{1,3}[0-9]+\.png)$/i                // wisdom/W0001.png
         ];
         
-        // Debug specific challenge files
-        if (obj.name.includes('Challenge/CH')) {
-          console.log(`🐛 Testing challenge file: ${obj.name}`);
-          cardPatterns.forEach((pattern, idx) => {
-            const match = obj.name.match(pattern);
-            console.log(`   Pattern ${idx}: ${pattern} -> ${match ? 'MATCH' : 'NO MATCH'}`);
-            if (match) {
-              console.log(`   Captured: category="${match[1]}", file="${match[2]}"`);
-            }
-          });
-        }
-        
-        let matched = false;
         for (const pattern of cardPatterns) {
           const match = obj.name.match(pattern);
           if (match) {
             const category = match[1].toLowerCase();
             const filename = match[2];
-            
-            console.log(`✅ Matched: ${obj.name} -> category: ${category}, file: ${filename}`);
             
             if (!cardFiles[category]) {
               cardFiles[category] = [];
@@ -143,29 +104,10 @@ export class ObjectStorageService {
             if (!cardFiles[category].includes(filename)) {
               cardFiles[category].push(filename);
             }
-            matched = true;
-            matchedFiles++;
             break;
           }
         }
-        
-        // Track unmatched files for debugging
-        if (!matched && (obj.name.toLowerCase().includes('challenge') || obj.name.toLowerCase().includes('card'))) {
-          console.log(`❌ No match for card-related file: ${obj.name}`);
-          unmatchedFiles.push(obj.name);
-        }
       });
-      
-      console.log(`📊 Card analysis results:`);
-      console.log(`   ✅ Matched ${matchedFiles} card files`);
-      console.log(`   📁 Found categories: ${Object.keys(cardFiles).join(', ')}`);
-      if (unmatchedFiles.length > 0) {
-        console.log(`   ❌ ${unmatchedFiles.length} unmatched files:`);
-        unmatchedFiles.slice(0, 10).forEach(file => console.log(`      - ${file}`));
-        if (unmatchedFiles.length > 10) {
-          console.log(`      ... and ${unmatchedFiles.length - 10} more`);
-        }
-      }
       
       // Sort files within each category
       Object.keys(cardFiles).forEach(category => {
@@ -181,13 +123,10 @@ export class ObjectStorageService {
 
   // Search for a public object from the search paths.
   async searchPublicObject(filePath: string): Promise<string | null> {
-    console.log(`🔍 Starting search for: ${filePath}`);
-    
     try {
-      // Get all objects in bucket first - safer than downloadAsStream
+      // Get all objects in bucket
       const listResult = await objectStorageClient.list();
       if (!listResult.ok) {
-        console.log(`❌ Failed to list bucket: ${listResult.error?.message}`);
         return null;
       }
       
@@ -200,7 +139,7 @@ export class ObjectStorageService {
           'leadership': 'Leadership',
           'possibilities': 'Possibilities',
           'tongue n cheek': 'Tongue N Cheek',
-          'health': 'Healing'  // Note: Health -> Healing in bucket
+          'health': 'Healing'
         };
         return `${categoryMap[category.toLowerCase()] || category}/`;
       });
@@ -214,30 +153,22 @@ export class ObjectStorageService {
       
       // Look for exact matches in bucket listing
       for (const pattern of searchPatterns) {
-        console.log(`📁 Looking for: ${pattern}`);
         const found = listResult.value.find(obj => obj.name === pattern);
         if (found) {
-          console.log(`🎉 Found exact match: ${found.name}`);
           return found.name;
         }
       }
       
-      // If no exact match, try partial matches (for debugging)
-      console.log(`🔍 No exact match found, checking partial matches for filename...`);
-      const filename = filePath.split('/').pop(); // Get W0001.png from wisdom/W0001.png
+      // If no exact match, try partial matches
+      const filename = filePath.split('/').pop();
       
       if (filename) {
         const partialMatches = listResult.value.filter(obj => obj.name.endsWith(filename));
         if (partialMatches.length > 0) {
-          console.log(`🔍 Found ${partialMatches.length} files ending with ${filename}:`);
-          partialMatches.forEach(match => console.log(`   - ${match.name}`));
-          // Return the first match
-          console.log(`🎯 Using first match: ${partialMatches[0].name}`);
           return partialMatches[0].name;
         }
       }
       
-      console.log(`❌ File not found: ${filePath}`);
       return null;
       
     } catch (error) {
@@ -249,28 +180,20 @@ export class ObjectStorageService {
   // Downloads an object to the response.
   async downloadObject(objectPath: string, res: Response, cacheTtlSec: number = 3600) {
     try {
-      console.log(`📥 Attempting to download: ${objectPath}`);
-      
-      // Use Replit client to download as stream - returns stream directly
       const stream = await objectStorageClient.downloadAsStream(objectPath);
-      console.log(`📊 Stream created:`, typeof stream, stream?.readable, stream?.destroyed);
       
       if (!stream) {
-        console.error(`❌ No stream returned for ${objectPath}`);
         res.status(404).json({ error: 'File not found' });
         return;
       }
       
-      console.log(`✅ Stream created successfully for ${objectPath}`);
-      console.log(`📋 Stream readable: ${stream.readable}, destroyed: ${stream.destroyed}`);
-      
-      // Set appropriate headers - assume images are PNG for now
+      // Set appropriate headers
       res.set({
         "Content-Type": "image/png",
         "Cache-Control": `public, max-age=${cacheTtlSec}`,
       });
       
-      // Handle stream errors immediately to prevent unhandled errors
+      // Handle stream errors
       stream.on('error', (error) => {
         console.error('Stream error:', error);
         if (!res.headersSent) {
@@ -278,12 +201,12 @@ export class ObjectStorageService {
         }
       });
       
-      // Handle response errors to prevent unhandled errors
+      // Handle response errors
       res.on('error', (error) => {
         console.error('Response stream error:', error);
       });
       
-      // Handle response close/finish to clean up stream
+      // Clean up stream on response close
       res.on('close', () => {
         if (stream.destroy) {
           stream.destroy();
@@ -292,7 +215,6 @@ export class ObjectStorageService {
       
       // Pipe the stream to the response
       stream.pipe(res);
-      console.log(`🚀 Stream piped to response for ${objectPath}`);
       
     } catch (error) {
       console.error('Download error:', error);
