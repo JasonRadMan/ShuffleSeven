@@ -2,12 +2,19 @@ import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
 import { format, isToday, isYesterday, isThisWeek, isThisMonth } from 'date-fns';
-import { ArrowLeft, Calendar, Star, Zap } from 'lucide-react';
+import { ArrowLeft, Calendar, Star, Zap, X, ImageOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card as UICard, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  Dialog,
+  DialogContent,
+  DialogClose,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import type { DrawnCard } from '@shared/schema';
 import type { Card } from '@/lib/cards';
 
@@ -20,9 +27,10 @@ const ITEMS_PER_PAGE = 20;
 interface CardGroupProps {
   cards: DrawnCard[];
   groupTitle: string;
+  onCardClick: (drawnCard: DrawnCard) => void;
 }
 
-function CardGroup({ cards, groupTitle }: CardGroupProps) {
+function CardGroup({ cards, groupTitle, onCardClick }: CardGroupProps) {
   if (cards.length === 0) return null;
 
   return (
@@ -38,7 +46,12 @@ function CardGroup({ cards, groupTitle }: CardGroupProps) {
           const drawTime = format(drawDate, 'h:mm a');
           
           return (
-            <UICard key={drawnCard.id} className="overflow-hidden" data-testid={`card-drawn-${drawnCard.id}`}>
+            <UICard 
+              key={drawnCard.id} 
+              className="overflow-hidden cursor-pointer hover:bg-muted/50 transition-colors" 
+              data-testid={`card-drawn-${drawnCard.id}`}
+              onClick={() => onCardClick(drawnCard)}
+            >
               <CardContent className="p-0">
                 <div className="flex">
                   <div className="w-20 h-24 bg-muted flex-shrink-0">
@@ -142,6 +155,9 @@ function groupCardsByDate(cards: DrawnCard[]): { [key: string]: DrawnCard[] } {
 export default function MyCards() {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<'all' | 'daily' | 'lifeline'>('all');
+  const [selectedCard, setSelectedCard] = useState<DrawnCard | null>(null);
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const {
     data,
@@ -185,6 +201,18 @@ export default function MyCards() {
 
   const handleLoadMore = () => {
     fetchNextPage();
+  };
+
+  const handleCardClick = (drawnCard: DrawnCard) => {
+    setSelectedCard(drawnCard);
+    setImageError(false);
+    setIsCardModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsCardModalOpen(false);
+    setSelectedCard(null);
+    setImageError(false);
   };
 
   // Flatten all pages of drawn cards
@@ -266,6 +294,7 @@ export default function MyCards() {
                       key={groupKey}
                       groupTitle={groupKey}
                       cards={groupedCards[groupKey]}
+                      onCardClick={handleCardClick}
                     />
                   ))}
                   
@@ -321,6 +350,7 @@ export default function MyCards() {
                       key={groupKey}
                       groupTitle={groupKey}
                       cards={groupedCards[groupKey]}
+                      onCardClick={handleCardClick}
                     />
                   ))}
                   
@@ -376,6 +406,7 @@ export default function MyCards() {
                       key={groupKey}
                       groupTitle={groupKey}
                       cards={groupedCards[groupKey]}
+                      onCardClick={handleCardClick}
                     />
                   ))}
                   
@@ -397,6 +428,99 @@ export default function MyCards() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Card Expansion Modal */}
+      <Dialog open={isCardModalOpen} onOpenChange={setIsCardModalOpen}>
+        <DialogContent className="max-w-2xl w-[90vw] max-h-[90vh] overflow-y-auto" data-testid="modal-card-expansion">
+          <DialogClose asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute right-4 top-4 z-10"
+              onClick={handleCloseModal}
+              data-testid="button-close-modal"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </DialogClose>
+          
+          <DialogTitle className="sr-only">Expanded Card View</DialogTitle>
+          <DialogDescription className="sr-only">Full details of your drawn card</DialogDescription>
+          
+          {selectedCard && (() => {
+            const card = selectedCard.cardData as Card;
+            const drawDate = new Date(selectedCard.drawnAt!);
+            const formattedDate = format(drawDate, 'EEEE, MMM d, yyyy');
+            const drawTime = format(drawDate, 'h:mm a');
+            
+            return (
+              <div className="pt-6">
+                {/* Card Image */}
+                <div className="aspect-[3/4] max-w-sm mx-auto mb-6 bg-muted rounded-lg overflow-hidden">
+                  {!imageError ? (
+                    <img
+                      src={card?.image || '/assets/shuffle7-card-back.svg'}
+                      alt={card?.title || card?.message || 'Card'}
+                      className="w-full h-full object-cover"
+                      onError={() => setImageError(true)}
+                      data-testid="img-expanded-card"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
+                      <ImageOff className="w-16 h-16 mb-4" />
+                      <p className="text-center px-4" data-testid="text-image-fallback">
+                        Image not available
+                      </p>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Card Details */}
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <h2 className="text-2xl font-serif font-bold text-primary mb-2" data-testid={`text-expanded-title-${selectedCard.id}`}>
+                      {card?.title || card?.message || 'Untitled Card'}
+                    </h2>
+                    <p className="text-lg text-muted-foreground" data-testid={`text-expanded-category-${selectedCard.id}`}>
+                      {card?.category || 'Uncategorized'}
+                    </p>
+                  </div>
+                  
+                  {card?.message && card.message !== card.title && (
+                    <div className="bg-muted/50 rounded-lg p-4">
+                      <p className="text-sm text-muted-foreground font-medium mb-2">Message:</p>
+                      <p className="text-foreground" data-testid={`text-expanded-message-${selectedCard.id}`}>
+                        {card.message}
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-border">
+                    <div>
+                      <p className="text-sm text-muted-foreground" data-testid={`text-expanded-date-${selectedCard.id}`}>
+                        {formattedDate} at {drawTime}
+                      </p>
+                    </div>
+                    <div>
+                      {selectedCard.cardType === 'lifeline' ? (
+                        <div className="flex items-center gap-1 bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 px-3 py-1 rounded-full text-sm font-medium">
+                          <Star className="w-4 h-4" />
+                          Lifeline Draw
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1 bg-blue-500/20 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
+                          <Zap className="w-4 h-4" />
+                          Daily Draw
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
