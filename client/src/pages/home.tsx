@@ -14,12 +14,31 @@ export default function Home() {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isCardRevealModalOpen, setIsCardRevealModalOpen] = useState(false);
   const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
+  const [isImagePreloaded, setIsImagePreloaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const { drawDailyCard, useLifelineCard, lifelinesRemaining, hasDrawnToday, currentCard, clearCurrentCard, cardsLoading } = useShuffleState();
 
   const handleDailyDraw = () => {
     const card = drawDailyCard();
     if (card) {
+      setIsImagePreloaded(false); // Reset preload status
+      
+      // Start preloading the card image immediately
+      console.log('🖼️ Preloading card image:', card.image);
+      const preloadImage = new Image();
+      
+      preloadImage.onload = () => {
+        console.log('✅ Card image preloaded successfully');
+        setIsImagePreloaded(true);
+      };
+      
+      preloadImage.onerror = () => {
+        console.log('❌ Card image failed to preload, but continuing anyway');
+        setIsImagePreloaded(true); // Continue with animation even if image fails
+      };
+      
+      preloadImage.src = card.image;
+      
       setIsDrawAnimationPlaying(true);
       // Play shuffle audio when animation starts
       if (audioRef.current) {
@@ -59,6 +78,24 @@ export default function Home() {
   const handleLifeline = () => {
     const card = useLifelineCard();
     if (card) {
+      setIsImagePreloaded(false); // Reset preload status
+      
+      // Start preloading the lifeline card image immediately
+      console.log('🖼️ Preloading lifeline card image:', card.image);
+      const preloadImage = new Image();
+      
+      preloadImage.onload = () => {
+        console.log('✅ Lifeline card image preloaded successfully');
+        setIsImagePreloaded(true);
+      };
+      
+      preloadImage.onerror = () => {
+        console.log('❌ Lifeline card image failed to preload, but continuing anyway');
+        setIsImagePreloaded(true); // Continue with animation even if image fails
+      };
+      
+      preloadImage.src = card.image;
+      
       setIsCardRevealModalOpen(true);
     }
   };
@@ -171,6 +208,7 @@ export default function Home() {
         onOpenChange={setIsCardRevealModalOpen}
         card={currentCard}
         onClose={handleCloseCardModal}
+        isImagePreloaded={isImagePreloaded}
       />
     </div>
   );

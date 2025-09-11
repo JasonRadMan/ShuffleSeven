@@ -16,9 +16,10 @@ interface CardRevealModalProps {
   onOpenChange: (open: boolean) => void;
   card: Card | null;
   onClose: () => void;
+  isImagePreloaded: boolean;
 }
 
-export default function CardRevealModal({ open, onOpenChange, card, onClose }: CardRevealModalProps) {
+export default function CardRevealModal({ open, onOpenChange, card, onClose, isImagePreloaded }: CardRevealModalProps) {
   const [animationStage, setAnimationStage] = useState(0); // 0: hidden, 1: fade in, 2: flip, 3: enlarge
   const [imageError, setImageError] = useState(false);
 
@@ -39,7 +40,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
     setImageError(false);
   }, [card?.image]);
 
-  // Coordinate the three-stage animation
+  // Coordinate the three-stage animation - now waits for image preload
   useEffect(() => {
     if (open) {
       setAnimationStage(0);
@@ -50,23 +51,33 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose }: C
         setAnimationStage(1);
       }, 200);
       
-      // Stage 2: Flip to front (after 1000ms total)
-      const flipTimer = setTimeout(() => {
-        setAnimationStage(2);
-      }, 1000);
-      
-      // Stage 3: Enlarge (after 1600ms total)
-      const enlargeTimer = setTimeout(() => {
-        setAnimationStage(3);
-      }, 1600);
-      
       return () => {
         clearTimeout(fadeInTimer);
+      };
+    }
+  }, [open]);
+
+  // Wait for image to preload before flipping to front
+  useEffect(() => {
+    if (open && animationStage === 1 && isImagePreloaded) {
+      console.log('🎬 Image preloaded, starting flip animation');
+      
+      // Stage 2: Flip to front (after image is preloaded + small delay)
+      const flipTimer = setTimeout(() => {
+        setAnimationStage(2);
+      }, 300); // Small delay after preload for smooth transition
+      
+      // Stage 3: Enlarge (600ms after flip)
+      const enlargeTimer = setTimeout(() => {
+        setAnimationStage(3);
+      }, 900);
+      
+      return () => {
         clearTimeout(flipTimer);
         clearTimeout(enlargeTimer);
       };
     }
-  }, [open]);
+  }, [open, animationStage, isImagePreloaded]);
 
   if (!card) {
     return null;
