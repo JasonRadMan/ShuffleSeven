@@ -133,6 +133,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 gap-4">
             <button 
+              onClick={() => setLocation('/my-cards')}
               className="py-1 px-6 bg-slate-800/50 text-white rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-3 font-medium"
               data-testid="button-past-cards"
             >

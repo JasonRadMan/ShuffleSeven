@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import Settings from "@/pages/settings";
 import About from "@/pages/about";
 import CardReveal from "@/pages/card-reveal";
+import MyCards from "@/pages/my-cards";
 import Landing from "@/pages/landing";
 import NotFound from "@/pages/not-found";
 
@@ -24,6 +25,7 @@ function Router() {
           <Route path="/settings" component={Settings} />
           <Route path="/about" component={About} />
           <Route path="/card-reveal" component={CardReveal} />
+          <Route path="/my-cards" component={MyCards} />
         </>
       )}
       <Route component={NotFound} />
