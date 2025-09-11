@@ -94,23 +94,48 @@ export class ObjectStorageService {
         throw new Error(`Failed to list storage: ${result.error?.message}`);
       }
       
+      console.log(`🔍 Listing ${result.value.length} objects in bucket for card analysis...`);
+      
       // Filter and organize card files by category
       const cardFiles: { [category: string]: string[] } = {};
+      let matchedFiles = 0;
+      let unmatchedFiles: string[] = [];
       
       result.value.forEach((obj: any) => {
-        // Look for card image patterns
+        // Log all files that might be related to cards
+        if (obj.name.toLowerCase().includes('challenge') || obj.name.toLowerCase().includes('card') || obj.name.includes('.png')) {
+          console.log(`🔍 Analyzing file: ${obj.name}`);
+        }
+        
+        // Look for card image patterns - updated to handle multi-character prefixes and variable numbering
         const cardPatterns = [
-          /^Cards\/(\w+)\/([A-Z]\d+\.png)$/i,           // Cards/Wisdom/W0001.png
-          /^objects\/cards\/(\w+)\/([A-Z]\d+\.png)$/i,  // objects/cards/wisdom/W0001.png
-          /^cards\/(\w+)\/([A-Z]\d+\.png)$/i,           // cards/wisdom/W0001.png
-          /^(\w+)\/([A-Z]\d+\.png)$/i                   // wisdom/W0001.png
+          /^Cards\/([^\/]+)\/([A-Z]{1,3}\d+\.png)$/i,           // Cards/Wisdom/W0001.png, Cards/Challenge/CH00001.png, Cards/Tongue N Cheek/T0001.png
+          /^Cards\/([^\/]+)\/([A-Z]{1,3}[0-9]+\.png)$/,         // Case-sensitive version  
+          /^objects\/cards\/([^\/]+)\/([A-Z]{1,3}[0-9]+\.png)$/i, // objects/cards/wisdom/W0001.png
+          /^cards\/([^\/]+)\/([A-Z]{1,3}[0-9]+\.png)$/i,        // cards/wisdom/W0001.png
+          /^([^\/]+)\/([A-Z]{1,3}[0-9]+\.png)$/i                // wisdom/W0001.png
         ];
         
+        // Debug specific challenge files
+        if (obj.name.includes('Challenge/CH')) {
+          console.log(`🐛 Testing challenge file: ${obj.name}`);
+          cardPatterns.forEach((pattern, idx) => {
+            const match = obj.name.match(pattern);
+            console.log(`   Pattern ${idx}: ${pattern} -> ${match ? 'MATCH' : 'NO MATCH'}`);
+            if (match) {
+              console.log(`   Captured: category="${match[1]}", file="${match[2]}"`);
+            }
+          });
+        }
+        
+        let matched = false;
         for (const pattern of cardPatterns) {
           const match = obj.name.match(pattern);
           if (match) {
             const category = match[1].toLowerCase();
             const filename = match[2];
+            
+            console.log(`✅ Matched: ${obj.name} -> category: ${category}, file: ${filename}`);
             
             if (!cardFiles[category]) {
               cardFiles[category] = [];
@@ -118,10 +143,29 @@ export class ObjectStorageService {
             if (!cardFiles[category].includes(filename)) {
               cardFiles[category].push(filename);
             }
+            matched = true;
+            matchedFiles++;
             break;
           }
         }
+        
+        // Track unmatched files for debugging
+        if (!matched && (obj.name.toLowerCase().includes('challenge') || obj.name.toLowerCase().includes('card'))) {
+          console.log(`❌ No match for card-related file: ${obj.name}`);
+          unmatchedFiles.push(obj.name);
+        }
       });
+      
+      console.log(`📊 Card analysis results:`);
+      console.log(`   ✅ Matched ${matchedFiles} card files`);
+      console.log(`   📁 Found categories: ${Object.keys(cardFiles).join(', ')}`);
+      if (unmatchedFiles.length > 0) {
+        console.log(`   ❌ ${unmatchedFiles.length} unmatched files:`);
+        unmatchedFiles.slice(0, 10).forEach(file => console.log(`      - ${file}`));
+        if (unmatchedFiles.length > 10) {
+          console.log(`      ... and ${unmatchedFiles.length - 10} more`);
+        }
+      }
       
       // Sort files within each category
       Object.keys(cardFiles).forEach(category => {

@@ -335,6 +335,150 @@
       "image": "/public-objects/wisdom/W0013.png",
       "message": "The moon teaches us that even in darkness, there is beauty. Find grace in life's challenging phases.",
       "title": "Beauty in Darkness"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH00001.png",
+      "message": "Fear is not your enemy; it's a compass pointing toward your next breakthrough. Face it with courage.",
+      "title": "Fear Compass"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH00002.png",
+      "message": "Your comfort zone is a beautiful place, but nothing grows there. Step out and bloom where you've never been.",
+      "title": "Beyond Comfort"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0003.png",
+      "message": "Every setback is a setup for a comeback. Rise stronger, wiser, and more determined than before.",
+      "title": "Comeback Story"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0004.png",
+      "message": "Like a diamond forged under pressure, your challenges are transforming you into something precious and unbreakable.",
+      "title": "Diamond Pressure"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0005.png",
+      "message": "Obstacles are not roadblocks; they're stepping stones placed perfectly to elevate you to your next level.",
+      "title": "Stepping Stones"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0006.png",
+      "message": "The strength you seek already lives within you. Challenges simply awaken the giant that was always there.",
+      "title": "Inner Giant"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0007.png",
+      "message": "Growth requires discomfort. Embrace the struggle, for it's sculpting the masterpiece of who you're becoming.",
+      "title": "Sculpting Growth"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0008.png",
+      "message": "Difficult roads often lead to beautiful destinations. Keep walking; your scenery is about to change.",
+      "title": "Beautiful Destinations"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0009.png",
+      "message": "Persistence is the key that unlocks every door. Keep turning it, even when the lock seems stubborn.",
+      "title": "Persistent Key"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0010.png",
+      "message": "From the ashes of your struggles, you will rise like a phoenix. Your adversity is fuel for your flight.",
+      "title": "Phoenix Rising"
+    },
+    {
+      "category": "Challenge",
+      "image": "/public-objects/challenge/CH0011.png",
+      "message": "The moment you're ready to quit is usually the moment right before the miracle happens. Hold on a little longer.",
+      "title": "Miracle Moment"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T00003.png",
+      "message": "Life is like a software update: it happens whether you're ready or not, and it usually takes longer than expected.",
+      "title": "Life Updates"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0001.png",
+      "message": "They say money can't buy happiness, but it can buy coffee, and that's close enough for a Monday morning.",
+      "title": "Coffee Happiness"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0002.png",
+      "message": "Patience is a virtue, especially when you're stuck behind someone who clearly learned to drive from a cereal box.",
+      "title": "Traffic Patience"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0004.png",
+      "message": "The early bird might get the worm, but the second mouse gets the cheese. Sometimes timing is everything.",
+      "title": "Second Mouse"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0005.png",
+      "message": "I told my problems to go away, but apparently they didn't get the memo. Time to send a follow-up email.",
+      "title": "Problem Memo"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0006.png",
+      "message": "Wisdom comes with age, or so they say. I'm still waiting for my delivery; it might be stuck in traffic.",
+      "title": "Wisdom Delivery"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0007.png",
+      "message": "They say laughter is the best medicine, which explains why my sense of humor has such good health insurance.",
+      "title": "Humor Insurance"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0008.png",
+      "message": "Life gives you lemons, make lemonade. Life gives you melons, you might be dyslexic. Either way, make fruit salad.",
+      "title": "Fruit Salad"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0009.png",
+      "message": "I'm not procrastinating; I'm giving my ideas time to marinate. Good things come to those who wait... eventually.",
+      "title": "Marinating Ideas"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0010.png",
+      "message": "Common sense is like a deodorant. The people who need it most never seem to use it.",
+      "title": "Common Sense"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0011.png",
+      "message": "The secret to staying young is to live honestly, eat slowly, and lie about your age. Two out of three isn't bad.",
+      "title": "Staying Young"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0012.png",
+      "message": "I tried to be normal once. Worst two minutes of my life. Embrace your weirdness; it's your superpower.",
+      "title": "Normal Experiment"
+    },
+    {
+      "category": "Tongue N Cheek",
+      "image": "/public-objects/tongue-n-cheek/T0013.png",
+      "message": "Adults are just kids with bills and back pain. The good news is, we still get excited about snacks.",
+      "title": "Adult Reality"
     }
   ]
 }

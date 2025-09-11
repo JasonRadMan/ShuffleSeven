@@ -5,7 +5,7 @@ import path from "path";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, hashPassword } from "./localAuth";
 import { signupSchema, loginSchema, notificationSubscriptionSchema } from "@shared/schema";
-import { ObjectStorageService } from "./objectStorage";
+import { ObjectStorageService, objectStorageClient } from "./objectStorage";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Serve cards.json API endpoint
@@ -39,6 +39,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error listing card files:', error);
       res.status(500).json({ error: 'Failed to list card files' });
+    }
+  });
+
+  // Debug endpoint to see raw bucket contents
+  app.get('/api/debug/bucket', async (req, res) => {
+    try {
+      const result = await objectStorageClient.list();
+      if (result.ok) {
+        const objects = result.value.map((obj: any) => obj.name);
+        res.json({ 
+          total: objects.length,
+          objects: objects.sort(),
+          challengeFiles: objects.filter((name: string) => name.toLowerCase().includes('challenge')),
+          cardDirectories: [...new Set(objects.filter((name: string) => name.includes('/')).map((name: string) => name.split('/')[0]))]
+        });
+      } else {
+        res.status(500).json({ error: result.error?.message || 'Failed to list bucket' });
+      }
+    } catch (error) {
+      console.error('Error listing bucket contents:', error);
+      res.status(500).json({ error: 'Failed to list bucket contents' });
     }
   });
 
