@@ -121,6 +121,47 @@ export class ObjectStorageService {
     }
   }
 
+  // List lifeline cards specifically from the lifeline folder
+  async listLifelineCards(): Promise<string[]> {
+    try {
+      const result = await objectStorageClient.list();
+      if (!result.ok) {
+        throw new Error(`Failed to list storage: ${result.error?.message}`);
+      }
+      
+      const lifelineFiles: string[] = [];
+      
+      result.value.forEach((obj: any) => {
+        // Look for lifeline card patterns
+        const lifelinePatterns = [
+          /^lifeline\/([^\/]+\.png)$/i,                    // lifeline/L0001.png
+          /^Lifeline\/([^\/]+\.png)$/i,                    // Lifeline/L0001.png
+          /^objects\/lifeline\/([^\/]+\.png)$/i,           // objects/lifeline/L0001.png
+          /^cards\/lifeline\/([^\/]+\.png)$/i              // cards/lifeline/L0001.png
+        ];
+        
+        for (const pattern of lifelinePatterns) {
+          const match = obj.name.match(pattern);
+          if (match) {
+            const filename = match[1];
+            if (!lifelineFiles.includes(filename)) {
+              lifelineFiles.push(obj.name); // Store full path for easier retrieval
+            }
+            break;
+          }
+        }
+      });
+      
+      // Sort files
+      lifelineFiles.sort();
+      
+      return lifelineFiles;
+    } catch (error) {
+      console.error('Error listing lifeline cards:', error);
+      throw error;
+    }
+  }
+
   // Search for a public object from the search paths.
   async searchPublicObject(filePath: string): Promise<string | null> {
     try {
