@@ -42,6 +42,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Serve lifeline cards from the lifeline folder in object storage
+  app.get('/api/cards/lifeline', async (req, res) => {
+    try {
+      const objectStorageService = new ObjectStorageService();
+      const lifelineFiles = await objectStorageService.listLifelineCards();
+      
+      // Generate card data from lifeline files
+      const lifelineCards = lifelineFiles.map((filePath, index) => {
+        // Extract filename from path for generating basic card data
+        const filename = filePath.split('/').pop() || `lifeline-${index}`;
+        const cardId = filename.replace(/\.[^/.]+$/, ""); // Remove file extension
+        
+        return {
+          category: 'Lifeline',
+          image: `/public-objects/${filePath}`,
+          message: `Lifeline card ${cardId}`,
+          title: `Lifeline ${cardId}`
+        };
+      });
+      
+      res.json({ cards: lifelineCards });
+    } catch (error) {
+      console.error('Error loading lifeline cards:', error);
+      res.status(500).json({ error: 'Failed to load lifeline cards' });
+    }
+  });
+
 
   // Serve public card images from App Storage
   app.get("/public-objects/:filePath(*)", async (req, res) => {
