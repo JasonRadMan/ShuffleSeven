@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { loadCards, Card } from '@/lib/cards';
+import { loadCards, loadLifelineCards, Card } from '@/lib/cards';
 import { 
   getTodaysDraw, 
   setTodaysDraw, 
@@ -21,6 +21,7 @@ export interface ShuffleState {
   hasDrawnToday: boolean;
   settings: Record<string, boolean>;
   cardsLoading: boolean;
+  lifelineCardsLoading: boolean;
 }
 
 export function useShuffleState() {
@@ -29,10 +30,12 @@ export function useShuffleState() {
     lifelinesRemaining: 5,
     hasDrawnToday: false,
     settings: {},
-    cardsLoading: true
+    cardsLoading: true,
+    lifelineCardsLoading: true
   });
 
   const [cards, setCards] = useState<Card[]>([]);
+  const [lifelineCards, setLifelineCards] = useState<Card[]>([]);
   const { isAuthenticated } = useAuth();
 
   // Mutation to save drawn cards to database
@@ -62,8 +65,14 @@ export function useShuffleState() {
   useEffect(() => {
     // Load initial state
     const initializeState = async () => {
-      const loadedCards = await loadCards();
+      // Load daily cards and lifeline cards in parallel
+      const [loadedCards, loadedLifelineCards] = await Promise.all([
+        loadCards(),
+        loadLifelineCards()
+      ]);
+      
       setCards(loadedCards);
+      setLifelineCards(loadedLifelineCards);
 
       const todaysDraw = getTodaysDraw();
       const lifelines = getLifelinesRemaining();
@@ -74,7 +83,8 @@ export function useShuffleState() {
         lifelinesRemaining: lifelines,
         hasDrawnToday: !!todaysDraw,
         settings,
-        cardsLoading: false
+        cardsLoading: false,
+        lifelineCardsLoading: false
       });
     };
 
@@ -115,21 +125,14 @@ export function useShuffleState() {
   };
 
   const useLifelineCard = () => {
-    if (state.lifelinesRemaining <= 0 || state.cardsLoading || cards.length === 0) return null;
+    if (state.lifelinesRemaining <= 0 || state.lifelineCardsLoading || lifelineCards.length === 0) return null;
 
-    // Use smart card selection for lifelines too
-    const { card: selectedCard, deckReset } = selectSmartCard(cards);
+    // Use pure random selection from lifeline cards only (no smart selection, no deck tracking)
+    const randomIndex = Math.floor(Math.random() * lifelineCards.length);
+    const selectedCard = lifelineCards[randomIndex];
     const remaining = useLifeline();
     
-    if (deckReset) {
-      console.info('Deck was reset during lifeline draw - all cards are now available again');
-    }
-    
-    // Track the lifeline card draw in localStorage (but don't update today's draw storage)
-    addDrawnCard(selectedCard);
-    setLastDrawnCategory(selectedCard.category);
-    
-    // Save to database for authenticated users
+    // Save to database for authenticated users (no localStorage side effects)
     if (isAuthenticated) {
       saveDrawnCardMutation.mutate({
         cardType: 'lifeline',
