@@ -16,7 +16,7 @@ export default function Home() {
   const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
   const [isImagePreloaded, setIsImagePreloaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { drawDailyCard, useLifelineCard, lifelinesRemaining, hasDrawnToday, currentCard, clearCurrentCard, cardsLoading } = useShuffleState();
+  const { drawDailyCard, useLifelineCard, lifelinesRemaining, lifelineUniqueRemaining, hasDrawnToday, currentCard, clearCurrentCard, cardsLoading } = useShuffleState();
 
   const handleDailyDraw = () => {
     const card = drawDailyCard();
@@ -97,6 +97,9 @@ export default function Home() {
       preloadImage.src = card.image;
       
       setIsCardRevealModalOpen(true);
+    } else if (lifelinesRemaining > 0 && lifelineUniqueRemaining <= 0) {
+      // Show user feedback when no unique cards remain
+      alert('No new lifeline cards available this month. All lifeline cards have been drawn!');
     }
   };
 
@@ -153,17 +156,17 @@ export default function Home() {
           <div className="flex justify-center">
             <button 
               onClick={handleLifeline}
-              disabled={lifelinesRemaining <= 0 || cardsLoading}
+              disabled={lifelinesRemaining <= 0 || lifelineUniqueRemaining <= 0 || cardsLoading}
               className={`py-1 px-6 rounded-2xl border transition-all flex items-center justify-center gap-3 font-medium h-[42px] ${
-                lifelinesRemaining <= 0 || cardsLoading
+                lifelinesRemaining <= 0 || lifelineUniqueRemaining <= 0 || cardsLoading
                   ? 'bg-slate-800/30 text-slate-500 border-slate-700/30 cursor-not-allowed'
                   : 'bg-slate-800/50 text-white border-slate-700/50 hover:bg-slate-700/50'
               }`}
               data-testid="button-lifeline"
             >
-              <Star className={`w-5 h-5 ${lifelinesRemaining <= 0 || cardsLoading ? 'text-slate-500' : 'text-yellow-500'}`} />
+              <Star className={`w-5 h-5 ${lifelinesRemaining <= 0 || lifelineUniqueRemaining <= 0 || cardsLoading ? 'text-slate-500' : 'text-yellow-500'}`} />
               <span data-testid="text-lifelines-remaining">
-                Lifeline
+                Lifeline ({lifelineUniqueRemaining} left this month)
               </span>
             </button>
           </div>

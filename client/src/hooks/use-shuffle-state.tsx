@@ -10,7 +10,10 @@ import {
   updateSettings,
   selectSmartCard,
   addDrawnCard,
-  setLastDrawnCategory
+  setLastDrawnCategory,
+  getLifelineUniqueRemaining,
+  getUndrawnLifelineCardsThisMonth,
+  addLifelineDrawn
 } from '@/lib/storage';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useAuth } from '@/hooks/useAuth';
@@ -18,6 +21,7 @@ import { useAuth } from '@/hooks/useAuth';
 export interface ShuffleState {
   currentCard: Card | null;
   lifelinesRemaining: number;
+  lifelineUniqueRemaining: number;
   hasDrawnToday: boolean;
   settings: Record<string, boolean>;
   cardsLoading: boolean;
@@ -28,6 +32,7 @@ export function useShuffleState() {
   const [state, setState] = useState<ShuffleState>({
     currentCard: null,
     lifelinesRemaining: 5,
+    lifelineUniqueRemaining: 0,
     hasDrawnToday: false,
     settings: {},
     cardsLoading: true,
@@ -76,11 +81,13 @@ export function useShuffleState() {
 
       const todaysDraw = getTodaysDraw();
       const lifelines = getLifelinesRemaining();
+      const lifelineUnique = getLifelineUniqueRemaining(loadedLifelineCards);
       const settings = getSettings();
 
       setState({
         currentCard: todaysDraw,
         lifelinesRemaining: lifelines,
+        lifelineUniqueRemaining: lifelineUnique,
         hasDrawnToday: !!todaysDraw,
         settings,
         cardsLoading: false,
@@ -125,14 +132,31 @@ export function useShuffleState() {
   };
 
   const useLifelineCard = () => {
-    if (state.lifelinesRemaining <= 0 || state.lifelineCardsLoading || lifelineCards.length === 0) return null;
+    // Check both lifeline counter and unique cards availability
+    if (state.lifelinesRemaining <= 0 || state.lifelineUniqueRemaining <= 0 || state.lifelineCardsLoading || lifelineCards.length === 0) return null;
 
-    // Use pure random selection from lifeline cards only (no smart selection, no deck tracking)
-    const randomIndex = Math.floor(Math.random() * lifelineCards.length);
-    const selectedCard = lifelineCards[randomIndex];
+    // Get undrawn lifeline cards for this month
+    const undrawnCards = getUndrawnLifelineCardsThisMonth(lifelineCards);
+    
+    if (undrawnCards.length === 0) {
+      console.warn('No unique lifeline cards remaining this month');
+      return null;
+    }
+
+    // Select from undrawn cards only
+    const randomIndex = Math.floor(Math.random() * undrawnCards.length);
+    const selectedCard = undrawnCards[randomIndex];
+    
+    // Only decrement counter after successful unique card selection
     const remaining = useLifeline();
     
-    // Save to database for authenticated users (no localStorage side effects)
+    // Add selected card to drawn history
+    addLifelineDrawn(selectedCard);
+    
+    // Update unique remaining count
+    const lifelineUnique = getLifelineUniqueRemaining(lifelineCards);
+    
+    // Save to database for authenticated users
     if (isAuthenticated) {
       saveDrawnCardMutation.mutate({
         cardType: 'lifeline',
@@ -144,7 +168,8 @@ export function useShuffleState() {
     setState(prev => ({
       ...prev,
       currentCard: selectedCard,
-      lifelinesRemaining: remaining
+      lifelinesRemaining: remaining,
+      lifelineUniqueRemaining: lifelineUnique
     }));
 
     return selectedCard;

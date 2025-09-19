@@ -32,7 +32,8 @@ const STORAGE_KEYS = {
   LIFELINES: 'shuffle7_lifelines',
   SETTINGS: 'shuffle7_settings',
   DRAWN_CARDS: 'shuffle7_drawn_cards',
-  LAST_DRAWN_CATEGORY: 'shuffle7_last_drawn_category'
+  LAST_DRAWN_CATEGORY: 'shuffle7_last_drawn_category',
+  LIFELINE_DRAWN: 'shuffle7_lifeline_drawn'
 } as const;
 
 interface DailyDraw {
@@ -53,6 +54,11 @@ interface LastDrawnCategory {
   category: string;
   date: string;
   timestamp: number;
+}
+
+interface LifelineDrawn {
+  month: string;
+  ids: string[];
 }
 
 // Daily Draw Functions
@@ -283,4 +289,46 @@ export function selectSmartCard(allCards: Card[]): { card: Card; deckReset: bool
   
   const card = availableCards[Math.floor(Math.random() * availableCards.length)];
   return { card, deckReset: true };
+}
+
+// Lifeline Card Tracking Functions
+export function getLifelineDrawn(): string[] {
+  const currentMonth = getLocalMonthString();
+  const stored = localStorage.getItem(STORAGE_KEYS.LIFELINE_DRAWN);
+  
+  if (!stored) return [];
+  
+  try {
+    const data: LifelineDrawn = JSON.parse(stored);
+    // Reset if new month
+    if (data.month !== currentMonth) {
+      return [];
+    }
+    return data.ids || [];
+  } catch {
+    return [];
+  }
+}
+
+export function addLifelineDrawn(card: Card): void {
+  const currentMonth = getLocalMonthString();
+  const drawnIds = getLifelineDrawn();
+  const cardId = card.image; // Use card.image as unique identifier
+  
+  if (!drawnIds.includes(cardId)) {
+    drawnIds.push(cardId);
+    const data: LifelineDrawn = { month: currentMonth, ids: drawnIds };
+    localStorage.setItem(STORAGE_KEYS.LIFELINE_DRAWN, JSON.stringify(data));
+  }
+}
+
+export function getUndrawnLifelineCardsThisMonth(allCards: Card[]): Card[] {
+  const drawnIds = getLifelineDrawn();
+  return allCards.filter(card => !drawnIds.includes(card.image));
+}
+
+export function getLifelineUniqueRemaining(allCards: Card[]): number {
+  const lifelinesRemaining = getLifelinesRemaining();
+  const undrawnCards = getUndrawnLifelineCardsThisMonth(allCards);
+  return Math.min(lifelinesRemaining, undrawnCards.length);
 }
