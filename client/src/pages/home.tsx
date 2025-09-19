@@ -154,7 +154,7 @@ export default function Home() {
             <button 
               onClick={handleLifeline}
               disabled={lifelinesRemaining <= 0 || cardsLoading}
-              className={`py-1 px-6 rounded-2xl border transition-all flex items-center justify-center gap-3 font-medium ${
+              className={`py-1 px-6 rounded-2xl border transition-all flex items-center justify-center gap-3 font-medium h-[42px] ${
                 lifelinesRemaining <= 0 || cardsLoading
                   ? 'bg-slate-800/30 text-slate-500 border-slate-700/30 cursor-not-allowed'
                   : 'bg-slate-800/50 text-white border-slate-700/50 hover:bg-slate-700/50'
