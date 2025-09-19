@@ -19,3 +19,18 @@ export async function loadCards(): Promise<Card[]> {
     return [];
   }
 }
+
+export async function loadLifelineCards(): Promise<Card[]> {
+  try {
+    const response = await fetch('/api/cards/lifeline');
+    if (!response.ok) {
+      throw new Error('Failed to load lifeline cards');
+    }
+    const data = await response.json();
+    return data.cards || [];
+  } catch (error) {
+    console.error('Error loading lifeline cards:', error);
+    // Return empty array if lifeline cards can't be loaded
+    return [];
+  }
+}
