@@ -150,15 +150,7 @@ export default function Home() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <button 
-              onClick={() => setLocation('/about')}
-              className="py-1 px-6 bg-slate-800/50 text-white rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-3 font-medium"
-              data-testid="button-my-account"
-            >
-              <User className="w-5 h-5" />
-              My Account
-            </button>
+          <div className="flex justify-center">
             <button 
               onClick={handleLifeline}
               disabled={lifelinesRemaining <= 0 || cardsLoading}
