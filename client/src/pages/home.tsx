@@ -7,6 +7,7 @@ import AdBox from '@/components/AdBox';
 import FooterBanner from '@/components/FooterBanner';
 import InviteFriendModal from '@/components/InviteFriendModal';
 import CardRevealModal from '@/components/CardRevealModal';
+import InfoModal from '@/components/InfoModal';
 import { useShuffleState } from '@/hooks/use-shuffle-state';
 import drawAnimationGif from '@assets/SHuffle front page_1_1757096240479.gif';
 import shuffleAudio from '@assets/SHuffle front page_1757097826767.mp3';
@@ -15,6 +16,7 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isCardRevealModalOpen, setIsCardRevealModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
   const [isImagePreloaded, setIsImagePreloaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -110,6 +112,10 @@ export default function Home() {
     setIsCardRevealModalOpen(false);
   };
 
+  const handleInfoClick = () => {
+    setIsInfoModalOpen(true);
+  };
+
   const handleReset = () => {
     localStorage.removeItem('shuffle7_daily_draw');
     window.location.reload();
@@ -117,7 +123,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <Header />
+      <Header onInfoClick={handleInfoClick} />
       
       <main className="flex-1 px-4 py-8">
         <Carousel isAnimationPlaying={isDrawAnimationPlaying} onAnimationClick={handleAnimationClick} />
@@ -211,6 +217,11 @@ export default function Home() {
         card={currentCard}
         onClose={handleCloseCardModal}
         isImagePreloaded={isImagePreloaded}
+      />
+
+      <InfoModal
+        open={isInfoModalOpen}
+        onOpenChange={setIsInfoModalOpen}
       />
     </div>
   );

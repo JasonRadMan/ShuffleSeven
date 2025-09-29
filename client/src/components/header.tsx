@@ -1,7 +1,11 @@
-import { Calendar, Settings, Bell } from 'lucide-react';
+import { Calendar, Settings, Bell, Info } from 'lucide-react';
 import { useLocation } from 'wouter';
 
-export default function Header() {
+interface HeaderProps {
+  onInfoClick?: () => void;
+}
+
+export default function Header({ onInfoClick }: HeaderProps) {
   const [, setLocation] = useLocation();
 
   return (
@@ -24,6 +28,14 @@ export default function Header() {
         >
           <Settings className="w-4 h-4 text-slate-300" />
           <span className="text-xs text-slate-400 font-medium">Settings</span>
+        </button>
+        <button 
+          onClick={onInfoClick}
+          className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
+          data-testid="button-info"
+        >
+          <Info className="w-4 h-4 text-slate-300" />
+          <span className="text-xs text-slate-400 font-medium">Info</span>
         </button>
       </div>
     </header>
