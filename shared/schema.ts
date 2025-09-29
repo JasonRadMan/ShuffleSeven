@@ -66,6 +66,19 @@ export const drawnCards = pgTable("drawn_cards", {
   index("IDX_drawn_cards_drawn_at").on(table.drawnAt),
 ]);
 
+// Journal entries table
+export const journalEntries = pgTable("journal_entries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  drawnCardId: varchar("drawn_card_id").notNull().references(() => drawnCards.id, { onDelete: 'cascade' }),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("IDX_journal_entries_drawn_card_id").on(table.drawnCardId),
+  index("IDX_journal_entries_user_id").on(table.userId),
+]);
+
 export const signupSchema = z.object({
   email: z.string().email().transform(v => v.toLowerCase()),
   password: z.string().min(8).max(72),
@@ -108,12 +121,22 @@ export const insertDrawnCardSchema = createInsertSchema(drawnCards).omit({
   updatedAt: true,
 });
 
+export const insertJournalEntrySchema = createInsertSchema(journalEntries).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  content: z.string().min(1).max(500, "Journal entry cannot exceed 500 characters"),
+});
+
 export type SignupData = z.infer<typeof signupSchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type NotificationSubscriptionData = z.infer<typeof notificationSubscriptionSchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertNotificationSubscription = z.infer<typeof insertNotificationSubscriptionSchema>;
 export type InsertDrawnCard = z.infer<typeof insertDrawnCardSchema>;
+export type InsertJournalEntry = z.infer<typeof insertJournalEntrySchema>;
 export type User = Omit<typeof users.$inferSelect, 'passwordHash'>;
 export type NotificationSubscription = typeof notificationSubscriptions.$inferSelect;
 export type DrawnCard = typeof drawnCards.$inferSelect;
+export type JournalEntry = typeof journalEntries.$inferSelect;

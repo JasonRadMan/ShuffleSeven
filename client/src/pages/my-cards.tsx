@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
 import { format, isToday, isYesterday, isThisWeek, isThisMonth } from 'date-fns';
-import { ArrowLeft, Calendar, Star, Zap, X, ImageOff } from 'lucide-react';
+import { ArrowLeft, Calendar, Star, Zap, X, ImageOff, Book } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card as UICard, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import JournalModal from '@/components/JournalModal';
 import type { DrawnCard } from '@shared/schema';
 import type { Card } from '@/lib/cards';
 
@@ -28,9 +29,10 @@ interface CardGroupProps {
   cards: DrawnCard[];
   groupTitle: string;
   onCardClick: (drawnCard: DrawnCard) => void;
+  onJournalClick: (drawnCard: DrawnCard) => void;
 }
 
-function CardGroup({ cards, groupTitle, onCardClick }: CardGroupProps) {
+function CardGroup({ cards, groupTitle, onCardClick, onJournalClick }: CardGroupProps) {
   if (cards.length === 0) return null;
 
   return (
@@ -76,6 +78,19 @@ function CardGroup({ cards, groupTitle, onCardClick }: CardGroupProps) {
                         </p>
                       </div>
                       <div className="flex items-center gap-2 ml-4">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onJournalClick(drawnCard);
+                          }}
+                          className="h-6 px-2 text-xs bg-amber-50 border-amber-300 hover:bg-amber-100 text-amber-700 hover:text-amber-800 dark:bg-amber-100/20 dark:border-amber-200 dark:hover:bg-amber-200/30 dark:text-amber-200 dark:hover:text-amber-100"
+                          data-testid={`button-journal-${drawnCard.id}`}
+                        >
+                          <Book className="w-3 h-3 mr-1" />
+                          Journal
+                        </Button>
                         {drawnCard.cardType === 'lifeline' ? (
                           <div className="flex items-center gap-1 bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 px-2 py-1 rounded-full text-xs font-medium">
                             <Star className="w-3 h-3" />
@@ -157,6 +172,8 @@ export default function MyCards() {
   const [activeTab, setActiveTab] = useState<'daily' | 'lifeline'>('daily');
   const [selectedCard, setSelectedCard] = useState<DrawnCard | null>(null);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [journalCard, setJournalCard] = useState<DrawnCard | null>(null);
+  const [isJournalModalOpen, setIsJournalModalOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   const {
@@ -209,10 +226,20 @@ export default function MyCards() {
     setIsCardModalOpen(true);
   };
 
+  const handleJournalClick = (drawnCard: DrawnCard) => {
+    setJournalCard(drawnCard);
+    setIsJournalModalOpen(true);
+  };
+
   const handleCloseModal = () => {
     setIsCardModalOpen(false);
     setSelectedCard(null);
     setImageError(false);
+  };
+
+  const handleCloseJournalModal = () => {
+    setIsJournalModalOpen(false);
+    setJournalCard(null);
   };
 
   // Flatten all pages of drawn cards
@@ -288,6 +315,7 @@ export default function MyCards() {
                       groupTitle={groupKey}
                       cards={groupedCards[groupKey]}
                       onCardClick={handleCardClick}
+                      onJournalClick={handleJournalClick}
                     />
                   ))}
                   
@@ -344,6 +372,7 @@ export default function MyCards() {
                       groupTitle={groupKey}
                       cards={groupedCards[groupKey]}
                       onCardClick={handleCardClick}
+                      onJournalClick={handleJournalClick}
                     />
                   ))}
                   
@@ -428,6 +457,20 @@ export default function MyCards() {
           })()}
         </DialogContent>
       </Dialog>
+      
+      {/* Journal Modal */}
+      {journalCard && (
+        <JournalModal
+          open={isJournalModalOpen}
+          onOpenChange={(open) => {
+            setIsJournalModalOpen(open);
+            if (!open) {
+              setJournalCard(null);
+            }
+          }}
+          drawnCard={journalCard}
+        />
+      )}
     </div>
   );
 }

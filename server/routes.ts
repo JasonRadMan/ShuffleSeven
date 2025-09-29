@@ -4,7 +4,7 @@ import passport from "passport";
 import path from "path";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, hashPassword } from "./localAuth";
-import { signupSchema, loginSchema, notificationSubscriptionSchema, insertDrawnCardSchema } from "@shared/schema";
+import { signupSchema, loginSchema, notificationSubscriptionSchema, insertDrawnCardSchema, insertJournalEntrySchema } from "@shared/schema";
 import { z } from "zod";
 import { ObjectStorageService, objectStorageClient } from "./objectStorage";
 
@@ -324,6 +324,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ drawnCards });
     } catch (error) {
       console.error("Get drawn cards error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Journal entries routes
+  app.post('/api/journal-entries', isAuthenticated, async (req, res) => {
+    try {
+      const result = insertJournalEntrySchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ message: "Invalid input", errors: result.error.issues });
+      }
+
+      if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const userId = (req.user as any).id;
+      const journalEntry = await storage.createJournalEntry({
+        ...result.data,
+        userId,
+      });
+
+      res.status(201).json(journalEntry);
+    } catch (error) {
+      console.error("Create journal entry error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get('/api/journal-entries/card/:drawnCardId', isAuthenticated, async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const { drawnCardId } = req.params;
+      const journalEntry = await storage.getJournalEntryByDrawnCardId(drawnCardId);
+
+      if (!journalEntry) {
+        return res.status(404).json({ message: "Journal entry not found" });
+      }
+
+      // Verify that the journal entry belongs to the authenticated user
+      const userId = (req.user as any).id;
+      if (journalEntry.userId !== userId) {
+        return res.status(403).json({ message: "Access denied" });
+      }
+
+      res.json(journalEntry);
+    } catch (error) {
+      console.error("Get journal entry error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.put('/api/journal-entries/:id', isAuthenticated, async (req, res) => {
+    try {
+      const { content } = req.body;
+      if (!content || typeof content !== 'string' || content.length === 0 || content.length > 500) {
+        return res.status(400).json({ message: "Content must be between 1 and 500 characters" });
+      }
+
+      if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const { id } = req.params;
+      
+      // First check if the journal entry exists and belongs to the user
+      const existingEntry = await storage.getJournalEntryById(id);
+      if (!existingEntry) {
+        return res.status(404).json({ message: "Journal entry not found" });
+      }
+
+      const userId = (req.user as any).id;
+      if (existingEntry.userId !== userId) {
+        return res.status(403).json({ message: "Access denied" });
+      }
+
+      const journalEntry = await storage.updateJournalEntry(id, content);
+      res.json(journalEntry);
+    } catch (error) {
+      console.error("Update journal entry error:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });

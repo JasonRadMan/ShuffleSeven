@@ -2,12 +2,15 @@ import {
   users,
   notificationSubscriptions,
   drawnCards,
+  journalEntries,
   type User,
   type SignupData,
   type NotificationSubscription,
   type InsertNotificationSubscription,
   type DrawnCard,
   type InsertDrawnCard,
+  type JournalEntry,
+  type InsertJournalEntry,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc } from "drizzle-orm";
@@ -30,6 +33,13 @@ export interface IStorage {
   saveDrawnCard(userId: string, insertDrawnCard: InsertDrawnCard): Promise<DrawnCard>;
   getUserDrawnCards(userId: string, cardType?: string, limitCount?: number, offsetCount?: number): Promise<DrawnCard[]>;
   getDrawnCardsByUser(userId: string): Promise<DrawnCard[]>;
+  
+  // Journal entries operations
+  createJournalEntry(insertJournalEntry: InsertJournalEntry): Promise<JournalEntry>;
+  getJournalEntryByDrawnCardId(drawnCardId: string): Promise<JournalEntry | undefined>;
+  getJournalEntryById(id: string): Promise<JournalEntry | undefined>;
+  updateJournalEntry(id: string, content: string): Promise<JournalEntry | undefined>;
+  getUserJournalEntries(userId: string): Promise<JournalEntry[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -164,6 +174,52 @@ export class DatabaseStorage implements IStorage {
       .from(drawnCards)
       .where(eq(drawnCards.userId, userId))
       .orderBy(desc(drawnCards.drawnAt));
+  }
+
+  // Journal entries operations
+  async createJournalEntry(insertJournalEntry: InsertJournalEntry): Promise<JournalEntry> {
+    const [journalEntry] = await db
+      .insert(journalEntries)
+      .values(insertJournalEntry)
+      .returning();
+    
+    return journalEntry;
+  }
+
+  async getJournalEntryByDrawnCardId(drawnCardId: string): Promise<JournalEntry | undefined> {
+    const [journalEntry] = await db
+      .select()
+      .from(journalEntries)
+      .where(eq(journalEntries.drawnCardId, drawnCardId));
+    
+    return journalEntry;
+  }
+
+  async getJournalEntryById(id: string): Promise<JournalEntry | undefined> {
+    const [journalEntry] = await db
+      .select()
+      .from(journalEntries)
+      .where(eq(journalEntries.id, id));
+    
+    return journalEntry;
+  }
+
+  async updateJournalEntry(id: string, content: string): Promise<JournalEntry | undefined> {
+    const [journalEntry] = await db
+      .update(journalEntries)
+      .set({ content, updatedAt: new Date() })
+      .where(eq(journalEntries.id, id))
+      .returning();
+    
+    return journalEntry;
+  }
+
+  async getUserJournalEntries(userId: string): Promise<JournalEntry[]> {
+    return await db
+      .select()
+      .from(journalEntries)
+      .where(eq(journalEntries.userId, userId))
+      .orderBy(desc(journalEntries.createdAt));
   }
 }
 
