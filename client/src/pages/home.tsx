@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import Header from '@/components/header';
 import Carousel from '@/components/carousel';
+import AdBox from '@/components/AdBox';
+import FooterBanner from '@/components/FooterBanner';
 import InviteFriendModal from '@/components/InviteFriendModal';
 import CardRevealModal from '@/components/CardRevealModal';
 import { useShuffleState } from '@/hooks/use-shuffle-state';
@@ -117,6 +119,8 @@ export default function Home() {
     <div className="min-h-screen">
       <Header />
       
+      <AdBox />
+      
       <main className="flex-1 px-4 py-8">
         <Carousel isAnimationPlaying={isDrawAnimationPlaying} onAnimationClick={handleAnimationClick} />
 
@@ -182,6 +186,8 @@ export default function Home() {
         </div>
 
       </main>
+
+      <FooterBanner />
 
       {/* Audio element for shuffle sound */}
       <audio 
