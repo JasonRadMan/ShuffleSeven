@@ -187,7 +187,7 @@ export default function Home() {
 
       </main>
 
-      <FooterBanner />
+      <FooterBanner className="mt-2" />
 
       {/* Audio element for shuffle sound */}
       <audio 
