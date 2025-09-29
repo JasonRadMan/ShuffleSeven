@@ -119,8 +119,6 @@ export default function Home() {
     <div className="min-h-screen">
       <Header />
       
-      <AdBox />
-      
       <main className="flex-1 px-4 py-8">
         <Carousel isAnimationPlaying={isDrawAnimationPlaying} onAnimationClick={handleAnimationClick} />
 
@@ -184,6 +182,8 @@ export default function Home() {
             🔄 RESET FOR TESTING
           </button>
         </div>
+
+        <AdBox className="mt-6 mx-0 max-w-md mx-auto" />
 
       </main>
 
