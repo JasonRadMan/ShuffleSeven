@@ -229,7 +229,7 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                   </div>
 
                   {/* Text area */}
-                  <div className="flex-1 mb-6" style={{ width: 'calc(100% + 20px)', marginLeft: '-10px', marginTop: '30px' }}>
+                  <div className="flex-1 mb-6" style={{ width: 'calc(100% + 20px)', marginLeft: '-10px', marginTop: '60px' }}>
                     <Textarea
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
