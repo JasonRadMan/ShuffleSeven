@@ -233,7 +233,7 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       placeholder="Share your thoughts about this card..."
-                      className="w-full h-full resize-none bg-transparent border-amber-200/50 text-amber-100 underline placeholder:text-amber-200/60 p-4 text-base leading-relaxed"
+                      className="w-full h-full resize-none bg-transparent border-none text-amber-100 underline placeholder:text-amber-200/60 p-4 text-base leading-relaxed focus:outline-none"
                       maxLength={500}
                       data-testid="textarea-journal-content"
                     />
