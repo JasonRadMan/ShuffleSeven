@@ -8,7 +8,7 @@ interface InfoModalProps {
 export default function InfoModal({ open, onOpenChange }: InfoModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-lg sm:w-full mx-4 sm:mx-auto" data-testid="info-modal">
+      <DialogContent className="w-[calc(100vw-3rem)] max-w-md mx-auto" data-testid="info-modal">
         <DialogHeader className="text-center">
           <DialogTitle className="font-serif text-2xl text-primary mb-4">
             Welcome to Shuffle 7
