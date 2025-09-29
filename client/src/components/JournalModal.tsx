@@ -223,13 +223,13 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 {/* Journal content */}
                 <div className="relative z-10 h-full p-8 flex flex-col">
                   {/* Journal header */}
-                  <div className="text-center mb-6">
+                  <div className="text-center mb-2">
                     <h2 className="font-serif text-2xl text-amber-100 mb-2">Journal Entry</h2>
                     <p className="text-amber-200/80 text-sm">{card?.title}</p>
                   </div>
 
                   {/* Text area */}
-                  <div className="flex-1 mb-6">
+                  <div className="flex-1 mb-6" style={{ width: 'calc(100% + 20px)', marginLeft: '-10px' }}>
                     <Textarea
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
