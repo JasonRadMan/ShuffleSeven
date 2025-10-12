@@ -106,6 +106,33 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
   // Handle journal button click (flip to journal side)
   const handleJournalClick = () => {
     setShowJournalSide(true);
+    
+    // Play celebratory sound effect
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    
+    // Create a simple celebratory melody
+    const playNote = (frequency: number, startTime: number, duration: number) => {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(0.3, startTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+      
+      oscillator.start(startTime);
+      oscillator.stop(startTime + duration);
+    };
+    
+    // Play a celebratory sequence of notes (C-E-G chord)
+    const now = audioContext.currentTime;
+    playNote(523.25, now, 0.15); // C5
+    playNote(659.25, now + 0.08, 0.15); // E5
+    playNote(783.99, now + 0.16, 0.2); // G5
   };
 
   // Handle save
