@@ -123,8 +123,8 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               scale: 1
             }}
             transition={{ 
-              opacity: { duration: 0.5, ease: "easeOut" },
-              rotateY: { duration: 0.6, ease: "easeInOut" }
+              opacity: { duration: 0.6, ease: "easeOut" },
+              rotateY: { duration: 1.2, ease: "easeInOut" }
             }}
             style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
           >
@@ -148,7 +148,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               scale: animationStage >= 3 ? 1.02 : 1
             }}
             transition={{ 
-              opacity: { duration: 0.4, ease: "easeOut", delay: animationStage >= 2 ? 0.3 : 0 },
+              opacity: { duration: 0.6, ease: "easeOut", delay: animationStage >= 2 ? 0.5 : 0 },
               scale: { duration: 0.4, ease: "easeOut" }
             }}
             style={{ transformStyle: "preserve-3d" }}
