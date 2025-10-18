@@ -48,10 +48,10 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
       setAnimationStage(0);
       setImageError(false); // Reset image error state when modal opens
       
-      // Stage 1: Fade in card back (after 200ms)
+      // Stage 1: Fade in card back (after 50ms)
       const fadeInTimer = setTimeout(() => {
         setAnimationStage(1);
-      }, 200);
+      }, 50);
       
       return () => {
         clearTimeout(fadeInTimer);
@@ -88,7 +88,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             console.log('Audio playback failed:', error);
           });
         }
-      }, 300); // Small delay after preload for smooth transition
+      }, 50); // Quick flip for responsive feel
       
       // Stage 3: Enlarge (600ms after flip)
       const enlargeTimer = setTimeout(() => {
