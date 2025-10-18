@@ -7,9 +7,10 @@ import {
 } from '@/components/ui/dialog';
 import { X, ImageOff } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Card } from '@/lib/cards';
 import cardBackImage from '@assets/card back_1757444079274.png';
+import treasureFoundSfx from '@assets/Treasure_Found_SFX_2025-10-18T171250_1760807992808.mp3';
 
 interface CardRevealModalProps {
   open: boolean;
@@ -22,6 +23,7 @@ interface CardRevealModalProps {
 export default function CardRevealModal({ open, onOpenChange, card, onClose, isImagePreloaded }: CardRevealModalProps) {
   const [animationStage, setAnimationStage] = useState(0); // 0: hidden, 1: fade in, 2: flip, 3: enlarge
   const [imageError, setImageError] = useState(false);
+  const flipAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleClose = () => {
     onClose();
@@ -57,6 +59,19 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
     }
   }, [open]);
 
+  // Initialize audio on component mount
+  useEffect(() => {
+    flipAudioRef.current = new Audio(treasureFoundSfx);
+    flipAudioRef.current.volume = 0.6;
+    
+    return () => {
+      if (flipAudioRef.current) {
+        flipAudioRef.current.pause();
+        flipAudioRef.current = null;
+      }
+    };
+  }, []);
+
   // Wait for image to preload before flipping to front
   useEffect(() => {
     if (open && animationStage === 1 && isImagePreloaded) {
@@ -65,6 +80,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
       // Stage 2: Flip to front (after image is preloaded + small delay)
       const flipTimer = setTimeout(() => {
         setAnimationStage(2);
+        
+        // Play treasure found sound effect when card flips
+        if (flipAudioRef.current) {
+          flipAudioRef.current.currentTime = 0;
+          flipAudioRef.current.play().catch((error) => {
+            console.log('Audio playback failed:', error);
+          });
+        }
       }, 300); // Small delay after preload for smooth transition
       
       // Stage 3: Enlarge (600ms after flip)
