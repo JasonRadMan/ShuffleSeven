@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import type { Card } from '@/lib/cards';
 import cardBackImage from '@assets/card back_1757444079274.png';
-import treasureFoundSfx from '@assets/Treasure_Found_SFX_2025-10-18T171250_1760807992808.mp3';
+import treasureFoundSfx from '@assets/Treasure_Found_SFX_2025-10-18T171602_1760808858694.mp3';
 
 interface CardRevealModalProps {
   open: boolean;
