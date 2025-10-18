@@ -112,23 +112,31 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
-        <div className="relative w-full h-full" style={{ transformStyle: "preserve-3d" }}>
-          {/* Card Back */}
+        <div className="relative w-full h-full" style={{ perspective: "2000px" }}>
+          {/* Single rotating card wrapper */}
           <motion.div 
-            className="absolute inset-0 flex items-center justify-center"
-            initial={{ opacity: 0, scale: 1 }}
+            className="relative w-full h-full"
+            initial={{ opacity: 0, rotateY: 0 }}
             animate={{ 
-              opacity: animationStage === 1 ? 1 : (animationStage >= 2 ? 0 : 0),
+              opacity: animationStage >= 1 ? 1 : 0,
               rotateY: animationStage >= 2 ? 180 : 0,
-              scale: 1
+              scale: animationStage >= 3 ? 1.02 : 1
             }}
             transition={{ 
-              opacity: { duration: 0.6, ease: "easeOut" },
-              rotateY: { duration: 1.2, ease: "easeInOut" }
+              opacity: { duration: 0.3, ease: "easeOut" },
+              rotateY: { duration: 1.2, ease: "easeInOut" },
+              scale: { duration: 0.4, ease: "easeOut" }
             }}
-            style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
+            style={{ transformStyle: "preserve-3d" }}
           >
-            <div className="flex items-center justify-center w-full h-full">
+            {/* Card Back - facing forward initially */}
+            <div 
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ 
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden"
+              }}
+            >
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
@@ -136,44 +144,38 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 data-testid="img-card-back"
               />
             </div>
-          </motion.div>
 
-          {/* Card Front - Only Image */}
-          <motion.div 
-            className="absolute inset-0 flex items-center justify-center"
-            initial={{ opacity: 0, rotateY: 0, scale: 1 }}
-            animate={{ 
-              opacity: animationStage >= 2 ? 1 : 0,
-              rotateY: 0,
-              scale: animationStage >= 3 ? 1.02 : 1
-            }}
-            transition={{ 
-              opacity: { duration: 0.6, ease: "easeOut", delay: animationStage >= 2 ? 0.5 : 0 },
-              scale: { duration: 0.4, ease: "easeOut" }
-            }}
-            style={{ transformStyle: "preserve-3d" }}
-            onClick={handleClose}
-          >
-            {!imageError ? (
-              <img 
-                src={card.image} 
-                alt="Card inspiration image" 
-                className="max-w-full max-h-full object-contain cursor-pointer"
-                onError={handleImageError}
-                data-testid="img-card-image"
-              />
-            ) : (
-              <div 
-                className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground cursor-pointer"
-                data-testid="status-image-unavailable"
-              >
-                <ImageOff className="w-16 h-16 mb-4" />
-                <p className="text-lg text-center px-8" data-testid="text-image-fallback">
-                  Image not available<br />
-                  <span className="text-sm opacity-75">Content loads from your App Storage</span>
-                </p>
-              </div>
-            )}
+            {/* Card Front - pre-rotated 180 degrees so it faces forward when wrapper rotates 180 */}
+            <div 
+              className="absolute inset-0 flex items-center justify-center cursor-pointer"
+              style={{ 
+                transform: "rotateY(180deg)",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden"
+              }}
+              onClick={handleClose}
+            >
+              {!imageError ? (
+                <img 
+                  src={card.image} 
+                  alt="Card inspiration image" 
+                  className="max-w-full max-h-full object-contain"
+                  onError={handleImageError}
+                  data-testid="img-card-image"
+                />
+              ) : (
+                <div 
+                  className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground"
+                  data-testid="status-image-unavailable"
+                >
+                  <ImageOff className="w-16 h-16 mb-4" />
+                  <p className="text-lg text-center px-8" data-testid="text-image-fallback">
+                    Image not available<br />
+                    <span className="text-sm opacity-75">Content loads from your App Storage</span>
+                  </p>
+                </div>
+              )}
+            </div>
           </motion.div>
         </div>
       </DialogContent>
