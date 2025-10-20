@@ -8,27 +8,37 @@ interface CarouselProps {
 
 export default function Carousel({ isAnimationPlaying = false, onAnimationClick }: CarouselProps) {
   return (
-    <div className="carousel-container">
-      <div className="static-card-background" data-testid="static-card-background">
-        <img 
-          src={cardBackImage} 
-          alt="Shuffle 7 Card Back" 
-          className="card-back-image"
-        />
-      </div>
-      {isAnimationPlaying && (
-        <div 
-          className="animation-overlay cursor-pointer" 
-          data-testid="animation-overlay"
-          onClick={onAnimationClick}
-        >
+    <>
+      <div className="carousel-container">
+        <div className="static-card-background" data-testid="static-card-background">
           <img 
-            src={drawAnimationGif} 
-            alt="Drawing animation - Click to reveal card" 
-            className="draw-animation-gif"
+            src={cardBackImage} 
+            alt="Shuffle 7 Card Back" 
+            className="card-back-image"
           />
         </div>
+        {isAnimationPlaying && (
+          <div 
+            className="animation-overlay cursor-pointer" 
+            data-testid="animation-overlay"
+            onClick={onAnimationClick}
+          >
+            <img 
+              src={drawAnimationGif} 
+              alt="Drawing animation - Click to reveal card" 
+              className="draw-animation-gif"
+            />
+          </div>
+        )}
+      </div>
+      {isAnimationPlaying && (
+        <p 
+          className="text-center text-white text-lg font-medium mt-4 animate-pulse"
+          data-testid="text-touch-instruction"
+        >
+          Touch card to stop shuffle
+        </p>
       )}
-    </div>
+    </>
   );
 }
