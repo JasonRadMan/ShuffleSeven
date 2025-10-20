@@ -2,6 +2,7 @@ import { useLocation } from 'wouter';
 import { useShuffleState } from '@/hooks/use-shuffle-state';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
 
 interface ToggleSwitchProps {
   checked: boolean;
@@ -59,7 +60,17 @@ export default function Settings() {
   return (
     <div className="min-h-screen px-4 py-8">
       <div className="max-w-md mx-auto">
-        <h2 className="font-serif text-3xl font-bold text-primary text-center mb-8">SETTINGS</h2>
+        {/* Header with back button */}
+        <div className="flex items-center gap-4 mb-8">
+          <button
+            onClick={() => setLocation('/')}
+            className="p-2 rounded-lg hover:bg-slate-700/40 transition-all"
+            data-testid="button-back-to-home-top"
+          >
+            <ArrowLeft className="w-6 h-6 text-primary" />
+          </button>
+          <h2 className="font-serif text-3xl font-bold text-primary">SETTINGS</h2>
+        </div>
         
         <div className="space-y-6">
           <div className="flex items-center justify-between py-4 border-b border-border">

@@ -1,4 +1,5 @@
 import { useLocation } from 'wouter';
+import { ArrowLeft } from 'lucide-react';
 
 interface CategoryButtonProps {
   icon: string;
@@ -29,7 +30,19 @@ export default function About() {
   return (
     <div className="min-h-screen px-4 py-8">
       <div className="max-w-md mx-auto">
-        <h2 className="font-serif text-3xl font-bold text-primary text-center mb-2">ABOUT YOU</h2>
+        {/* Header with back button */}
+        <div className="flex items-center gap-4 mb-6">
+          <button
+            onClick={() => setLocation('/')}
+            className="p-2 rounded-lg hover:bg-slate-700/40 transition-all"
+            data-testid="button-back-to-home-top"
+          >
+            <ArrowLeft className="w-6 h-6 text-primary" />
+          </button>
+          <div className="flex-1">
+            <h2 className="font-serif text-3xl font-bold text-primary">ABOUT YOU</h2>
+          </div>
+        </div>
         <p className="text-center text-primary text-sm mb-8">LIFE FOCUS (PRIMARY THEME)</p>
 
         <div className="grid grid-cols-2 gap-4 mb-8">
