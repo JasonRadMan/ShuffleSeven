@@ -2,8 +2,11 @@ import { useLocation } from 'wouter';
 import { useShuffleState } from '@/hooks/use-shuffle-state';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, LogOut } from 'lucide-react';
 import { CardAd } from '@/components/AdBox';
+import { useMutation } from '@tanstack/react-query';
+import { queryClient, apiRequest } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
 
 interface ToggleSwitchProps {
   checked: boolean;
@@ -27,6 +30,7 @@ function ToggleSwitch({ checked, onChange, testId }: ToggleSwitchProps) {
 export default function Settings() {
   const [, setLocation] = useLocation();
   const { settings, updateSetting } = useShuffleState();
+  const { toast } = useToast();
   const { 
     permission, 
     isSubscribed, 
@@ -37,6 +41,31 @@ export default function Settings() {
     sendTestNotification, 
     isSupported 
   } = useNotifications();
+
+  // Logout mutation
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest('POST', '/api/auth/logout', {});
+      if (!res.ok) throw new Error('Logout failed');
+      return res;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out.",
+      });
+      // Redirect to landing page
+      window.location.href = '/';
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Logout failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
 
   // Handle notification permission changes
   const handleNotificationToggle = async (settingKey: string, checked: boolean) => {
@@ -194,6 +223,20 @@ export default function Settings() {
             data-testid="button-sleep-mode"
           >
             Set Shuffle 7 as Sleep Screen
+          </button>
+        </div>
+
+        {/* Logout Section */}
+        <div className="mt-8 pt-6 border-t border-border">
+          <h3 className="text-primary font-semibold text-center mb-4">ACCOUNT</h3>
+          <button 
+            onClick={() => logoutMutation.mutate()}
+            disabled={logoutMutation.isPending}
+            className="w-full py-3 px-6 bg-destructive/10 text-destructive border border-destructive/30 rounded-lg hover:bg-destructive/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            data-testid="button-logout"
+          >
+            <LogOut className="w-4 h-4" />
+            {logoutMutation.isPending ? 'Logging out...' : 'Log Out'}
           </button>
         </div>
 
