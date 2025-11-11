@@ -1,0 +1,8 @@
+# Shuffle 7 - Daily Mindset Cards
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location (update with your actual domain when deployed)
+Sitemap: https://your-domain.replit.app/sitemap.xml
