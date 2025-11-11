@@ -4,5 +4,5 @@
 User-agent: *
 Allow: /
 
-# Sitemap location (update with your actual domain when deployed)
-Sitemap: https://your-domain.replit.app/sitemap.xml
+# Note: Add your sitemap URL here when deploying to production
+# Example: Sitemap: https://your-domain.com/sitemap.xml

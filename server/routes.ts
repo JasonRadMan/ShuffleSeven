@@ -29,6 +29,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Serve PWA assets with correct MIME types (before Vite's catch-all middleware)
+  app.get('/sw.js', (req, res) => {
+    try {
+      const swPath = path.resolve(import.meta.dirname, '../public/sw.js');
+      res.setHeader('Content-Type', 'application/javascript');
+      res.sendFile(swPath);
+    } catch (error) {
+      res.status(500).json({ error: 'Could not load service worker' });
+    }
+  });
+
+  app.get('/manifest.webmanifest', (req, res) => {
+    try {
+      const manifestPath = path.resolve(import.meta.dirname, '../public/manifest.webmanifest');
+      res.setHeader('Content-Type', 'application/manifest+json');
+      res.sendFile(manifestPath);
+    } catch (error) {
+      res.status(500).json({ error: 'Could not load manifest' });
+    }
+  });
+
   // List all available card files in object storage
   app.get('/api/cards/list', async (req, res) => {
     try {

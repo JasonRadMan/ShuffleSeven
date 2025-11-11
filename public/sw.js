@@ -1,13 +1,12 @@
-const CACHE_NAME = 'shuffle7-v1';
+const CACHE_NAME = 'shuffle7-v2';
 const urlsToCache = [
   '/',
-  '/src/main.tsx',
-  '/src/index.css',
   '/cards.json',
   '/assets/icon-192.png',
   '/assets/icon-512.png',
   '/assets/shuffle7-card-back.svg',
-  '/manifest.webmanifest'
+  '/manifest.webmanifest',
+  '/sw.js'
 ];
 
 // Install event
