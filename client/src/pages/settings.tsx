@@ -101,6 +101,11 @@ export default function Settings() {
           </button>
           <h2 className="font-serif text-3xl font-bold text-primary">SETTINGS</h2>
         </div>
+
+        {/* Ad Placement 1: Card Ad at top of settings */}
+        <div className="mb-8">
+          <CardAd />
+        </div>
         
         <div className="space-y-6">
           <div className="flex items-center justify-between py-4 border-b border-border">
@@ -238,11 +243,6 @@ export default function Settings() {
             <LogOut className="w-4 h-4" />
             {logoutMutation.isPending ? 'Logging out...' : 'Log Out'}
           </button>
-        </div>
-
-        {/* Ad Placement 1: Card Ad at bottom of settings */}
-        <div className="mt-8">
-          <CardAd />
         </div>
 
         <div className="mt-8 text-center">
