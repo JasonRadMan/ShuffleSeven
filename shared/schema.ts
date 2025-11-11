@@ -89,6 +89,7 @@ export const signupSchema = z.object({
 export const loginSchema = z.object({
   email: z.string().email().transform(v => v.toLowerCase()),
   password: z.string().min(1),
+  rememberMe: z.boolean().optional().default(false),
 });
 
 export const notificationSubscriptionSchema = z.object({

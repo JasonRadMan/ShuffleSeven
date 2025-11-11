@@ -154,6 +154,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(400).json({ message: "Invalid input", errors: result.error.issues });
     }
 
+    const { rememberMe } = result.data;
+
     passport.authenticate('local', (err: any, user: any, info: any) => {
       if (err) {
         console.error("Login error:", err);
@@ -168,6 +170,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error("Session error:", err);
           return res.status(500).json({ message: "Login failed" });
         }
+
+        // Set session cookie maxAge based on Remember Me
+        if (rememberMe && req.session.cookie) {
+          // 30 days if remember me is checked
+          req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+        } else if (req.session.cookie) {
+          // 7 days if not checked (default)
+          req.session.cookie.maxAge = 7 * 24 * 60 * 60 * 1000;
+        }
+
         res.json(user);
       });
     })(req, res, next);

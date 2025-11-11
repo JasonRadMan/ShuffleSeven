@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(1, 'Password is required'),
+  rememberMe: z.boolean().optional().default(false),
 });
 
 const signupSchema = z.object({
@@ -37,7 +38,7 @@ export default function Landing() {
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: '', password: '', rememberMe: false },
   });
 
   const signupForm = useForm<SignupData>({
@@ -197,6 +198,18 @@ export default function Landing() {
                       {loginForm.formState.errors.password && (
                         <p className="text-xs text-destructive mt-1">{loginForm.formState.errors.password.message}</p>
                       )}
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        id="remember-me"
+                        type="checkbox"
+                        className="w-4 h-4 rounded border-border bg-background text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+                        data-testid="checkbox-remember-me"
+                        {...loginForm.register('rememberMe')}
+                      />
+                      <Label htmlFor="remember-me" className="text-sm font-normal cursor-pointer">
+                        Remember me for 30 days
+                      </Label>
                     </div>
                     <Button
                       type="submit"
