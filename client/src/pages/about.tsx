@@ -1,5 +1,6 @@
 import { useLocation } from 'wouter';
 import { ArrowLeft } from 'lucide-react';
+import { InlineAd } from '@/components/AdBox';
 
 interface CategoryButtonProps {
   icon: string;
@@ -124,6 +125,11 @@ export default function About() {
         >
           Save My Profile
         </button>
+
+        {/* Ad Placement 3: Inline Ad at bottom of About page */}
+        <div className="mb-6">
+          <InlineAd />
+        </div>
 
         <div className="flex justify-between">
           <button 

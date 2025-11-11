@@ -3,6 +3,7 @@ import { useShuffleState } from '@/hooks/use-shuffle-state';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { CardAd } from '@/components/AdBox';
 
 interface ToggleSwitchProps {
   checked: boolean;
@@ -194,6 +195,11 @@ export default function Settings() {
           >
             Set Shuffle 7 as Sleep Screen
           </button>
+        </div>
+
+        {/* Ad Placement 1: Card Ad at bottom of settings */}
+        <div className="mt-8">
+          <CardAd />
         </div>
 
         <div className="mt-8 text-center">

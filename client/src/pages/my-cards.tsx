@@ -16,6 +16,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import JournalModal from '@/components/JournalModal';
+import { BannerAd } from '@/components/AdBox';
 import type { DrawnCard } from '@shared/schema';
 import type { Card } from '@/lib/cards';
 
@@ -318,6 +319,11 @@ export default function MyCards() {
                       onJournalClick={handleJournalClick}
                     />
                   ))}
+                  
+                  {/* Ad Placement 2: Banner Ad between card groups */}
+                  <div className="my-8">
+                    <BannerAd />
+                  </div>
                   
                   {hasNextPage && (
                     <div className="text-center mt-8">
