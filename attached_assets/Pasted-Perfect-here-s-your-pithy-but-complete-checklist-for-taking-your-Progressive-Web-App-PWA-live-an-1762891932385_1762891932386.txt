@@ -1,0 +1,81 @@
+Perfect — here’s your pithy but complete checklist for taking your Progressive Web App (PWA) live and installable on mobile:
+
+✅ CORE FILES & STRUCTURE
+
+index.html – clean root file with correct <meta> tags & viewport.
+
+manifest.json – app name, short name, icons (192×192 & 512×512), start URL, display mode (standalone), theme & background colors.
+
+service-worker.js – handles caching, offline support, updates.
+
+HTTPS – site must be served securely (mandatory for install prompts).
+
+📱 INSTALLABILITY REQUIREMENTS
+
+Valid Web App Manifest linked via <link rel="manifest" href="/manifest.json">.
+
+Correct icon sizes & MIME types for Android/iOS.
+
+start_url points to your landing screen (e.g. /index.html).
+
+Service Worker registered in JS (navigator.serviceWorker.register('/service-worker.js')).
+
+No console errors (manifest or service worker errors block install prompt).
+
+🧭 MOBILE META TAGS
+
+<meta name="theme-color" content="#000000">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<link rel="apple-touch-icon" href="/icons/icon-512x512.png">
+
+(Optional) <meta name="apple-mobile-web-app-title" content="YourAppName">
+
+🚀 DEPLOYMENT PREP
+
+Build output (e.g. /dist) generated via Vite or React build.
+
+Set correct paths for manifest, service worker, and assets.
+
+Enable gzip/Brotli compression on server.
+
+Redirect all routes → index.html (important for SPAs).
+
+Check Lighthouse PWA score (should hit all green checks).
+
+🌍 HOSTING & DOMAINS
+
+Custom domain with SSL certificate (Let’s Encrypt / Cloudflare / Vercel / Netlify).
+
+/robots.txt and /favicon.ico included.
+
+Canonical link tag for SEO: <link rel="canonical" href="https://yourdomain.com/">
+
+📲 TESTING
+
+Test install prompt on:
+
+Chrome (Android)
+
+Safari (iOS – “Add to Home Screen”)
+
+Edge / Firefox optional
+
+Offline test: disconnect Wi-Fi → app should still load cached shell.
+
+Version update test: confirm service worker updates properly.
+
+🧩 OPTIONAL BUT RECOMMENDED
+
+Push notifications (requires user opt-in + Firebase or custom setup).
+
+Analytics (Google Analytics 4 or Plausible).
+
+App splash screen configuration in manifest.
+
+Apple touch startup images for older iOS devices (optional polish).
+
+Open Graph / Twitter card meta tags for sharing.
