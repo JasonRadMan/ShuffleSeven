@@ -206,11 +206,18 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-0 bg-transparent border-none shadow-none">
+      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
-        <div className="relative w-full h-full flex flex-col">
+        {/* Simple Instructions - Always Visible */}
+        <div className="text-center mb-3 pb-3 border-b border-primary/20">
+          <p className="text-sm text-muted-foreground">
+            💾 <strong>To save as wallpaper:</strong> Right-click image → Save → Set as background in your device settings
+          </p>
+        </div>
+
+        <div className="relative w-full flex-1 flex flex-col">
           {/* Card container with perspective */}
           <div className="relative flex-1" style={{ perspective: "2000px" }}>
             {/* Single rotating card wrapper */}
@@ -278,35 +285,6 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             </div>
             </motion.div>
           </div>
-
-          {/* Action Buttons - Appear after animation completes */}
-          {animationStage >= 2 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
-              className="flex justify-center gap-3 py-4 bg-background/80 rounded-lg"
-            >
-              <Button
-                onClick={handleShare}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
-                data-testid="button-share-card"
-              >
-                <Share2 className="w-4 h-4 mr-2" />
-                Share
-              </Button>
-              {!imageError && (
-                <Button
-                  onClick={handleDownload}
-                  className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg"
-                  data-testid="button-download-card"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Save Image
-                </Button>
-              )}
-            </motion.div>
-          )}
         </div>
       </DialogContent>
     </Dialog>
