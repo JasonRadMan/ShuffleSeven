@@ -1,0 +1,131 @@
+[Coframe] Replit Enterprise watcher loaded
+15The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.Understand this error
+15The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?Understand this error
+15The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.Understand this error
+ShuffleSeven:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.Understand this error
+ShuffleSeven:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?Understand this error
+ShuffleSeven:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.Understand this error
+1a68345da7069210.js:2 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+1a68345da7069210.js:2 Download the Apollo DevTools for a better development experience: https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+1a68345da7069210.js:2 [LaunchDarkly] LaunchDarkly client initialized
+1a68345da7069210.js:2 Adding extension: GPT-Replit - ChatGPT in your Repl. Object
+6Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+ed1e693c96a75807.js:2 Unrecognized feature: 'ambient-light-sensor'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'battery'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'layout-animations'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'legacy-image-formats'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'navigation-override'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'oversized-images'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'publickey-credentials'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'speaker-selection'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'unoptimized-images'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'unsized-media'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+z @ ed1e693c96a75807.js:2Understand this warning
+attached_assets/card%20back_1762893238901.png:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+ShuffleSeven:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+main.tsx:8 ServiceWorker registration successful with scope:  https://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/
+client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=ShWe1YIf1ypO' failed: 
+setupWebSocket @ client:536Understand this error
+d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/@vite/client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=ShWe1YIf1ypO' is invalid.Understand this error
+d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/src/pages/home.tsx:294 Audio loaded successfully
+main.tsx:8 ServiceWorker registration successful with scope:  https://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/
+client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=ShWe1YIf1ypO' failed: 
+setupWebSocket @ client:536Understand this error
+d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/@vite/client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=ShWe1YIf1ypO' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)Understand this error
+d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/src/pages/home.tsx:294 Audio loaded successfully
+d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/src/pages/home.tsx:45 🖼️ Preloading card image: /public-objects/knowledge/K0012.png
+d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/src/pages/home.tsx:48 ✅ Card image preloaded successfully
+d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/src/pages/home.tsx:61 Audio playing successfully
+d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/src/components/CardRevealModal.tsx:70 🎬 Image preloaded, starting flip animation
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar179%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+VM459 main.tsx:8 ServiceWorker registration successful with scope:  https://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/
+VM458 client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=ShWe1YIf1ypO' failed: 
+setupWebSocket @ VM458 client:536
+(anonymous) @ VM458 client:531Understand this error
+VM458 client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=ShWe1YIf1ypO' is invalid.
+    at setupWebSocket (VM458 client:536:19)
+    at fallback (VM458 client:509:16)
+    at WebSocket.<anonymous> (VM458 client:555:7)
+setupWebSocket @ VM458 client:536
+fallback @ VM458 client:509
+(anonymous) @ VM458 client:555Understand this error
+VM477 home.tsx:294 Audio loaded successfully
+main.tsx:10 ServiceWorker registration successful with scope:  https://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/
+client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=ShWe1YIf1ypO' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531Understand this error
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=ShWe1YIf1ypO' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555Understand this error
+home.tsx:202 Audio loaded successfully
+home.tsx:31 🖼️ Preloading card image: /public-objects/possibilities/P0008.png
+home.tsx:53 Audio playing successfully
+home.tsx:35 ✅ Card image preloaded successfully
+CardRevealModal.tsx:78 🎬 Image preloaded, starting flip animation
