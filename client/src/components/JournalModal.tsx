@@ -92,20 +92,30 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
 
   // Initialize content when existing entry is loaded or modal opens
   useEffect(() => {
+    console.log('Modal state changed:', { open, existingEntry: !!existingEntry });
     if (open) {
       if (existingEntry?.content) {
+        console.log('Existing entry found, showing journal side');
         setContent(existingEntry.content);
         setShowJournalSide(true); // Show journal side if entry exists
       } else {
+        console.log('No existing entry, showing card side first');
         setContent('');
         setShowJournalSide(false); // Show card side first if no entry
       }
     }
   }, [open, existingEntry]);
 
+  // Debug showJournalSide changes
+  useEffect(() => {
+    console.log('showJournalSide changed to:', showJournalSide);
+  }, [showJournalSide]);
+
   // Handle journal button click (flip to journal side)
   const handleJournalClick = () => {
+    console.log('Journal button clicked! Flipping to journal side...');
     setShowJournalSide(true);
+    console.log('showJournalSide set to true');
     
     // Play celebratory sound effect
     try {
