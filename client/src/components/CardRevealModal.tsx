@@ -131,12 +131,15 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
   // Coordinate the three-stage animation - now waits for image preload
   useEffect(() => {
+    console.log('Modal open state:', open);
     if (open) {
+      console.log('Setting animation stage to 0');
       setAnimationStage(0);
       setImageError(false); // Reset image error state when modal opens
       
       // Stage 1: Fade in card back (after 50ms)
       const fadeInTimer = setTimeout(() => {
+        console.log('Setting animation stage to 1');
         setAnimationStage(1);
       }, 50);
       
@@ -166,11 +169,13 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
   // Wait for image to preload before flipping to front
   useEffect(() => {
+    console.log('Flip check:', { open, animationStage, isImagePreloaded });
     if (open && animationStage === 1 && isImagePreloaded) {
       console.log('🎬 Image preloaded, starting flip animation');
       
       // Stage 2: Flip to front (after image is preloaded + small delay)
       const flipTimer = setTimeout(() => {
+        console.log('Setting animation stage to 2');
         setAnimationStage(2);
         
         // Play treasure found sound effect when card flips
