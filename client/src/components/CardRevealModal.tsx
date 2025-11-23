@@ -5,12 +5,14 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { X, ImageOff } from 'lucide-react';
+import { X, ImageOff, Share2, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import type { Card } from '@/lib/cards';
 import cardBackImage from '@assets/card back_1757444079274.png';
 import treasureFoundSfx from '@assets/Treasure_Found_SFX_2025-10-18T171602_1760808858694.mp3';
+import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 
 interface CardRevealModalProps {
   open: boolean;
@@ -24,6 +26,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
   const [animationStage, setAnimationStage] = useState(0); // 0: hidden, 1: fade in, 2: flip, 3: enlarge
   const [imageError, setImageError] = useState(false);
   const flipAudioRef = useRef<HTMLAudioElement | null>(null);
+  const { toast } = useToast();
 
   const handleClose = () => {
     onClose();
@@ -35,6 +38,84 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
   const handleImageError = () => {
     setImageError(true);
+  };
+
+  const handleShare = async () => {
+    if (!card) return;
+
+    const shareData = {
+      title: `Shuffle 7 - ${card.category}`,
+      text: `${card.title}\n\n${card.message}`,
+      url: window.location.href
+    };
+
+    // Check if Web Share API is supported
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        toast({
+          title: "Shared successfully",
+          description: "Your card has been shared!",
+        });
+      } catch (err) {
+        // User cancelled share, or share failed
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Share failed:', err);
+          handleFallbackShare(shareData);
+        }
+      }
+    } else {
+      handleFallbackShare(shareData);
+    }
+  };
+
+  const handleFallbackShare = (shareData: { title: string; text: string; url: string }) => {
+    // Fallback: Copy to clipboard
+    const textToCopy = `${shareData.title}\n\n${shareData.text}\n\n${shareData.url}`;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      toast({
+        title: "Copied to clipboard",
+        description: "Card content copied! You can now share it with your contacts.",
+      });
+    }).catch(() => {
+      toast({
+        title: "Share not available",
+        description: "Sharing is not supported on this device.",
+        variant: "destructive",
+      });
+    });
+  };
+
+  const handleDownload = async () => {
+    if (!card) return;
+
+    try {
+      // Fetch the image as a blob
+      const response = await fetch(card.image);
+      const blob = await response.blob();
+      
+      // Create a download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `shuffle7-${card.category.toLowerCase().replace(/\s+/g, '-')}-card.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      toast({
+        title: "Card saved",
+        description: "You can now set this image as your wallpaper or screensaver!",
+      });
+    } catch (err) {
+      console.error('Download failed:', err);
+      toast({
+        title: "Download failed",
+        description: "Unable to download the card image.",
+        variant: "destructive",
+      });
+    }
   };
 
   // Reset image error when card changes
@@ -108,11 +189,11 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-0 bg-transparent border-none shadow-none">
+      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-0 bg-transparent border-none shadow-none overflow-visible">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
-        <div className="relative w-full h-full" style={{ perspective: "2000px" }}>
+        <div className="relative w-full h-full flex flex-col" style={{ perspective: "2000px" }}>
           {/* Single rotating card wrapper */}
           <motion.div 
             className="relative w-full h-full"
@@ -177,6 +258,33 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               )}
             </div>
           </motion.div>
+
+          {/* Action Buttons - Appear after animation completes */}
+          {animationStage >= 3 && !imageError && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3 z-50"
+            >
+              <Button
+                onClick={handleShare}
+                className="bg-primary/90 hover:bg-primary text-primary-foreground shadow-lg backdrop-blur-sm"
+                data-testid="button-share-card"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Share
+              </Button>
+              <Button
+                onClick={handleDownload}
+                className="bg-secondary/90 hover:bg-secondary text-secondary-foreground shadow-lg backdrop-blur-sm"
+                data-testid="button-download-card"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Save Image
+              </Button>
+            </motion.div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
