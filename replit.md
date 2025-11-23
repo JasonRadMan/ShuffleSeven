@@ -4,6 +4,14 @@
 
 Shuffle 7 is a Progressive Web Application (PWA) designed as a mindset support tool that provides daily inspirational card draws and monthly lifelines. The application features a visually striking 3D CSS carousel interface where users can draw cards from seven different categories: Wisdom, Health, Challenge, Leadership, Tongue N Cheek, Possibilities, and Knowledge. Built as a full-stack application with React frontend and Express backend, it emphasizes offline functionality and user engagement through carefully managed drawing mechanics.
 
+**Key Features:**
+- Daily card draws with 3D flip animation and sound effects
+- Share functionality using Web Share API with clipboard fallback
+- Image download capability for wallpaper/screensaver use with device-specific instructions
+- User authentication with session management
+- Comprehensive journal system with database persistence
+- Password visibility toggles on all authentication forms
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

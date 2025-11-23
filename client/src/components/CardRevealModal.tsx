@@ -108,10 +108,10 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
       toast({
-        title: "Card saved to your device! 📥",
+        title: "Card saved! 📥",
         description: isMobile 
           ? "Go to Photos/Gallery → Select the image → Set as wallpaper or lock screen"
-          : "Right-click the downloaded image → Set as desktop background (or set in Display Settings)",
+          : "Check Downloads folder → Right-click image → Set as desktop background",
         duration: 8000,
       });
     } catch (err) {
@@ -131,15 +131,12 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
   // Coordinate the three-stage animation - now waits for image preload
   useEffect(() => {
-    console.log('Modal open state:', open);
     if (open) {
-      console.log('Setting animation stage to 0');
       setAnimationStage(0);
       setImageError(false); // Reset image error state when modal opens
       
       // Stage 1: Fade in card back (after 50ms)
       const fadeInTimer = setTimeout(() => {
-        console.log('Setting animation stage to 1');
         setAnimationStage(1);
       }, 50);
       
@@ -162,20 +159,11 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
     };
   }, []);
 
-  // Debug animation stage
-  useEffect(() => {
-    console.log('Animation stage:', animationStage, 'Image error:', imageError);
-  }, [animationStage, imageError]);
-
   // Wait for image to preload before flipping to front
   useEffect(() => {
-    console.log('Flip check:', { open, animationStage, isImagePreloaded });
     if (open && animationStage === 1 && isImagePreloaded) {
-      console.log('🎬 Image preloaded, starting flip animation');
-      
       // Stage 2: Flip to front (after image is preloaded + small delay)
       const flipTimer = setTimeout(() => {
-        console.log('Setting animation stage to 2');
         setAnimationStage(2);
         
         // Play treasure found sound effect when card flips
@@ -189,7 +177,6 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
       
       // Stage 3: Enlarge (600ms after flip)
       const enlargeTimer = setTimeout(() => {
-        console.log('🎬 Animation complete - stage 3 reached');
         setAnimationStage(3);
       }, 900);
       
