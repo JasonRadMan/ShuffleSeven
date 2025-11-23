@@ -104,9 +104,15 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
       
+      // Determine device type for instructions
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
       toast({
-        title: "Card saved",
-        description: "You can now set this image as your wallpaper or screensaver!",
+        title: "Card saved to your device! 📥",
+        description: isMobile 
+          ? "Go to Photos/Gallery → Select the image → Set as wallpaper or lock screen"
+          : "Right-click the downloaded image → Set as desktop background (or set in Display Settings)",
+        duration: 8000,
       });
     } catch (err) {
       console.error('Download failed:', err);
