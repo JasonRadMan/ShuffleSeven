@@ -153,6 +153,11 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
     };
   }, []);
 
+  // Debug animation stage
+  useEffect(() => {
+    console.log('Animation stage:', animationStage, 'Image error:', imageError);
+  }, [animationStage, imageError]);
+
   // Wait for image to preload before flipping to front
   useEffect(() => {
     if (open && animationStage === 1 && isImagePreloaded) {
@@ -264,16 +269,16 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
           </div>
 
           {/* Action Buttons - Appear after animation completes */}
-          {animationStage >= 3 && !imageError && (
+          {animationStage >= 2 && !imageError && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="flex justify-center gap-3 py-4 bg-background/50"
+              transition={{ duration: 0.4, delay: 0.5 }}
+              className="flex justify-center gap-3 py-4 bg-background/80 rounded-lg"
             >
               <Button
                 onClick={handleShare}
-                className="bg-primary/90 hover:bg-primary text-primary-foreground shadow-lg backdrop-blur-sm"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
                 data-testid="button-share-card"
               >
                 <Share2 className="w-4 h-4 mr-2" />
@@ -281,7 +286,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               </Button>
               <Button
                 onClick={handleDownload}
-                className="bg-secondary/90 hover:bg-secondary text-secondary-foreground shadow-lg backdrop-blur-sm"
+                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg"
                 data-testid="button-download-card"
               >
                 <Download className="w-4 h-4 mr-2" />
