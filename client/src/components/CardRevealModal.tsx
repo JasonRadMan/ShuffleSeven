@@ -189,27 +189,29 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-0 bg-transparent border-none shadow-none overflow-visible">
+      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-0 bg-transparent border-none shadow-none">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
-        <div className="relative w-full h-full flex flex-col" style={{ perspective: "2000px" }}>
-          {/* Single rotating card wrapper */}
-          <motion.div 
-            className="relative w-full h-full"
-            initial={{ opacity: 0, rotateY: 0 }}
-            animate={{ 
-              opacity: animationStage >= 1 ? 1 : 0,
-              rotateY: animationStage >= 2 ? 180 : 0,
-              scale: animationStage >= 3 ? 1.02 : 1
-            }}
-            transition={{ 
-              opacity: { duration: 0.3, ease: "easeOut" },
-              rotateY: { duration: 1.2, ease: "easeInOut" },
-              scale: { duration: 0.4, ease: "easeOut" }
-            }}
-            style={{ transformStyle: "preserve-3d" }}
-          >
+        <div className="relative w-full h-full flex flex-col">
+          {/* Card container with perspective */}
+          <div className="relative flex-1" style={{ perspective: "2000px" }}>
+            {/* Single rotating card wrapper */}
+            <motion.div 
+              className="relative w-full h-full"
+              initial={{ opacity: 0, rotateY: 0 }}
+              animate={{ 
+                opacity: animationStage >= 1 ? 1 : 0,
+                rotateY: animationStage >= 2 ? 180 : 0,
+                scale: animationStage >= 3 ? 1.02 : 1
+              }}
+              transition={{ 
+                opacity: { duration: 0.3, ease: "easeOut" },
+                rotateY: { duration: 1.2, ease: "easeInOut" },
+                scale: { duration: 0.4, ease: "easeOut" }
+              }}
+              style={{ transformStyle: "preserve-3d" }}
+            >
             {/* Card Back - facing forward initially */}
             <div 
               className="absolute inset-0 flex items-center justify-center"
@@ -257,7 +259,8 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 </div>
               )}
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
           {/* Action Buttons - Appear after animation completes */}
           {animationStage >= 3 && !imageError && (
@@ -265,7 +268,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3 z-50"
+              className="flex justify-center gap-3 py-4"
             >
               <Button
                 onClick={handleShare}
