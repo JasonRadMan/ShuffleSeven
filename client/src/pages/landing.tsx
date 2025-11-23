@@ -1,4 +1,4 @@
-import { Star, Sparkles, Users, Calendar, Heart, Zap, Mail, Lock, User } from 'lucide-react';
+import { Star, Sparkles, Users, Calendar, Heart, Zap, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -34,6 +34,9 @@ type SignupData = z.infer<typeof signupSchema>;
 export default function Landing() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
 
   const loginForm = useForm<LoginData>({
@@ -188,12 +191,20 @@ export default function Landing() {
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="login-password"
-                          type="password"
+                          type={showLoginPassword ? "text" : "password"}
                           placeholder="Enter your password"
-                          className="pl-10"
+                          className="pl-10 pr-10"
                           data-testid="input-login-password"
                           {...loginForm.register('password')}
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowLoginPassword(!showLoginPassword)}
+                          className="absolute right-3 top-3 text-muted-foreground hover:text-foreground transition-colors"
+                          data-testid="button-toggle-login-password"
+                        >
+                          {showLoginPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
                       </div>
                       {loginForm.formState.errors.password && (
                         <p className="text-xs text-destructive mt-1">{loginForm.formState.errors.password.message}</p>
@@ -282,12 +293,20 @@ export default function Landing() {
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="signup-password"
-                          type="password"
+                          type={showSignupPassword ? "text" : "password"}
                           placeholder="At least 8 characters"
-                          className="pl-10"
+                          className="pl-10 pr-10"
                           data-testid="input-signup-password"
                           {...signupForm.register('password')}
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowSignupPassword(!showSignupPassword)}
+                          className="absolute right-3 top-3 text-muted-foreground hover:text-foreground transition-colors"
+                          data-testid="button-toggle-signup-password"
+                        >
+                          {showSignupPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
                       </div>
                       {signupForm.formState.errors.password && (
                         <p className="text-xs text-destructive mt-1">{signupForm.formState.errors.password.message}</p>
@@ -299,12 +318,20 @@ export default function Landing() {
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="signup-confirmPassword"
-                          type="password"
+                          type={showConfirmPassword ? "text" : "password"}
                           placeholder="Confirm your password"
-                          className="pl-10"
+                          className="pl-10 pr-10"
                           data-testid="input-signup-confirmPassword"
                           {...signupForm.register('confirmPassword')}
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-3 text-muted-foreground hover:text-foreground transition-colors"
+                          data-testid="button-toggle-confirm-password"
+                        >
+                          {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
                       </div>
                       {signupForm.formState.errors.confirmPassword && (
                         <p className="text-xs text-destructive mt-1">{signupForm.formState.errors.confirmPassword.message}</p>
