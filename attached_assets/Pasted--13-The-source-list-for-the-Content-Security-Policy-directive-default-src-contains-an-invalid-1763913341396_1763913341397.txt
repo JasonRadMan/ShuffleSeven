@@ -1,0 +1,118 @@
+
+﻿
+13
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+13
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+13
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+ShuffleSeven:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+ShuffleSeven:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+ShuffleSeven:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+1a68345da7069210.js:2 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+1a68345da7069210.js:2 Download the Apollo DevTools for a better development experience: https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+1a68345da7069210.js:2 [LaunchDarkly] LaunchDarkly client initialized
+1a68345da7069210.js:2 [Coframe] Replit Enterprise watcher loaded
+1a68345da7069210.js:2 Adding extension: GPT-Replit - ChatGPT in your Repl. 
+{extensionArgs: {…}, local: false, logLevel: 'info'}
+ShuffleSeven:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ed1e693c96a75807.js:2 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ed1e693c96a75807.js:2 Unrecognized feature: 'ambient-light-sensor'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'battery'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'layout-animations'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'legacy-image-formats'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'navigation-override'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'oversized-images'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'publickey-credentials'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'speaker-selection'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'unoptimized-images'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'unsized-media'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.htm…%2F&id=%3Ar30%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+main.tsx?v=O0tMWymi13rdqfnDQidmm:8 ServiceWorker registration successful with scope:  https://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/
+CardRevealModal.tsx:143 Animation stage: 0 Image error: false
+client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=LZf7TP19BQtK' failed: 
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=LZf7TP19BQtK' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+home.tsx:294 Audio loaded successfully
+home.tsx:45 🖼️ Preloading card image: /public-objects/wisdom/W0001.png
+home.tsx:61 Audio playing successfully
+home.tsx:48 ✅ Card image preloaded successfully
+CardRevealModal.tsx:143 Animation stage: 1 Image error: false
+CardRevealModal.tsx:147 🎬 Image preloaded, starting flip animation
+CardRevealModal.tsx:143 Animation stage: 2 Image error: false
+ed1e693c96a75807.js:2 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.htm…%2F&id=%3Arim%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+VM9 main.tsx:8 ServiceWorker registration successful with scope:  https://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/
+VM44 CardRevealModal.tsx:143 Animation stage: 0 Image error: false
+VM10 client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=LZf7TP19BQtK' failed: 
+VM10 client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=LZf7TP19BQtK' is invalid.
+    at setupWebSocket (VM10 client:536:19)
+    at fallback (VM10 client:509:16)
+    at WebSocket.<anonymous> (VM10 client:555:7)
+VM27 home.tsx:294 Audio loaded successfully
+main.tsx:10 ServiceWorker registration successful with scope:  https://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/
+CardRevealModal.tsx:158 Animation stage: 0 Image error: false
+client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=LZf7TP19BQtK' failed: 
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=LZf7TP19BQtK' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+home.tsx:202 Audio loaded successfully
+home.tsx:31 🖼️ Preloading card image: /public-objects/healing/H0005.png
+home.tsx:53 Audio playing successfully
+home.tsx:35 ✅ Card image preloaded successfully
+CardRevealModal.tsx:158 Animation stage: 1 Image error: false
+CardRevealModal.tsx:164 🎬 Image preloaded, starting flip animation
+CardRevealModal.tsx:158 Animation stage: 2 Image error: false

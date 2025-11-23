@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shuffle7-v3';
+const CACHE_NAME = 'shuffle7-v4-buttons';
 const urlsToCache = [
   '/',
   '/cards.json',
