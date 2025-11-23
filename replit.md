@@ -11,6 +11,14 @@ Shuffle 7 is a Progressive Web Application (PWA) designed as a mindset support t
 - User authentication with session management
 - Comprehensive journal system with database persistence
 - Password visibility toggles on all authentication forms
+- Journal button in card reveal modal (appears after card flip for authenticated users)
+
+**Recent Changes (November 23, 2025):**
+- Added Journal button to CardRevealModal alongside Share and Save Image buttons
+- Journal button only appears for authenticated users who have drawn cards saved to database
+- Updated useShuffleState hook to track currentDrawnCardId from database
+- Journal modal opens directly from card reveal for immediate journaling
+- Fixed button visibility issues by adjusting z-index and positioning
 
 ## User Preferences
 
