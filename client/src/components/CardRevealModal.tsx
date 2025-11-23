@@ -269,7 +269,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
           </div>
 
           {/* Action Buttons - Appear after animation completes */}
-          {animationStage >= 2 && !imageError && (
+          {animationStage >= 2 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -284,14 +284,16 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <Share2 className="w-4 h-4 mr-2" />
                 Share
               </Button>
-              <Button
-                onClick={handleDownload}
-                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg"
-                data-testid="button-download-card"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Save Image
-              </Button>
+              {!imageError && (
+                <Button
+                  onClick={handleDownload}
+                  className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg"
+                  data-testid="button-download-card"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Save Image
+                </Button>
+              )}
             </motion.div>
           )}
         </div>
