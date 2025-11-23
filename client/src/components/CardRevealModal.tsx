@@ -173,6 +173,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
       
       // Stage 3: Enlarge (600ms after flip)
       const enlargeTimer = setTimeout(() => {
+        console.log('🎬 Animation complete - stage 3 reached');
         setAnimationStage(3);
       }, 900);
       
@@ -268,7 +269,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="flex justify-center gap-3 py-4"
+              className="flex justify-center gap-3 py-4 bg-background/50"
             >
               <Button
                 onClick={handleShare}
