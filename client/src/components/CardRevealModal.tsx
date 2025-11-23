@@ -217,9 +217,8 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
           </p>
         </div>
 
-        <div className="relative w-full flex-1 flex flex-col">
-          {/* Card container with perspective */}
-          <div className="relative flex-1" style={{ perspective: "2000px" }}>
+        {/* Card container with perspective - height limited to leave room for buttons */}
+        <div className="relative flex-1 overflow-hidden" style={{ perspective: "2000px" }}>
             {/* Single rotating card wrapper */}
             <motion.div 
               className="relative w-full h-full"
@@ -284,8 +283,36 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               )}
             </div>
             </motion.div>
-          </div>
         </div>
+
+        {/* Action Buttons - Fixed at bottom with high z-index */}
+        {animationStage >= 2 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+            className="relative z-50 flex justify-center gap-3 pt-4 mt-4 border-t border-primary/20"
+          >
+            <Button
+              onClick={handleShare}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+              data-testid="button-share-card"
+            >
+              <Share2 className="w-4 h-4 mr-2" />
+              Share
+            </Button>
+            {!imageError && (
+              <Button
+                onClick={handleDownload}
+                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg"
+                data-testid="button-download-card"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Save Image
+              </Button>
+            )}
+          </motion.div>
+        )}
       </DialogContent>
     </Dialog>
   );
