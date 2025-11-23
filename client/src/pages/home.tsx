@@ -20,7 +20,7 @@ export default function Home() {
   const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
   const [isImagePreloaded, setIsImagePreloaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { drawDailyCard, useLifelineCard, lifelinesRemaining, lifelineUniqueRemaining, hasDrawnToday, currentCard, clearCurrentCard, cardsLoading } = useShuffleState();
+  const { drawDailyCard, useLifelineCard, lifelinesRemaining, lifelineUniqueRemaining, hasDrawnToday, currentCard, currentDrawnCardId, clearCurrentCard, cardsLoading } = useShuffleState();
 
   const handleDailyDraw = () => {
     const card = drawDailyCard();
@@ -217,6 +217,7 @@ export default function Home() {
         card={currentCard}
         onClose={handleCloseCardModal}
         isImagePreloaded={isImagePreloaded}
+        drawnCardId={currentDrawnCardId}
       />
 
       <InfoModal

@@ -5,14 +5,16 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { X, ImageOff, Share2, Download } from 'lucide-react';
+import { X, ImageOff, Share2, Download, Book } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import type { Card } from '@/lib/cards';
+import type { DrawnCard } from '@shared/schema';
 import cardBackImage from '@assets/card back_1757444079274.png';
 import treasureFoundSfx from '@assets/Treasure_Found_SFX_2025-10-18T171602_1760808858694.mp3';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+import JournalModal from '@/components/JournalModal';
 
 interface CardRevealModalProps {
   open: boolean;
@@ -20,11 +22,13 @@ interface CardRevealModalProps {
   card: Card | null;
   onClose: () => void;
   isImagePreloaded: boolean;
+  drawnCardId?: string | null;
 }
 
-export default function CardRevealModal({ open, onOpenChange, card, onClose, isImagePreloaded }: CardRevealModalProps) {
+export default function CardRevealModal({ open, onOpenChange, card, onClose, isImagePreloaded, drawnCardId }: CardRevealModalProps) {
   const [animationStage, setAnimationStage] = useState(0); // 0: hidden, 1: fade in, 2: flip, 3: enlarge
   const [imageError, setImageError] = useState(false);
+  const [isJournalModalOpen, setIsJournalModalOpen] = useState(false);
   const flipAudioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
 
@@ -192,6 +196,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
   }
 
   return (
+    <>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
@@ -298,9 +303,32 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 Save Image
               </Button>
             )}
+            {drawnCardId && card && (
+              <Button
+                onClick={() => setIsJournalModalOpen(true)}
+                className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg"
+                data-testid="button-journal-card"
+              >
+                <Book className="w-4 h-4 mr-2" />
+                Journal
+              </Button>
+            )}
           </motion.div>
         )}
       </DialogContent>
     </Dialog>
+
+    {/* Journal Modal */}
+    {drawnCardId && card && (
+      <JournalModal
+        open={isJournalModalOpen}
+        onOpenChange={setIsJournalModalOpen}
+        drawnCard={{
+          id: drawnCardId,
+          cardData: card
+        } as DrawnCard}
+      />
+    )}
+  </>
   );
 }

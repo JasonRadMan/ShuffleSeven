@@ -20,6 +20,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 export interface ShuffleState {
   currentCard: Card | null;
+  currentDrawnCardId: string | null;
   lifelinesRemaining: number;
   lifelineUniqueRemaining: number;
   hasDrawnToday: boolean;
@@ -31,6 +32,7 @@ export interface ShuffleState {
 export function useShuffleState() {
   const [state, setState] = useState<ShuffleState>({
     currentCard: null,
+    currentDrawnCardId: null,
     lifelinesRemaining: 5,
     lifelineUniqueRemaining: 0,
     hasDrawnToday: false,
@@ -57,9 +59,17 @@ export function useShuffleState() {
       });
       return await res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       // Invalidate drawn cards cache so My Cards page updates
       queryClient.invalidateQueries({ queryKey: ['api', 'drawn-cards'] });
+      
+      // Store the drawn card ID for journal access
+      if (data?.id) {
+        setState(prev => ({
+          ...prev,
+          currentDrawnCardId: data.id
+        }));
+      }
     },
     onError: (error: Error) => {
       // Log error but don't break user experience - localStorage is the fallback
@@ -86,6 +96,7 @@ export function useShuffleState() {
 
       setState({
         currentCard: todaysDraw,
+        currentDrawnCardId: null,
         lifelinesRemaining: lifelines,
         lifelineUniqueRemaining: lifelineUnique,
         hasDrawnToday: !!todaysDraw,
@@ -186,7 +197,8 @@ export function useShuffleState() {
   const clearCurrentCard = () => {
     setState(prev => ({
       ...prev,
-      currentCard: null
+      currentCard: null,
+      currentDrawnCardId: null
     }));
   };
 
