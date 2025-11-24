@@ -210,10 +210,10 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
         </div>
 
         {/* Card container with perspective - fills remaining space */}
-        <div className="relative flex-1 min-h-0 overflow-hidden" style={{ perspective: "2000px" }}>
-            {/* Single rotating card wrapper */}
+        <div className="relative flex-1 min-h-0 flex items-center justify-center" style={{ perspective: "2000px" }}>
+            {/* Single rotating card wrapper - explicit size for mobile */}
             <motion.div 
-              className="relative w-full h-full"
+              className="relative w-full h-full max-w-md"
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
                 opacity: animationStage >= 1 ? 1 : 0,
@@ -229,7 +229,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             >
             {/* Card Back - facing forward initially */}
             <div 
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0 flex items-center justify-center p-4"
               style={{ 
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden"
@@ -238,14 +238,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
-                className="w-full h-full object-contain"
+                className="max-w-full max-h-full object-contain"
                 data-testid="img-card-back"
               />
             </div>
 
             {/* Card Front - pre-rotated 180 degrees so it faces forward when wrapper rotates 180 */}
             <div 
-              className="absolute inset-0 flex items-center justify-center cursor-pointer"
+              className="absolute inset-0 flex items-center justify-center cursor-pointer p-4"
               style={{ 
                 transform: "rotateY(180deg)",
                 backfaceVisibility: "hidden",
@@ -257,7 +257,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <img 
                   src={card.image} 
                   alt="Card inspiration image" 
-                  className="w-full h-full object-contain"
+                  className="max-w-full max-h-full object-contain"
                   onError={handleImageError}
                   data-testid="img-card-image"
                 />
