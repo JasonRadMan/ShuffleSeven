@@ -238,7 +238,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
-                className="max-w-full max-h-full object-contain"
+                className="w-full h-full object-contain"
                 data-testid="img-card-back"
               />
             </div>
@@ -257,7 +257,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <img 
                   src={card.image} 
                   alt="Card inspiration image" 
-                  className="max-w-full max-h-full object-contain"
+                  className="w-full h-full object-contain"
                   onError={handleImageError}
                   data-testid="img-card-image"
                 />
