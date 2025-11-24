@@ -211,9 +211,9 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
         {/* Card container with perspective */}
         <div className="relative h-full w-full flex items-center justify-center" style={{ perspective: "2000px" }}>
-            {/* Single rotating card wrapper - matches shuffle deck dimensions */}
+            {/* Single rotating card wrapper */}
             <motion.div 
-              className="relative w-full h-[350px] md:h-[450px] max-w-[600px] md:max-w-[700px] mx-auto"
+              className="relative w-full h-full"
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
                 opacity: animationStage >= 1 ? 1 : 0,
