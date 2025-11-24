@@ -202,20 +202,15 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
-        {/* Inner flex wrapper to override grid layout */}
-        <div className="flex h-full flex-col -mt-6">
-        
         {/* Simple Instructions - Always Visible */}
-        <div className="text-center mb-3 pb-3 border-b border-primary/20 flex-shrink-0">
+        <div className="text-center mb-3 pb-3 border-b border-primary/20">
           <p className="text-sm text-muted-foreground">
             💾 <strong>To save as wallpaper:</strong> Right-click image → Save → Set as background in your device settings
           </p>
         </div>
 
-        {/* Card container with perspective - fills remaining space */}
-        <div className="relative flex-1 min-h-0 flex items-center justify-center" style={{ perspective: "2000px" }}>
-            {/* Aspect ratio box for consistent card sizing */}
-            <div className="aspect-[2/3] w-full max-w-sm md:max-w-md lg:max-w-lg">
+        {/* Card container with perspective */}
+        <div className="relative h-full w-full flex items-center justify-center" style={{ perspective: "2000px" }}>
             {/* Single rotating card wrapper */}
             <motion.div 
               className="relative w-full h-full"
@@ -234,7 +229,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             >
             {/* Card Back - facing forward initially */}
             <div 
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0"
               style={{ 
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden"
@@ -243,14 +238,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
-                className="w-full h-full object-contain"
+                className="absolute inset-0 w-full h-full object-cover"
                 data-testid="img-card-back"
               />
             </div>
 
             {/* Card Front - pre-rotated 180 degrees so it faces forward when wrapper rotates 180 */}
             <div 
-              className="absolute inset-0 flex items-center justify-center cursor-pointer"
+              className="absolute inset-0 cursor-pointer"
               style={{ 
                 transform: "rotateY(180deg)",
                 backfaceVisibility: "hidden",
@@ -262,7 +257,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <img 
                   src={card.image} 
                   alt="Card inspiration image" 
-                  className="w-full h-full object-contain"
+                  className="absolute inset-0 w-full h-full object-cover"
                   onError={handleImageError}
                   data-testid="img-card-image"
                 />
@@ -280,7 +275,6 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               )}
             </div>
             </motion.div>
-            </div>
         </div>
 
         {/* Action Buttons - Fixed at bottom with high z-index */}
@@ -289,7 +283,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
-            className="relative z-50 flex justify-center gap-3 pt-4 mt-4 border-t border-primary/20 flex-shrink-0"
+            className="relative z-50 flex justify-center gap-3 pt-4 mt-4 border-t border-primary/20"
           >
             <Button
               onClick={handleShare}
@@ -321,7 +315,6 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             )}
           </motion.div>
         )}
-        </div>
       </DialogContent>
     </Dialog>
 
