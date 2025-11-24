@@ -1,0 +1,138 @@
+10[Intervention] Slow network is detected. See <URL> for more details. Fallback font will be used while loading: <URL>
+12The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.Understand this error
+12The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?Understand this error
+12The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.Understand this error
+/~:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.Understand this error
+/~:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?Understand this error
+/~:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.Understand this error
+1d175b218ac613db.js:2 [Coframe] Replit Enterprise watcher loaded
+1d175b218ac613db.js:2 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+1d175b218ac613db.js:2 Download the Apollo DevTools for a better development experience: https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+207f0174f3482c02.js:2 DD_RUM is already initialized.
+(anonymous) @ 207f0174f3482c02.js:2Understand this error
+1d175b218ac613db.js:2 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+1d175b218ac613db.js:2   WARN  [Statsig] Creating multiple Statsig clients with the same SDK key can lead to unexpected behavior. Multi-instance support requires different SDK keys.
+(anonymous) @ 1d175b218ac613db.js:2Understand this warning
+ed1e693c96a75807.js:2 Uncaught Error: Minified React error #425; visit https://reactjs.org/docs/error-decoder.html?invariant=425 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at rv (ed1e693c96a75807.js:2:44482)
+    at ed1e693c96a75807.js:2:105194
+    at iA (ed1e693c96a75807.js:2:110704)
+    at iV (ed1e693c96a75807.js:2:103652)
+    at iU (ed1e693c96a75807.js:2:103462)
+    at i_ (ed1e693c96a75807.js:2:98511)
+    at C (ed1e693c96a75807.js:2:1564)
+    at MessagePort.M (ed1e693c96a75807.js:2:2094)Understand this error
+10ed1e693c96a75807.js:2 Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at ly (ed1e693c96a75807.js:2:50795)
+    at o (ed1e693c96a75807.js:2:125676)
+    at iV (ed1e693c96a75807.js:2:103592)
+    at iU (ed1e693c96a75807.js:2:103462)
+    at i_ (ed1e693c96a75807.js:2:98511)
+    at C (ed1e693c96a75807.js:2:1564)
+    at MessagePort.M (ed1e693c96a75807.js:2:2094)Understand this error
+ed1e693c96a75807.js:2 Uncaught Error: Minified React error #423; visit https://reactjs.org/docs/error-decoder.html?invariant=423 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at o (ed1e693c96a75807.js:2:125335)
+    at iV (ed1e693c96a75807.js:2:103592)
+    at iU (ed1e693c96a75807.js:2:103462)
+    at iz (ed1e693c96a75807.js:2:100209)
+    at i_ (ed1e693c96a75807.js:2:98764)
+    at C (ed1e693c96a75807.js:2:1564)
+    at MessagePort.M (ed1e693c96a75807.js:2:2094)Understand this error
+1d175b218ac613db.js:2 [LaunchDarkly] LaunchDarkly client initialized
+1d175b218ac613db.js:2 Adding extension: GPT-Replit - ChatGPT in your Repl. Object
+ed1e693c96a75807.js:2 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+z @ ed1e693c96a75807.js:2Understand this error
+ed1e693c96a75807.js:2 Unrecognized feature: 'ambient-light-sensor'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'battery'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'layout-animations'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'legacy-image-formats'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'navigation-override'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'oversized-images'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'publickey-credentials'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'speaker-selection'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'unoptimized-images'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'unsized-media'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+z @ ed1e693c96a75807.js:2Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+attached_assets/Screenshot%202025-11-24%20115615_1764003388540.png:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+attached_assets/Screenshot%202025-11-24%20114721_1764002877746.png:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+attached_assets/Screenshot%202025-11-24%20120525_1764003940958.png:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+ShuffleSeven:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=GyW_ygl1RNo4' failed: 
+setupWebSocket @ client:536Understand this error
+workspace_iframe.html?initialPath=%2F&id=%3Ar4e%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+home.tsx:202 Audio loaded successfully
+client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=GyW_ygl1RNo4' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=GyW_ygl1RNo4' is invalid.Understand this error
+client:536 WebSocket connection to 'wss://d07e2e69-2c2d-4caf-ab4d-d92e8ab63fba-00-2a17lz97w9379.janeway.replit.dev/?token=GyW_ygl1RNo4' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=GyW_ygl1RNo4' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)Understand this error
+home.tsx:202 Audio loaded successfully
+home.tsx:31 🖼️ Preloading card image: /public-objects/possibilities/P0013.png
+home.tsx:53 Audio playing successfully
+home.tsx:35 ✅ Card image preloaded successfully

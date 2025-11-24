@@ -198,9 +198,12 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
   return (
     <>
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl flex flex-col">
+      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
+        
+        {/* Inner flex wrapper to override grid layout */}
+        <div className="flex h-full flex-col -mt-6">
         
         {/* Simple Instructions - Always Visible */}
         <div className="text-center mb-3 pb-3 border-b border-primary/20 flex-shrink-0">
@@ -211,9 +214,11 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
 
         {/* Card container with perspective - fills remaining space */}
         <div className="relative flex-1 min-h-0 flex items-center justify-center" style={{ perspective: "2000px" }}>
-            {/* Single rotating card wrapper - explicit size for mobile */}
+            {/* Aspect ratio box for consistent card sizing */}
+            <div className="aspect-[2/3] w-full max-w-sm md:max-w-md lg:max-w-lg">
+            {/* Single rotating card wrapper */}
             <motion.div 
-              className="relative w-full h-full max-w-md"
+              className="relative w-full h-full"
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
                 opacity: animationStage >= 1 ? 1 : 0,
@@ -229,7 +234,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             >
             {/* Card Back - facing forward initially */}
             <div 
-              className="absolute inset-0 flex items-center justify-center p-4"
+              className="absolute inset-0 flex items-center justify-center"
               style={{ 
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden"
@@ -238,14 +243,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
-                className="max-w-full max-h-full object-contain"
+                className="w-full h-full object-contain"
                 data-testid="img-card-back"
               />
             </div>
 
             {/* Card Front - pre-rotated 180 degrees so it faces forward when wrapper rotates 180 */}
             <div 
-              className="absolute inset-0 flex items-center justify-center cursor-pointer p-4"
+              className="absolute inset-0 flex items-center justify-center cursor-pointer"
               style={{ 
                 transform: "rotateY(180deg)",
                 backfaceVisibility: "hidden",
@@ -257,7 +262,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <img 
                   src={card.image} 
                   alt="Card inspiration image" 
-                  className="max-w-full max-h-full object-contain"
+                  className="w-full h-full object-contain"
                   onError={handleImageError}
                   data-testid="img-card-image"
                 />
@@ -275,6 +280,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               )}
             </div>
             </motion.div>
+            </div>
         </div>
 
         {/* Action Buttons - Fixed at bottom with high z-index */}
@@ -315,6 +321,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             )}
           </motion.div>
         )}
+        </div>
       </DialogContent>
     </Dialog>
 
