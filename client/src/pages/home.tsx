@@ -139,7 +139,7 @@ export default function Home() {
             }`}
             data-testid="button-draw-daily"
           >
-            {cardsLoading ? 'LOADING CARDS...' : hasDrawnToday ? 'TODAY\'S CARD DRAWN' : 'DRAW TODAY\'S CARD'}
+            {cardsLoading ? 'LOADING CARDS...' : hasDrawnToday ? 'SEE YOU TOMORROW!' : 'DRAW TODAY\'S CARD'}
           </button>
 
           <div className="grid grid-cols-2 gap-4">
