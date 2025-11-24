@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shuffle7-v4-buttons';
+const CACHE_NAME = 'shuffle7-v5-see-you-tomorrow';
 const urlsToCache = [
   '/',
   '/cards.json',
@@ -11,6 +11,9 @@ const urlsToCache = [
 
 // Install event
 self.addEventListener('install', function(event) {
+  // Force the waiting service worker to become the active service worker
+  self.skipWaiting();
+  
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
@@ -53,16 +56,22 @@ self.addEventListener('fetch', function(event) {
 
 // Update event
 self.addEventListener('activate', function(event) {
+  // Take control of all pages immediately
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.map(function(cacheName) {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    Promise.all([
+      // Delete old caches
+      caches.keys().then(function(cacheNames) {
+        return Promise.all(
+          cacheNames.map(function(cacheName) {
+            if (cacheName !== CACHE_NAME) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      }),
+      // Take control immediately
+      clients.claim()
+    ])
   );
 });
 
