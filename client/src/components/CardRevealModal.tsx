@@ -198,19 +198,19 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
   return (
     <>
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
+      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl flex flex-col">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
         
         {/* Simple Instructions - Always Visible */}
-        <div className="text-center mb-3 pb-3 border-b border-primary/20">
+        <div className="text-center mb-3 pb-3 border-b border-primary/20 flex-shrink-0">
           <p className="text-sm text-muted-foreground">
             💾 <strong>To save as wallpaper:</strong> Right-click image → Save → Set as background in your device settings
           </p>
         </div>
 
-        {/* Card container with perspective - height limited to leave room for buttons */}
-        <div className="relative flex-1 overflow-hidden" style={{ perspective: "2000px" }}>
+        {/* Card container with perspective - fills remaining space */}
+        <div className="relative flex-1 min-h-0 overflow-hidden" style={{ perspective: "2000px" }}>
             {/* Single rotating card wrapper */}
             <motion.div 
               className="relative w-full h-full"
@@ -283,7 +283,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
-            className="relative z-50 flex justify-center gap-3 pt-4 mt-4 border-t border-primary/20"
+            className="relative z-50 flex justify-center gap-3 pt-4 mt-4 border-t border-primary/20 flex-shrink-0"
           >
             <Button
               onClick={handleShare}
