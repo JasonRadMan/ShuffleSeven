@@ -9,6 +9,14 @@ import { z } from "zod";
 import { ObjectStorageService, objectStorageClient } from "./objectStorage";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Add cache-busting headers for development to prevent stale content
+  app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+    next();
+  });
   // Serve cards.json API endpoint
   app.get('/api/cards', (req, res) => {
     try {

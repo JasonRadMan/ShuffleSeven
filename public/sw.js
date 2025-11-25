@@ -1,17 +1,12 @@
-const CACHE_NAME = 'shuffle7-v5-see-you-tomorrow';
+const CACHE_NAME = 'shuffle7-v6-card-size-fix';
 const urlsToCache = [
-  '/',
   '/cards.json',
   '/assets/icon-192.png',
   '/assets/icon-512.png',
-  '/assets/shuffle7-card-back.svg',
-  '/manifest.webmanifest',
-  '/sw.js'
+  '/manifest.webmanifest'
 ];
 
-// Install event
 self.addEventListener('install', function(event) {
-  // Force the waiting service worker to become the active service worker
   self.skipWaiting();
   
   event.waitUntil(
@@ -22,63 +17,78 @@ self.addEventListener('install', function(event) {
   );
 });
 
-// Fetch event
 self.addEventListener('fetch', function(event) {
+  const url = new URL(event.request.url);
+  
+  if (event.request.mode === 'navigate' || 
+      url.pathname === '/' || 
+      url.pathname.endsWith('.html') ||
+      url.pathname.endsWith('.js') ||
+      url.pathname.endsWith('.css')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(function(response) {
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(function() {
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-        // Cache hit - return response
         if (response) {
           return response;
         }
-
-        return fetch(event.request).then(
-          function(response) {
-            // Check if we received a valid response
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response
-            var responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
-
+        return fetch(event.request).then(function(response) {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
             return response;
           }
-        );
+          var responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, responseToCache);
+          });
+          return response;
+        });
       })
-    );
+  );
 });
 
-// Update event
 self.addEventListener('activate', function(event) {
-  // Take control of all pages immediately
   event.waitUntil(
     Promise.all([
-      // Delete old caches
       caches.keys().then(function(cacheNames) {
         return Promise.all(
           cacheNames.map(function(cacheName) {
             if (cacheName !== CACHE_NAME) {
+              console.log('Deleting old cache:', cacheName);
               return caches.delete(cacheName);
             }
           })
         );
       }),
-      // Take control immediately
       clients.claim()
-    ])
+    ]).then(function() {
+      return clients.matchAll().then(function(clientList) {
+        clientList.forEach(function(client) {
+          client.postMessage({ type: 'SW_UPDATED' });
+        });
+      });
+    })
   );
 });
 
-// Push event - handle incoming push notifications
 self.addEventListener('push', event => {
   const data = event.data?.json() || {};
-  
   const title = data.title || 'Shuffle 7';
   const options = {
     body: data.body || 'New message!',
@@ -92,29 +102,20 @@ self.addEventListener('push', event => {
     vibrate: data.vibrate || [200, 100, 200],
     sound: data.sound || null
   };
-
-  event.waitUntil(
-    self.registration.showNotification(title, options)
-  );
+  event.waitUntil(self.registration.showNotification(title, options));
 });
 
-// Notification click event - handle when user clicks on notification
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-
   const data = event.notification.data || {};
   const url = data.url || '/';
-
   event.waitUntil(
     clients.matchAll({ type: 'window' }).then(clientList => {
-      // Check if there's already a window/tab open with the target URL
       for (const client of clientList) {
         if (client.url === url && 'focus' in client) {
           return client.focus();
         }
       }
-      
-      // If not found, open new window/tab
       if (clients.openWindow) {
         return clients.openWindow(url);
       }
@@ -122,13 +123,9 @@ self.addEventListener('notificationclick', event => {
   );
 });
 
-// Notification close event - handle when user dismisses notification
 self.addEventListener('notificationclose', event => {
   const data = event.notification.data || {};
-  
-  // Optional: Send analytics or tracking data when notification is dismissed
   if (data.trackClose) {
-    // Could send a request to track notification dismissal
     console.log('Notification closed:', data);
   }
 });
