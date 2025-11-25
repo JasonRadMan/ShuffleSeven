@@ -209,11 +209,11 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
           </p>
         </div>
 
-        {/* Card container with perspective */}
-        <div className="relative h-full w-full flex items-center justify-center" style={{ perspective: "2000px" }}>
-            {/* Single rotating card wrapper */}
+        {/* Card container with perspective - uses same dimensions as carousel-container */}
+        <div className="relative flex-1 flex items-center justify-center" style={{ perspective: "2000px" }}>
+            {/* Single rotating card wrapper - matches carousel-container sizing exactly */}
             <motion.div 
-              className="relative w-full h-full"
+              className="relative h-[350px] md:h-[450px] w-full max-w-[600px] md:max-w-[700px]"
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
                 opacity: animationStage >= 1 ? 1 : 0,
@@ -238,7 +238,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover md:object-contain"
                 data-testid="img-card-back"
               />
             </div>
@@ -257,7 +257,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <img 
                   src={card.image} 
                   alt="Card inspiration image" 
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover md:object-contain"
                   onError={handleImageError}
                   data-testid="img-card-image"
                 />
