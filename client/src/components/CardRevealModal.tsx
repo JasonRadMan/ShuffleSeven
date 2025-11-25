@@ -209,11 +209,11 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
           </p>
         </div>
 
-        {/* Card container with perspective - uses same dimensions as carousel-container */}
+        {/* Card container with perspective */}
         <div className="relative flex-1 flex items-center justify-center" style={{ perspective: "2000px" }}>
-            {/* Single rotating card wrapper - matches carousel-container sizing exactly */}
+            {/* Single rotating card wrapper - fills available space */}
             <motion.div 
-              className="relative h-[350px] md:h-[450px] w-full max-w-[600px] md:max-w-[700px]"
+              className="relative w-full h-full"
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
                 opacity: animationStage >= 1 ? 1 : 0,
