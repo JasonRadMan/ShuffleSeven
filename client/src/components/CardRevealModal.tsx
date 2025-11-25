@@ -198,25 +198,17 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
   return (
     <>
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] mx-auto p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
+      <DialogContent className="w-auto max-w-[90vw] p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
-        
-        {/* Simple Instructions - Always Visible */}
-        <div className="text-center mb-3 pb-3 border-b border-primary/20">
-          <p className="text-sm text-muted-foreground">
-            💾 <strong>To save as wallpaper:</strong> Right-click image → Save → Set as background in your device settings
-          </p>
-        </div>
 
-        {/* Card container with perspective - sized to match home page card */}
-        <div className="relative flex-1 flex items-center justify-center overflow-hidden" style={{ perspective: "2000px" }}>
-            {/* Single rotating card wrapper - fixed size matching home page */}
+        {/* Card container with perspective - matches home page card size */}
+        <div className="flex items-center justify-center" style={{ perspective: "2000px" }}>
             <motion.div 
               className="relative"
               style={{ 
-                width: "min(280px, 70vw)",
-                height: "min(400px, 55vh)",
+                width: "280px",
+                height: "400px",
                 transformStyle: "preserve-3d"
               }}
               initial={{ opacity: 0, rotateY: 0 }}
@@ -231,9 +223,9 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 scale: { duration: 0.4, ease: "easeOut" }
               }}
             >
-            {/* Card Back - facing forward initially */}
+            {/* Card Back */}
             <div 
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0"
               style={{ 
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden"
@@ -248,9 +240,9 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               />
             </div>
 
-            {/* Card Front - pre-rotated 180 degrees so it faces forward when wrapper rotates 180 */}
+            {/* Card Front */}
             <div 
-              className="absolute inset-0 flex items-center justify-center cursor-pointer"
+              className="absolute inset-0 cursor-pointer"
               style={{ 
                 transform: "rotateY(180deg)",
                 backfaceVisibility: "hidden",
