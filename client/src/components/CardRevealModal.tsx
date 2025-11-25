@@ -209,9 +209,9 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
           </p>
         </div>
 
-        {/* Card container with perspective */}
-        <div className="relative flex-1 flex items-center justify-center" style={{ perspective: "2000px" }}>
-            {/* Single rotating card wrapper - fills available space */}
+        {/* Card container with perspective - height limited to leave room for buttons */}
+        <div className="relative flex-1 overflow-hidden" style={{ perspective: "2000px" }}>
+            {/* Single rotating card wrapper */}
             <motion.div 
               className="relative w-full h-full"
               initial={{ opacity: 0, rotateY: 0 }}
@@ -229,7 +229,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             >
             {/* Card Back - facing forward initially */}
             <div 
-              className="absolute inset-0"
+              className="absolute inset-0 flex items-center justify-center"
               style={{ 
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden"
@@ -238,14 +238,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
-                className="absolute inset-0 w-full h-full object-cover md:object-contain"
+                className="max-w-full max-h-full object-contain"
                 data-testid="img-card-back"
               />
             </div>
 
             {/* Card Front - pre-rotated 180 degrees so it faces forward when wrapper rotates 180 */}
             <div 
-              className="absolute inset-0 cursor-pointer"
+              className="absolute inset-0 flex items-center justify-center cursor-pointer"
               style={{ 
                 transform: "rotateY(180deg)",
                 backfaceVisibility: "hidden",
@@ -257,7 +257,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <img 
                   src={card.image} 
                   alt="Card inspiration image" 
-                  className="absolute inset-0 w-full h-full object-cover md:object-contain"
+                  className="max-w-full max-h-full object-contain"
                   onError={handleImageError}
                   data-testid="img-card-image"
                 />
