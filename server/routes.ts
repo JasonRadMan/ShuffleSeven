@@ -122,13 +122,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const objectPath = await objectStorageService.searchPublicObject(filePath);
       
       if (!objectPath) {
-        return res.status(404).json({ error: "File not found" });
+        // Fallback to default card back image when object storage is disabled
+        console.log(`⚠️ Object not found: ${filePath}, serving fallback image`);
+        const fallbackPath = path.resolve(import.meta.dirname, '../public/assets/shuffle7-card-back.svg');
+        return res.sendFile(fallbackPath);
       }
       
       await objectStorageService.downloadObject(objectPath, res);
     } catch (error) {
       console.error(`Error serving public object ${filePath}:`, error);
-      return res.status(500).json({ error: "Internal server error" });
+      // Fallback to default card back image on error
+      const fallbackPath = path.resolve(import.meta.dirname, '../public/assets/shuffle7-card-back.svg');
+      return res.sendFile(fallbackPath);
     }
   });
 

@@ -1,5 +1,4 @@
 // Object Storage integration using Replit client
-import { Client } from "@replit/object-storage";
 import { Response } from "express";
 import { randomUUID } from "crypto";
 import {
@@ -14,15 +13,18 @@ import {
 const REPLIT_SIDECAR_ENDPOINT = process.env.REPLIT_SIDECAR_ENDPOINT || 'https://production-sidecar.replit.com';
 
 // The object storage client is used to interact with the object storage service.
-let objectStorageClient: Client;
+let objectStorageClient: any;
 
-try {
-  objectStorageClient = new Client();
-  console.log('✅ Object storage client initialized successfully');
-} catch (error) {
-  console.error('❌ Failed to initialize object storage client:', error);
-  throw new Error('Object storage client initialization failed');
-}
+// Disable Replit object storage by default (set ENABLE_REPLIT_STORAGE=true to enable)
+const enableReplitStorage = process.env.ENABLE_REPLIT_STORAGE === 'true';
+
+console.log('⚠️  Object storage disabled by default (set ENABLE_REPLIT_STORAGE=true to enable)');
+
+// Create a mock client that always returns "not available"
+objectStorageClient = {
+  list: async () => ({ ok: false, error: { message: 'Object storage not enabled' } }),
+  downloadAsStream: async () => null,
+};
 
 export { objectStorageClient };
 
