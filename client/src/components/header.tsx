@@ -1,8 +1,7 @@
-import { Calendar, Settings, Bell, Info, Home, LogOut, User } from 'lucide-react';
+import { Settings, Bell, Info, Home, LogOut, User } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { useAuth } from '@/hooks/useAuth';
-import { useMutation } from '@tanstack/react-query';
-import { queryClient, apiRequest } from '@/lib/queryClient';
+import { queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import {
   DropdownMenu,
@@ -22,28 +21,22 @@ export default function Header({ onInfoClick, showHomeButton = false }: HeaderPr
   const { user, isAuthenticated } = useAuth();
   const { toast } = useToast();
 
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      const res = await apiRequest('POST', '/api/auth/logout', {});
-      if (!res.ok) throw new Error('Logout failed');
-      return res;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
-      toast({
-        title: "Logged out",
-        description: "You have been successfully logged out.",
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
       });
-      window.location.href = '/';
-    },
-    onError: (error: Error) => {
+      queryClient.clear();
+      window.location.replace('/');
+    } catch (error) {
       toast({
         title: "Logout failed",
-        description: error.message,
+        description: "Please try again",
         variant: "destructive",
       });
-    },
-  });
+    }
+  };
 
   return (
     <header className="py-4 px-3 text-center border-b border-border">
@@ -117,13 +110,12 @@ export default function Header({ onInfoClick, showHomeButton = false }: HeaderPr
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem 
-                onClick={() => logoutMutation.mutate()}
-                disabled={logoutMutation.isPending}
+                onClick={handleLogout}
                 className="cursor-pointer text-destructive focus:text-destructive"
                 data-testid="menu-item-logout"
               >
                 <LogOut className="w-4 h-4 mr-2" />
-                {logoutMutation.isPending ? 'Logging out...' : 'Log Out'}
+                Log Out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
