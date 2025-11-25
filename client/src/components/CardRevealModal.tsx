@@ -202,10 +202,10 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
 
-        {/* Card container - matches home page carousel-container size */}
+        {/* Card container - taller to show full card image */}
         <div className="flex items-center justify-center" style={{ perspective: "2000px" }}>
             <motion.div 
-              className="relative w-full h-[350px]"
+              className="relative w-full h-[500px]"
               style={{ transformStyle: "preserve-3d" }}
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
@@ -250,7 +250,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <img 
                   src={card.image} 
                   alt="Card inspiration image" 
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-full object-contain rounded-lg"
                   style={{ filter: "drop-shadow(0 4px 15px rgba(0, 0, 0, 0.5))" }}
                   onError={handleImageError}
                   data-testid="img-card-image"
