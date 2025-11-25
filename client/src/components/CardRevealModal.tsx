@@ -209,11 +209,16 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
           </p>
         </div>
 
-        {/* Card container with perspective - height limited to leave room for buttons */}
-        <div className="relative flex-1 overflow-hidden" style={{ perspective: "2000px" }}>
-            {/* Single rotating card wrapper */}
+        {/* Card container with perspective - sized to match home page card */}
+        <div className="relative flex-1 flex items-center justify-center overflow-hidden" style={{ perspective: "2000px" }}>
+            {/* Single rotating card wrapper - fixed size matching home page */}
             <motion.div 
-              className="relative w-full h-full"
+              className="relative"
+              style={{ 
+                width: "min(280px, 70vw)",
+                height: "min(400px, 55vh)",
+                transformStyle: "preserve-3d"
+              }}
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
                 opacity: animationStage >= 1 ? 1 : 0,
@@ -225,7 +230,6 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 rotateY: { duration: 1.2, ease: "easeInOut" },
                 scale: { duration: 0.4, ease: "easeOut" }
               }}
-              style={{ transformStyle: "preserve-3d" }}
             >
             {/* Card Back - facing forward initially */}
             <div 
@@ -238,7 +242,8 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
               <img 
                 src={cardBackImage} 
                 alt="Card back design" 
-                className="max-w-full max-h-full object-contain"
+                className="w-full h-full object-cover rounded-lg"
+                style={{ filter: "drop-shadow(0 4px 15px rgba(0, 0, 0, 0.5))" }}
                 data-testid="img-card-back"
               />
             </div>
@@ -257,13 +262,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
                 <img 
                   src={card.image} 
                   alt="Card inspiration image" 
-                  className="max-w-full max-h-full object-contain"
+                  className="w-full h-full object-cover rounded-lg"
+                  style={{ filter: "drop-shadow(0 4px 15px rgba(0, 0, 0, 0.5))" }}
                   onError={handleImageError}
                   data-testid="img-card-image"
                 />
               ) : (
                 <div 
-                  className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground"
+                  className="w-full h-full bg-muted flex flex-col items-center justify-center text-muted-foreground rounded-lg"
                   data-testid="status-image-unavailable"
                 >
                   <ImageOff className="w-16 h-16 mb-4" />
