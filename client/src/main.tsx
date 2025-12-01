@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const APP_VERSION = 'v8-journal-fix';
+const APP_VERSION = 'v9-journal-button-visible';
 
 async function clearAllCachesAndReload() {
   if ('caches' in window) {
