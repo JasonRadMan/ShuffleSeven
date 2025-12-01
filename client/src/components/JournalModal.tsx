@@ -257,36 +257,36 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 <div className="absolute inset-0 bg-black/40 rounded-lg" />
                 
                 {/* Journal content */}
-                <div className="relative z-10 h-full p-8 flex flex-col">
+                <div className="relative z-10 h-full p-4 flex flex-col">
                   {/* Journal header */}
                   <div className="text-center mb-2">
-                    <h2 className="font-serif text-2xl text-amber-100 mb-2">Journal Entry</h2>
+                    <h2 className="font-serif text-lg text-amber-100">Journal Entry</h2>
                   </div>
 
                   {/* Text area */}
-                  <div className="flex-1 mb-6" style={{ width: 'calc(100% + 20px)', marginLeft: '-10px', marginTop: '60px' }}>
+                  <div className="flex-1 mb-3">
                     <Textarea
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       placeholder="Share your thoughts about this card..."
-                      className="w-full h-full resize-none bg-transparent border-none text-amber-100 underline placeholder:text-amber-200/60 p-4 text-base leading-relaxed focus:outline-none focus:ring-0 focus:border-none"
+                      className="w-full h-full resize-none bg-transparent border-none text-amber-100 placeholder:text-amber-200/60 p-2 text-sm leading-relaxed focus:outline-none focus:ring-0 focus:border-none"
                       maxLength={500}
                       data-testid="textarea-journal-content"
                     />
                   </div>
 
                   {/* Character count and actions */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-amber-200 text-sm">
-                      {content.length}/500 characters
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="text-amber-200">
+                      {content.length}/500
                     </span>
                     
-                    <div className="flex gap-3">
+                    <div className="flex gap-2">
                       <Button
                         variant="outline"
                         onClick={handleClose}
                         disabled={isLoading}
-                        className="bg-amber-100/20 border-amber-200/50 text-amber-100 hover:bg-amber-100/30"
+                        className="bg-amber-100/20 border-amber-200/50 text-amber-100 hover:bg-amber-100/30 py-1 px-3 text-xs h-auto"
                         data-testid="button-cancel-journal"
                       >
                         Cancel
@@ -294,10 +294,10 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                       <Button
                         onClick={handleSave}
                         disabled={isLoading || content.trim().length === 0}
-                        className="bg-amber-600 hover:bg-amber-700 text-white"
+                        className="bg-amber-600 hover:bg-amber-700 text-white py-1 px-3 text-xs h-auto"
                         data-testid="button-save-journal"
                       >
-                        {isLoading ? 'Saving...' : existingEntry ? 'Update Entry' : 'Save Entry'}
+                        {isLoading ? 'Saving...' : existingEntry ? 'Update' : 'Save'}
                       </Button>
                     </div>
                   </div>

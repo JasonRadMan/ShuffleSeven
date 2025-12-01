@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const APP_VERSION = 'v11-journal-compact';
+const APP_VERSION = 'v12-journal-fitted';
 
 async function clearAllCachesAndReload() {
   if ('caches' in window) {
