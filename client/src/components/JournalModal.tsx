@@ -183,12 +183,12 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] overflow-y-auto" data-testid="journal-modal">
+      <DialogContent className="max-w-2xl w-[95vw] h-[95vh] overflow-y-auto" data-testid="journal-modal">
         <DialogHeader>
           <DialogTitle className="sr-only">Journal Entry for {card?.title}</DialogTitle>
         </DialogHeader>
 
-        <div className="relative w-full" style={{ perspective: '1000px', height: 'min(550px, calc(85vh - 60px))' }}>
+        <div className="relative w-full h-full" style={{ perspective: '1000px' }}>
           {/* Card flip container */}
           <motion.div
             className="relative w-full h-full"
