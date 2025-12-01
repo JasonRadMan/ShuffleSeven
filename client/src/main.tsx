@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const APP_VERSION = 'v7-full-card-visible';
+const APP_VERSION = 'v8-journal-fix';
 
 async function clearAllCachesAndReload() {
   if ('caches' in window) {
