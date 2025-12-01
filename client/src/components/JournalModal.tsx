@@ -183,7 +183,7 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl w-[95vw] h-[95vh] overflow-y-auto" data-testid="journal-modal">
+      <DialogContent className="max-w-2xl w-[75vw] h-[75vh] overflow-y-auto" data-testid="journal-modal">
         <DialogHeader>
           <DialogTitle className="sr-only">Journal Entry for {card?.title}</DialogTitle>
         </DialogHeader>
@@ -204,9 +204,9 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 transform: 'rotateY(0deg)'
               }}
             >
-              <div className="h-full bg-gradient-to-br from-slate-900 to-slate-800 rounded-lg p-6 flex flex-col">
+              <div className="h-full bg-gradient-to-br from-slate-600 to-slate-800 rounded-lg p-2 flex flex-col">
                 {/* Card image */}
-                <div className="flex-1 flex items-center justify-center mb-6">
+                <div className="flex-0 flex items-center justify-center mb-2 max-h-[35%]">
                   <img
                     src={card?.image || '/assets/shuffle7-card-back.svg'}
                     alt={card?.title || 'Card'}
@@ -215,17 +215,17 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 </div>
                 
                 {/* Card details */}
-                <div className="space-y-4">
-                  <h3 className="font-serif text-xl text-primary text-center">
+                <div className="space-y-1">
+                  <h3 className="font-serif text-lg text-primary text-center">
                     {card?.title || card?.message}
                   </h3>
-                  <p className="text-slate-300 text-sm text-center">
+                  <p className="text-slate-300 text-xs text-center">
                     {card?.category}
                   </p>
                 </div>
 
                 {/* Journal button */}
-                <div className="mt-6 text-center">
+                <div className="mt-2 text-center">
                   <Button
                     onClick={handleJournalClick}
                     className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-2"
