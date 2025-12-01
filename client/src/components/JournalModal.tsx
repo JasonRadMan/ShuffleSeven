@@ -258,11 +258,6 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 
                 {/* Journal content */}
                 <div className="relative z-10 h-full pt-1 px-4 pb-4 flex flex-col">
-                  {/* Journal header */}
-                  <div className="text-center mb-1">
-                    <h2 className="font-serif text-sm text-amber-100">Journal Entry</h2>
-                  </div>
-
                   {/* Text area */}
                   <div className="flex-1 mb-3">
                     <Textarea
