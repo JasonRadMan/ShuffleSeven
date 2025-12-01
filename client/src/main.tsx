@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const APP_VERSION = 'v19-journal-larger-container';
+const APP_VERSION = 'v20-textarea-lower';
 
 async function clearAllCachesAndReload() {
   if ('caches' in window) {
