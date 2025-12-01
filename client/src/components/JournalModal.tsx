@@ -253,21 +253,21 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 <div className="absolute inset-0 bg-black/40 rounded-lg" />
                 
                 {/* Journal content */}
-                <div className="relative z-10 h-full pt-1 px-4 pb-4 flex flex-col">
+                <div className="relative z-10 h-full p-0 flex flex-col">
                   {/* Text area */}
-                  <div className="flex-1 mb-3">
+                  <div className="flex-1 px-2 py-1">
                     <Textarea
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
-                      placeholder="Share your thoughts about this card..."
-                      className="w-full h-full resize-none bg-transparent border-none text-amber-100 placeholder:text-amber-200/60 p-2 text-sm leading-relaxed focus:outline-none focus:ring-0 focus:border-none"
+                      placeholder="Share your thoughts..."
+                      className="w-full h-full resize-none bg-transparent border-none text-amber-100 placeholder:text-amber-200/60 p-1 text-xs leading-relaxed focus:outline-none focus:ring-0 focus:border-none"
                       maxLength={500}
                       data-testid="textarea-journal-content"
                     />
                   </div>
 
                   {/* Character count and actions */}
-                  <div className="flex items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center justify-between gap-1 text-xs px-2 py-1">
                     <span className="text-amber-200">
                       {content.length}/500
                     </span>
