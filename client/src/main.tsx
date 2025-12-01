@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const APP_VERSION = 'v17-journal-full-width';
+const APP_VERSION = 'v18-journal-bg-fullsize';
 
 async function clearAllCachesAndReload() {
   if ('caches' in window) {
