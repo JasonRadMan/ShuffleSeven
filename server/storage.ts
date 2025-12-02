@@ -14,6 +14,7 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc } from "drizzle-orm";
+import { encrypt, decrypt } from "./encryption";
 
 // Interface for storage operations
 export interface IStorage {
@@ -176,14 +177,26 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(drawnCards.drawnAt));
   }
 
-  // Journal entries operations
+  // Journal entries operations (with encryption)
+  private decryptJournalEntry(entry: JournalEntry): JournalEntry {
+    return {
+      ...entry,
+      content: decrypt(entry.content),
+    };
+  }
+
   async createJournalEntry(insertJournalEntry: InsertJournalEntry): Promise<JournalEntry> {
+    const encryptedEntry = {
+      ...insertJournalEntry,
+      content: encrypt(insertJournalEntry.content),
+    };
+    
     const [journalEntry] = await db
       .insert(journalEntries)
-      .values(insertJournalEntry)
+      .values(encryptedEntry)
       .returning();
     
-    return journalEntry;
+    return this.decryptJournalEntry(journalEntry);
   }
 
   async getJournalEntryByDrawnCardId(drawnCardId: string): Promise<JournalEntry | undefined> {
@@ -192,7 +205,7 @@ export class DatabaseStorage implements IStorage {
       .from(journalEntries)
       .where(eq(journalEntries.drawnCardId, drawnCardId));
     
-    return journalEntry;
+    return journalEntry ? this.decryptJournalEntry(journalEntry) : undefined;
   }
 
   async getJournalEntryById(id: string): Promise<JournalEntry | undefined> {
@@ -201,25 +214,29 @@ export class DatabaseStorage implements IStorage {
       .from(journalEntries)
       .where(eq(journalEntries.id, id));
     
-    return journalEntry;
+    return journalEntry ? this.decryptJournalEntry(journalEntry) : undefined;
   }
 
   async updateJournalEntry(id: string, content: string): Promise<JournalEntry | undefined> {
+    const encryptedContent = encrypt(content);
+    
     const [journalEntry] = await db
       .update(journalEntries)
-      .set({ content, updatedAt: new Date() })
+      .set({ content: encryptedContent, updatedAt: new Date() })
       .where(eq(journalEntries.id, id))
       .returning();
     
-    return journalEntry;
+    return journalEntry ? this.decryptJournalEntry(journalEntry) : undefined;
   }
 
   async getUserJournalEntries(userId: string): Promise<JournalEntry[]> {
-    return await db
+    const entries = await db
       .select()
       .from(journalEntries)
       .where(eq(journalEntries.userId, userId))
       .orderBy(desc(journalEntries.createdAt));
+    
+    return entries.map(entry => this.decryptJournalEntry(entry));
   }
 }
 
