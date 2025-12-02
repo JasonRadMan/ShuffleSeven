@@ -15,6 +15,10 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
+localPort = 33299
+externalPort = 5173
+
+[[ports]]
 localPort = 33337
 externalPort = 3000
 
@@ -67,3 +71,9 @@ integrations = ["javascript_object_storage:1.0.0"]
 
 [objectStorage]
 defaultBucketID = "replit-objstore-af6d7f36-1ed2-403c-ae04-fe3275112438"
+
+[userenv]
+
+[userenv.shared]
+VAPID_PUBLIC_KEY = "BADwoF_D172bFCES2kTnglQObkoAgymuOk2xjFtQWxdB0SoLelj6L_kP99lN1WDgRqO5p9iG_07iYbTdPniZ234"
+VAPID_SUBJECT = "mailto:hello@shuffle7.app"
