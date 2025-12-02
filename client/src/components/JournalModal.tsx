@@ -256,8 +256,13 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 
                 {/* Journal content */}
                 <div className="relative z-10 h-full p-0 flex flex-col">
+                  {/* Privacy notice */}
+                  <div className="mx-2 mt-[220px] mb-1 px-2 py-1.5 bg-amber-900/60 border border-amber-500/30 rounded text-[10px] text-amber-100/90 leading-tight">
+                    <span className="font-semibold">Privacy Note:</span> Your journal entries are encrypted for security. However, no system is 100% guaranteed. For extra privacy, consider using initials or abbreviations when mentioning names.
+                  </div>
+                  
                   {/* Text area */}
-                  <div className="flex-1 px-0 py-1 mt-[250px]">
+                  <div className="flex-1 px-0 py-1">
                     <Textarea
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
