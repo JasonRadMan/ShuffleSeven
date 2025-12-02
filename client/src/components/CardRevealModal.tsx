@@ -198,14 +198,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
   return (
     <>
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[90vw] max-w-[500px] p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
+      <DialogContent className="w-[90vw] max-w-[500px] max-h-[90vh] p-3 sm:p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl overflow-y-auto">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
 
-        {/* Card container - taller to show full card image */}
+        {/* Card container - responsive height for different screens */}
         <div className="flex items-center justify-center" style={{ perspective: "2000px" }}>
             <motion.div 
-              className="relative w-full h-[500px]"
+              className="relative w-full h-[320px] sm:h-[400px] md:h-[500px]"
               style={{ transformStyle: "preserve-3d" }}
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
@@ -277,33 +277,36 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
-            className="relative z-50 flex justify-center gap-3 pt-4 mt-4 border-t border-primary/20"
+            className="relative z-50 flex justify-center gap-2 pt-3 mt-3 border-t border-primary/20"
           >
             <Button
               onClick={handleShare}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+              size="sm"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg text-xs px-3"
               data-testid="button-share-card"
             >
-              <Share2 className="w-4 h-4 mr-2" />
+              <Share2 className="w-3 h-3 mr-1" />
               Share
             </Button>
             {!imageError && (
               <Button
                 onClick={handleDownload}
-                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg"
+                size="sm"
+                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg text-xs px-3"
                 data-testid="button-download-card"
               >
-                <Download className="w-4 h-4 mr-2" />
-                Save Image
+                <Download className="w-3 h-3 mr-1" />
+                Save
               </Button>
             )}
             {drawnCardId && card && (
               <Button
                 onClick={() => setIsJournalModalOpen(true)}
-                className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg"
+                size="sm"
+                className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg text-xs px-3"
                 data-testid="button-journal-card"
               >
-                <Book className="w-4 h-4 mr-2" />
+                <Book className="w-3 h-3 mr-1" />
                 Journal
               </Button>
             )}
