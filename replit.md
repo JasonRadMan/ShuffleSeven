@@ -12,8 +12,18 @@ Shuffle 7 is a Progressive Web Application (PWA) designed as a mindset support t
 - Comprehensive journal system with database persistence
 - Password visibility toggles on all authentication forms
 - Journal button in card reveal modal (appears after card flip for authenticated users)
+- Push notifications for daily card reminders (PWA must be installed on iOS/iPadOS 16.4+)
 
-**Recent Changes (November 24, 2025):**
+**Recent Changes (December 2, 2025):**
+- Implemented server-side push notification infrastructure using web-push library
+- Created daily scheduler that sends card reminders at 8:00 AM
+- Added VAPID key management (public key exposed via API, private key secure on server)
+- Updated frontend to fetch VAPID public key dynamically from server
+- Added test notification endpoint for users to verify push notifications work
+- Fixed dialog accessibility warnings by adding screen-reader-only DialogTitle elements
+- Cross-platform push support: Android (full), iOS/iPadOS (requires PWA install to home screen, iOS 16.4+)
+
+**Previous Changes (November 24, 2025):**
 - Changed draw button text from "TODAY'S CARD DRAWN" to "SEE YOU TOMORROW!" after user draws
 - Added Journal button to CardRevealModal alongside Share and Save Image buttons
 - Journal button only appears for authenticated users who have drawn cards saved to database
@@ -74,6 +84,7 @@ Card data is stored in a static JSON file containing structured entries with cat
 ### Backend Framework
 - **Express.js**: Web application framework for Node.js
 - **TypeScript**: Type safety across the full stack
+- **web-push**: VAPID-based push notifications for PWA
 
 ### PWA Technologies
 - **Service Worker**: Asset caching and offline functionality
