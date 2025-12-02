@@ -183,7 +183,7 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-[92vw] sm:w-[90vw] h-[85vh] sm:h-[90vh] overflow-hidden p-0" data-testid="journal-modal">
+      <DialogContent className="max-w-4xl w-[90vw] h-[90vh] overflow-hidden p-0" data-testid="journal-modal">
         <DialogTitle className="sr-only">Journal Entry</DialogTitle>
         <DialogDescription className="sr-only">Write your thoughts about this card in your journal.</DialogDescription>
         <div className="relative w-full h-full" style={{ perspective: '1000px' }}>
@@ -204,7 +204,7 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
             >
               <div className="h-full bg-gradient-to-br from-slate-600 to-slate-800 rounded-lg p-2 flex flex-col">
                 {/* Card image */}
-                <div className="flex-0 flex items-center justify-center mb-2 max-h-[30%] sm:max-h-[35%]">
+                <div className="flex-0 flex items-center justify-center mb-2 max-h-[35%]">
                   <img
                     src={card?.image || '/assets/shuffle7-card-back.svg'}
                     alt={card?.title || 'Card'}
@@ -214,10 +214,10 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 
                 {/* Card details */}
                 <div className="space-y-1">
-                  <h3 className="font-serif text-base sm:text-lg text-primary text-center">
+                  <h3 className="font-serif text-lg text-primary text-center">
                     {card?.title || card?.message}
                   </h3>
-                  <p className="text-slate-300 text-[10px] sm:text-xs text-center">
+                  <p className="text-slate-300 text-xs text-center">
                     {card?.category}
                   </p>
                 </div>
@@ -226,7 +226,7 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 <div className="mt-2 text-center">
                   <Button
                     onClick={handleJournalClick}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 py-2 text-sm sm:text-base"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-2"
                     data-testid="button-open-journal"
                   >
                     Journal
@@ -257,8 +257,8 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                 {/* Journal content */}
                 <div className="relative z-10 h-full p-0 flex flex-col">
                   {/* Privacy notice */}
-                  <div className="mx-1.5 sm:mx-2 mt-[140px] sm:mt-[180px] md:mt-[220px] mb-1 px-1.5 sm:px-2 py-1 sm:py-1.5 bg-amber-900/60 border border-amber-500/30 rounded text-[8px] sm:text-[10px] text-amber-100/90 leading-tight">
-                    <span className="font-semibold">Privacy Note:</span> Your journal entries are encrypted. For extra privacy, consider using initials for names.
+                  <div className="mx-2 mt-[220px] mb-1 px-2 py-1.5 bg-amber-900/60 border border-amber-500/30 rounded text-[10px] text-amber-100/90 leading-tight">
+                    <span className="font-semibold">Privacy Note:</span> Your journal entries are encrypted for security. However, no system is 100% guaranteed. For extra privacy, consider using initials or abbreviations when mentioning names.
                   </div>
                   
                   {/* Text area */}
@@ -267,7 +267,7 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       placeholder="Share your thoughts..."
-                      className="w-full h-full resize-none bg-transparent border-none text-amber-100 placeholder:text-amber-200/60 p-1 text-[11px] sm:text-xs leading-relaxed focus:outline-none focus:ring-0 focus:border-none"
+                      className="w-full h-full resize-none bg-transparent border-none text-amber-100 placeholder:text-amber-200/60 p-1 text-xs leading-relaxed focus:outline-none focus:ring-0 focus:border-none"
                       maxLength={500}
                       data-testid="textarea-journal-content"
                     />
