@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { apiRequest, queryClient } from '@/lib/queryClient';
@@ -184,6 +184,8 @@ export default function JournalModal({ open, onOpenChange, drawnCard }: JournalM
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl w-[90vw] h-[90vh] overflow-hidden p-0" data-testid="journal-modal">
+        <DialogTitle className="sr-only">Journal Entry</DialogTitle>
+        <DialogDescription className="sr-only">Write your thoughts about this card in your journal.</DialogDescription>
         <div className="relative w-full h-full" style={{ perspective: '1000px' }}>
           {/* Card flip container */}
           <motion.div
