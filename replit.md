@@ -15,6 +15,17 @@ Shuffle 7 is a Progressive Web Application (PWA) designed as a mindset support t
 - Push notifications for daily card reminders (PWA must be installed on iOS/iPadOS 16.4+)
 
 **Recent Changes (December 2, 2025):**
+- Added sound toggle button on home page with localStorage persistence (golden speaker when on, gray when muted)
+- Made Share, Save, and Journal buttons smaller in card reveal modal for better fit
+- Implemented comprehensive responsive design fixes:
+  - Carousel: Responsive heights (280px mobile → 420px desktop), constrained animation overlay
+  - CardRevealModal: Max height 90vh, responsive card heights, overflow scrolling
+  - Header: Flex-wrap for narrow screens, smaller text/padding on mobile
+  - Home buttons: Responsive padding, text sizing, shortened labels for mobile
+  - Footer/AdBox: Responsive heights, padding, mobile-specific ad sizing labels
+- All layouts tested at 320px, 375px, 768px, and 1024px breakpoints
+
+**Previous Changes (December 2, 2025):**
 - Implemented server-side push notification infrastructure using web-push library
 - Created daily scheduler that sends card reminders at 8:00 AM
 - Added VAPID key management (public key exposed via API, private key secure on server)
