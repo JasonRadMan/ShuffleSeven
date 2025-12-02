@@ -1,4 +1,4 @@
-import { Copy, Heart, Star, Users, User, History } from 'lucide-react';
+import { Copy, Heart, Star, Users, User, History, Volume2, VolumeX } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import Header from '@/components/header';
@@ -19,8 +19,22 @@ export default function Home() {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
   const [isImagePreloaded, setIsImagePreloaded] = useState(false);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
+    const saved = localStorage.getItem('shuffle7_sound_enabled');
+    return saved !== null ? saved === 'true' : true;
+  });
   const audioRef = useRef<HTMLAudioElement>(null);
   const { drawDailyCard, useLifelineCard, lifelinesRemaining, lifelineUniqueRemaining, hasDrawnToday, currentCard, currentDrawnCardId, clearCurrentCard, cardsLoading } = useShuffleState();
+
+  const toggleSound = () => {
+    const newValue = !isSoundEnabled;
+    setIsSoundEnabled(newValue);
+    localStorage.setItem('shuffle7_sound_enabled', String(newValue));
+    if (!newValue && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
 
   const handleDailyDraw = () => {
     const card = drawDailyCard();
@@ -44,8 +58,8 @@ export default function Home() {
       preloadImage.src = card.image;
       
       setIsDrawAnimationPlaying(true);
-      // Play shuffle audio when animation starts
-      if (audioRef.current) {
+      // Play shuffle audio when animation starts (if sound is enabled)
+      if (audioRef.current && isSoundEnabled) {
         audioRef.current.currentTime = 0;
         audioRef.current.volume = 0.7;
         audioRef.current.play()
@@ -54,8 +68,6 @@ export default function Home() {
           })
           .catch((error) => {
             console.error('Audio playback failed:', error);
-            // Try to enable audio with user interaction
-            alert('Click OK to enable audio, then try drawing again');
           });
       }
     }
@@ -126,6 +138,26 @@ export default function Home() {
       <Header onInfoClick={handleInfoClick} />
       
       <main className="flex-1 px-4 py-8">
+        {/* Sound toggle button */}
+        <div className="flex justify-end max-w-md mx-auto mb-2">
+          <button
+            onClick={toggleSound}
+            className={`p-2 rounded-full transition-all ${
+              isSoundEnabled 
+                ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30' 
+                : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700/70'
+            }`}
+            data-testid="button-toggle-sound"
+            title={isSoundEnabled ? 'Sound On - Click to mute' : 'Sound Off - Click to unmute'}
+          >
+            {isSoundEnabled ? (
+              <Volume2 className="w-5 h-5" />
+            ) : (
+              <VolumeX className="w-5 h-5" />
+            )}
+          </button>
+        </div>
+
         <Carousel isAnimationPlaying={isDrawAnimationPlaying} onAnimationClick={handleAnimationClick} />
 
         <div className="max-w-md mx-auto space-y-4 mt-[60px]">
