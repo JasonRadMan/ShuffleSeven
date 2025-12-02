@@ -30,9 +30,9 @@ export default function AdBox({ variant = 'banner', position = 'middle', onClose
   if (!isVisible) return null;
 
   const variants = {
-    banner: 'w-full h-20 flex items-center justify-center',
-    card: 'w-full aspect-[2/1] flex flex-col items-center justify-center p-6',
-    inline: 'w-full h-24 flex items-center justify-center',
+    banner: 'w-full h-16 sm:h-20 flex items-center justify-center',
+    card: 'w-full aspect-[2/1] flex flex-col items-center justify-center p-4 sm:p-6',
+    inline: 'w-full h-20 sm:h-24 flex items-center justify-center',
   };
 
   return (
@@ -41,39 +41,39 @@ export default function AdBox({ variant = 'banner', position = 'middle', onClose
       data-testid={`ad-box-${variant}`}
     >
       {/* Ad Label - Required by both stores */}
-      <div className="absolute top-2 left-2 text-xs text-muted-foreground/60 font-medium">
+      <div className="absolute top-1.5 sm:top-2 left-1.5 sm:left-2 text-[10px] sm:text-xs text-muted-foreground/60 font-medium">
         AD
       </div>
 
       {/* Close button - visible after 5 seconds per Google requirement */}
       <button
         onClick={handleClose}
-        className={`absolute top-2 right-2 p-1.5 rounded-full bg-slate-900/80 hover:bg-slate-800 transition-all ${
+        className={`absolute top-1.5 sm:top-2 right-1.5 sm:right-2 p-1 sm:p-1.5 rounded-full bg-slate-900/80 hover:bg-slate-800 transition-all ${
           canClose ? 'opacity-100' : 'opacity-40 cursor-not-allowed'
         }`}
         disabled={!canClose}
         aria-label="Close advertisement"
         data-testid="button-close-ad"
       >
-        <X className="w-4 h-4 text-muted-foreground" />
+        <X className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
       </button>
 
       {/* Ad Content */}
-      <div className="text-center px-8">
+      <div className="text-center px-4 sm:px-8">
         {variant === 'card' ? (
-          <div className="space-y-3">
-            <div className="text-2xl">✨</div>
-            <h3 className="text-sm font-semibold text-primary">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="text-xl sm:text-2xl">✨</div>
+            <h3 className="text-xs sm:text-sm font-semibold text-primary">
               Upgrade Your Journey
             </h3>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
               Premium features for deeper insights
             </p>
           </div>
         ) : (
-          <div className="flex items-center gap-3">
-            <div className="text-xl">🌟</div>
-            <p className="text-sm text-primary font-medium">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="text-lg sm:text-xl">🌟</div>
+            <p className="text-xs sm:text-sm text-primary font-medium">
               Discover Premium Features
             </p>
           </div>
@@ -82,7 +82,7 @@ export default function AdBox({ variant = 'banner', position = 'middle', onClose
 
       {/* Timer indicator for close button */}
       {!canClose && (
-        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground/40">
+        <div className="absolute bottom-1.5 sm:bottom-2 right-1.5 sm:right-2 text-[10px] sm:text-xs text-muted-foreground/40">
           {5}s
         </div>
       )}

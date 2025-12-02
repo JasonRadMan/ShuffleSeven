@@ -39,43 +39,43 @@ export default function Header({ onInfoClick, showHomeButton = false }: HeaderPr
   };
 
   return (
-    <header className="py-4 px-3 text-center border-b border-border">
-      <h1 className="font-serif text-3xl font-bold text-primary mb-2">SHUFFLE 7</h1>
+    <header className="py-3 sm:py-4 px-2 sm:px-3 text-center border-b border-border">
+      <h1 className="font-serif text-2xl sm:text-3xl font-bold text-primary mb-2">SHUFFLE 7</h1>
       
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center gap-1 sm:gap-2 flex-wrap">
         {showHomeButton && (
           <button 
             onClick={() => setLocation('/')}
-            className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
+            className="flex flex-col items-center gap-0.5 sm:gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
             data-testid="button-home"
           >
             <Home className="w-4 h-4 text-slate-300" />
-            <span className="text-xs text-slate-400 font-medium">Home</span>
+            <span className="text-[10px] sm:text-xs text-slate-400 font-medium">Home</span>
           </button>
         )}
         <button 
-          className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105 relative"
+          className="flex flex-col items-center gap-0.5 sm:gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105 relative"
           data-testid="button-notifications"
         >
           <Bell className="w-4 h-4 text-slate-300" />
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-          <span className="text-xs text-slate-400 font-medium">Alerts</span>
+          <div className="absolute -top-0.5 sm:-top-1 -right-0.5 sm:-right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+          <span className="text-[10px] sm:text-xs text-slate-400 font-medium">Alerts</span>
         </button>
         <button 
           onClick={() => setLocation('/settings')}
-          className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
+          className="flex flex-col items-center gap-0.5 sm:gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
           data-testid="button-settings"
         >
           <Settings className="w-4 h-4 text-slate-300" />
-          <span className="text-xs text-slate-400 font-medium">Settings</span>
+          <span className="text-[10px] sm:text-xs text-slate-400 font-medium">Settings</span>
         </button>
         <button 
           onClick={onInfoClick}
-          className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
+          className="flex flex-col items-center gap-0.5 sm:gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:bg-slate-700/40 transition-all duration-200 hover:scale-105"
           data-testid="button-info"
         >
           <Info className="w-4 h-4 text-slate-300" />
-          <span className="text-xs text-slate-400 font-medium">Info</span>
+          <span className="text-[10px] sm:text-xs text-slate-400 font-medium">Info</span>
         </button>
 
         {/* User Account Dropdown */}
@@ -83,11 +83,11 @@ export default function Header({ onInfoClick, showHomeButton = false }: HeaderPr
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button 
-                className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl bg-primary/20 border border-primary/30 hover:bg-primary/30 transition-all duration-200 hover:scale-105"
+                className="flex flex-col items-center gap-0.5 sm:gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-primary/20 border border-primary/30 hover:bg-primary/30 transition-all duration-200 hover:scale-105"
                 data-testid="button-user-menu"
               >
                 <User className="w-4 h-4 text-primary" />
-                <span className="text-xs text-primary font-medium">Account</span>
+                <span className="text-[10px] sm:text-xs text-primary font-medium">Account</span>
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
