@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from './useAuth';
 import type { User } from '@shared/schema';
 
@@ -16,10 +16,25 @@ export function useNotifications() {
   const [permission, setPermission] = useState<NotificationPermission>('default');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [vapidPublicKey, setVapidPublicKey] = useState<string | null>(null);
   const { user } = useAuth();
+  const vapidKeyFetched = useRef(false);
 
-  // Placeholder VAPID public key - replace with actual key when implementing server-side push
-  const VAPID_PUBLIC_KEY = 'BCVfRY1x3j8Hgm0Ld4KyJgFgQ2hGfY8KJA9MNk3tYzK2lC3mVhZ0Qb2JgFYjX5wT';
+  // Fetch VAPID public key from server
+  const fetchVapidKey = useCallback(async () => {
+    if (vapidKeyFetched.current) return;
+    
+    try {
+      const response = await fetch('/api/notifications/vapid-public-key');
+      if (response.ok) {
+        const data = await response.json();
+        setVapidPublicKey(data.publicKey);
+        vapidKeyFetched.current = true;
+      }
+    } catch (error) {
+      console.error('Error fetching VAPID public key:', error);
+    }
+  }, []);
 
   useEffect(() => {
     // Check initial notification permission
@@ -29,9 +44,10 @@ export function useNotifications() {
       setPermission('unsupported');
     }
 
-    // Check if user is already subscribed
+    // Fetch VAPID key and check subscription status
+    fetchVapidKey();
     checkSubscriptionStatus();
-  }, []);
+  }, [fetchVapidKey]);
 
   const requestPermission = async (): Promise<NotificationPermission> => {
     if (!('Notification' in window)) {
@@ -88,6 +104,15 @@ export function useNotifications() {
       return false;
     }
 
+    if (!vapidPublicKey) {
+      console.warn('VAPID public key not available');
+      // Try to fetch it if not available
+      await fetchVapidKey();
+      if (!vapidPublicKey) {
+        return false;
+      }
+    }
+
     setLoading(true);
 
     try {
@@ -98,7 +123,7 @@ export function useNotifications() {
       
       if (!subscription) {
         // Convert VAPID key to Uint8Array
-        const applicationServerKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY);
+        const applicationServerKey = urlBase64ToUint8Array(vapidPublicKey);
         
         subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
@@ -201,13 +226,43 @@ export function useNotifications() {
     }
   };
 
-  const sendTestNotification = () => {
+  const sendLocalTestNotification = () => {
     if (permission === 'granted') {
       new Notification('Shuffle 7 Test', {
         body: 'Your daily card is ready to be drawn!',
         icon: '/assets/icon-192.png',
         badge: '/assets/icon-192.png'
       });
+    }
+  };
+
+  const sendServerTestNotification = async (): Promise<boolean> => {
+    if (!user || !isSubscribed) {
+      console.warn('User not authenticated or not subscribed');
+      return false;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch('/api/notifications/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        return true;
+      } else {
+        const data = await response.json();
+        console.error('Test notification failed:', data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error sending test notification:', error);
+      return false;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -218,7 +273,8 @@ export function useNotifications() {
     requestPermission,
     subscribeToPush,
     unsubscribeFromPush,
-    sendTestNotification,
+    sendLocalTestNotification,
+    sendServerTestNotification,
     isSupported: 'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window
   };
 }

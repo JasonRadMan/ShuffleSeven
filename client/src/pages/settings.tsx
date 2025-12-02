@@ -38,7 +38,8 @@ export default function Settings() {
     requestPermission, 
     subscribeToPush, 
     unsubscribeFromPush, 
-    sendTestNotification, 
+    sendLocalTestNotification,
+    sendServerTestNotification,
     isSupported 
   } = useNotifications();
 
@@ -208,13 +209,28 @@ export default function Settings() {
                 </button>
               )}
               
-              {permission === 'granted' && (
+              {permission === 'granted' && isSubscribed && (
                 <button 
-                  onClick={sendTestNotification}
-                  className="w-full py-3 px-6 bg-accent text-accent-foreground rounded-lg hover:bg-accent/80 transition-all"
+                  onClick={async () => {
+                    const success = await sendServerTestNotification();
+                    if (success) {
+                      toast({
+                        title: "Test notification sent",
+                        description: "You should receive a push notification shortly.",
+                      });
+                    } else {
+                      toast({
+                        title: "Test failed",
+                        description: "Could not send test notification. Make sure you are subscribed.",
+                        variant: "destructive",
+                      });
+                    }
+                  }}
+                  disabled={loading}
+                  className="w-full py-3 px-6 bg-accent text-accent-foreground rounded-lg hover:bg-accent/80 transition-all disabled:opacity-50"
                   data-testid="button-test-notification"
                 >
-                  Send Test Notification
+                  {loading ? 'Sending...' : 'Send Test Notification'}
                 </button>
               )}
             </div>

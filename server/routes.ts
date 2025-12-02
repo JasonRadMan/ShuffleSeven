@@ -7,6 +7,8 @@ import { setupAuth, isAuthenticated, hashPassword } from "./localAuth";
 import { signupSchema, loginSchema, notificationSubscriptionSchema, insertDrawnCardSchema, insertJournalEntrySchema } from "@shared/schema";
 import { z } from "zod";
 import { ObjectStorageService, objectStorageClient } from "./objectStorage";
+import { sendTestNotification } from "./pushNotifications";
+import { triggerManualReminder } from "./scheduler";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Add cache-busting headers for development to prevent stale content
@@ -293,6 +295,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ subscriptions });
     } catch (error) {
       console.error("Get subscriptions error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Get VAPID public key for push notification subscription
+  app.get('/api/notifications/vapid-public-key', (req, res) => {
+    const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
+    if (!vapidPublicKey) {
+      return res.status(500).json({ message: "Push notifications not configured" });
+    }
+    res.json({ publicKey: vapidPublicKey });
+  });
+
+  // Test notification endpoint
+  app.post('/api/notifications/test', isAuthenticated, async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const userId = (req.user as any).id;
+      const success = await sendTestNotification(userId);
+      
+      if (success) {
+        res.json({ ok: true, message: "Test notification sent" });
+      } else {
+        res.status(400).json({ message: "No active subscription found or failed to send" });
+      }
+    } catch (error) {
+      console.error("Test notification error:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
