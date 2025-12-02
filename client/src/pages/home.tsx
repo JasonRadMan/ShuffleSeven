@@ -1,4 +1,4 @@
-import { Copy, Heart, Star, Users, User, History, Volume2, VolumeX } from 'lucide-react';
+import { Copy, Heart, Star, Users, User, History } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import Header from '@/components/header';
@@ -19,22 +19,8 @@ export default function Home() {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isDrawAnimationPlaying, setIsDrawAnimationPlaying] = useState(false);
   const [isImagePreloaded, setIsImagePreloaded] = useState(false);
-  const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
-    const saved = localStorage.getItem('shuffle7_sound_enabled');
-    return saved !== null ? saved === 'true' : true;
-  });
   const audioRef = useRef<HTMLAudioElement>(null);
   const { drawDailyCard, useLifelineCard, lifelinesRemaining, lifelineUniqueRemaining, hasDrawnToday, currentCard, currentDrawnCardId, clearCurrentCard, cardsLoading } = useShuffleState();
-
-  const toggleSound = () => {
-    const newValue = !isSoundEnabled;
-    setIsSoundEnabled(newValue);
-    localStorage.setItem('shuffle7_sound_enabled', String(newValue));
-    if (!newValue && audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-  };
 
   const handleDailyDraw = () => {
     const card = drawDailyCard();
@@ -58,8 +44,8 @@ export default function Home() {
       preloadImage.src = card.image;
       
       setIsDrawAnimationPlaying(true);
-      // Play shuffle audio when animation starts (if sound is enabled)
-      if (audioRef.current && isSoundEnabled) {
+      // Play shuffle audio when animation starts
+      if (audioRef.current) {
         audioRef.current.currentTime = 0;
         audioRef.current.volume = 0.7;
         audioRef.current.play()
@@ -68,6 +54,8 @@ export default function Home() {
           })
           .catch((error) => {
             console.error('Audio playback failed:', error);
+            // Try to enable audio with user interaction
+            alert('Click OK to enable audio, then try drawing again');
           });
       }
     }
@@ -138,33 +126,13 @@ export default function Home() {
       <Header onInfoClick={handleInfoClick} />
       
       <main className="flex-1 px-4 py-8">
-        {/* Sound toggle button */}
-        <div className="flex justify-end max-w-md mx-auto mb-2">
-          <button
-            onClick={toggleSound}
-            className={`p-2 rounded-full transition-all ${
-              isSoundEnabled 
-                ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30' 
-                : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700/70'
-            }`}
-            data-testid="button-toggle-sound"
-            title={isSoundEnabled ? 'Sound On - Click to mute' : 'Sound Off - Click to unmute'}
-          >
-            {isSoundEnabled ? (
-              <Volume2 className="w-5 h-5" />
-            ) : (
-              <VolumeX className="w-5 h-5" />
-            )}
-          </button>
-        </div>
-
         <Carousel isAnimationPlaying={isDrawAnimationPlaying} onAnimationClick={handleAnimationClick} />
 
-        <div className="max-w-md mx-auto space-y-3 sm:space-y-4 mt-[40px] sm:mt-[60px]">
+        <div className="max-w-md mx-auto space-y-4 mt-[60px]">
           <button 
             onClick={handleDailyDraw}
             disabled={hasDrawnToday || cardsLoading}
-            className={`w-full py-3 sm:py-4 px-4 sm:px-6 text-sm sm:text-base font-semibold rounded-full shadow-lg transform transition-all duration-300 border-[3px] ${
+            className={`w-full py-4 px-6 font-semibold rounded-full shadow-lg transform transition-all duration-300 border-[3px] ${
               hasDrawnToday || cardsLoading
                 ? 'bg-amber-300 text-amber-800 border-amber-400 cursor-not-allowed'
                 : 'bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 text-white border-amber-600 hover:shadow-xl hover:scale-105'
@@ -174,22 +142,22 @@ export default function Home() {
             {cardsLoading ? 'LOADING CARDS...' : hasDrawnToday ? 'SEE YOU TOMORROW!' : 'DRAW TODAY\'S CARD'}
           </button>
 
-          <div className="grid grid-cols-2 gap-2 sm:gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <button 
               onClick={() => setLocation('/my-cards')}
-              className="py-2 px-3 sm:px-6 bg-slate-800/50 text-white text-sm sm:text-base rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-2 sm:gap-3 font-medium"
+              className="py-1 px-6 bg-slate-800/50 text-white rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-3 font-medium"
               data-testid="button-past-cards"
             >
-              <History className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-              <span className="truncate">My Cards</span>
+              <History className="w-5 h-5" />
+              My Cards
             </button>
             <button 
               onClick={() => setIsInviteModalOpen(true)}
-              className="py-2 px-3 sm:px-6 bg-slate-800/50 text-white text-sm sm:text-base rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-2 sm:gap-3 font-medium"
+              className="py-1 px-6 bg-slate-800/50 text-white rounded-2xl border border-slate-700/50 hover:bg-slate-700/50 transition-all flex items-center justify-center gap-3 font-medium"
               data-testid="button-invite-friend"
             >
-              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 flex-shrink-0" />
-              <span className="truncate">Invite</span>
+              <Users className="w-5 h-5 text-cyan-400" />
+              Invite + a Friend
             </button>
           </div>
 
@@ -197,16 +165,16 @@ export default function Home() {
             <button 
               onClick={handleLifeline}
               disabled={lifelinesRemaining <= 0 || lifelineUniqueRemaining <= 0 || cardsLoading}
-              className={`py-2 px-4 sm:px-6 rounded-2xl border transition-all flex items-center justify-center gap-2 sm:gap-3 font-medium text-sm sm:text-base ${
+              className={`py-1 px-6 rounded-2xl border transition-all flex items-center justify-center gap-3 font-medium h-[42px] ${
                 lifelinesRemaining <= 0 || lifelineUniqueRemaining <= 0 || cardsLoading
                   ? 'bg-slate-800/30 text-slate-500 border-slate-700/30 cursor-not-allowed'
                   : 'bg-slate-800/50 text-white border-slate-700/50 hover:bg-slate-700/50'
               }`}
               data-testid="button-lifeline"
             >
-              <Star className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${lifelinesRemaining <= 0 || lifelineUniqueRemaining <= 0 || cardsLoading ? 'text-slate-500' : 'text-yellow-500'}`} />
+              <Star className={`w-5 h-5 ${lifelinesRemaining <= 0 || lifelineUniqueRemaining <= 0 || cardsLoading ? 'text-slate-500' : 'text-yellow-500'}`} />
               <span data-testid="text-lifelines-remaining">
-                Lifeline ({lifelineUniqueRemaining} left)
+                Lifeline ({lifelineUniqueRemaining} left this month)
               </span>
             </button>
           </div>

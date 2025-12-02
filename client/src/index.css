@@ -49,28 +49,9 @@
 
 @layer components {
   .carousel-container {
-    height: 280px;
+    height: 350px;
     position: relative;
     margin: 1rem 0;
-    overflow: hidden;
-  }
-
-  @media (min-width: 400px) {
-    .carousel-container {
-      height: 320px;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .carousel-container {
-      height: 380px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .carousel-container {
-      height: 420px;
-    }
   }
 
 
@@ -211,7 +192,7 @@
 
   .animation-overlay {
     position: absolute;
-    top: 0;
+    top: 30px;
     left: 0;
     width: 100%;
     height: 100%;
@@ -222,17 +203,9 @@
   }
 
   .draw-animation-gif {
-    width: 120%;
-    height: 120%;
-    max-width: 100vw;
-    object-fit: contain;
-  }
-
-  @media (min-width: 768px) {
-    .draw-animation-gif {
-      width: 140%;
-      height: 140%;
-    }
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
   }
 }
 
