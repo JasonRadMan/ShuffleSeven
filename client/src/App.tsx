@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Redirect } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
@@ -12,22 +12,50 @@ import MyCards from "@/pages/my-cards";
 import Landing from "@/pages/landing";
 import NotFound from "@/pages/not-found";
 
+function ProtectedRoute({ component: Component }: { component: () => JSX.Element }) {
+  const { isAuthenticated, isLoading } = useAuth();
+  
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    </div>;
+  }
+  
+  if (!isAuthenticated) {
+    return <Redirect to="/" />;
+  }
+  
+  return <Component />;
+}
+
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
     <Switch>
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <>
-          <Route path="/" component={Home} />
-          <Route path="/settings" component={Settings} />
-          <Route path="/about" component={About} />
-          <Route path="/card-reveal" component={CardReveal} />
-          <Route path="/my-cards" component={MyCards} />
-        </>
-      )}
+      <Route path="/">
+        {isLoading ? (
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        ) : isAuthenticated ? (
+          <Home />
+        ) : (
+          <Landing />
+        )}
+      </Route>
+      <Route path="/settings">
+        <ProtectedRoute component={Settings} />
+      </Route>
+      <Route path="/about">
+        <ProtectedRoute component={About} />
+      </Route>
+      <Route path="/card-reveal">
+        <ProtectedRoute component={CardReveal} />
+      </Route>
+      <Route path="/my-cards">
+        <ProtectedRoute component={MyCards} />
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
