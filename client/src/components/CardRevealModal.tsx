@@ -280,6 +280,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             className="relative z-50 flex justify-center gap-3 pt-4 mt-4 border-t border-primary/20"
           >
             <Button
+              size="sm"
               onClick={handleShare}
               className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
               data-testid="button-share-card"
@@ -289,6 +290,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             </Button>
             {!imageError && (
               <Button
+                size="sm"
                 onClick={handleDownload}
                 className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg"
                 data-testid="button-download-card"
@@ -299,6 +301,7 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             )}
             {drawnCardId && card && (
               <Button
+                size="sm"
                 onClick={() => setIsJournalModalOpen(true)}
                 className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg"
                 data-testid="button-journal-card"
