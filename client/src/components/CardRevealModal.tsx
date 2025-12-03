@@ -198,25 +198,23 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
   return (
     <>
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[90vw] max-w-[500px] max-h-[90vh] overflow-hidden p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
+      <DialogContent className="w-[92vw] max-w-[500px] h-[85vh] max-h-[85vh] p-4 flex flex-col overflow-hidden bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
 
-        {/* Card container - taller to show full card image */}
-        <div className="flex items-center justify-center" style={{ perspective: "2000px" }}>
+        {/* Card container - flex-1 allows it to shrink within available space */}
+        <div className="flex-1 min-h-0 flex items-center justify-center overflow-hidden" style={{ perspective: "2000px" }}>
             <motion.div 
-              className="relative w-full h-[500px] max-h-[70vh]"
+              className="relative w-full h-full max-h-full overflow-hidden"
               style={{ transformStyle: "preserve-3d" }}
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
                 opacity: animationStage >= 1 ? 1 : 0,
-                rotateY: animationStage >= 2 ? 180 : 0,
-                scale: animationStage >= 3 ? 1.02 : 1
+                rotateY: animationStage >= 2 ? 180 : 0
               }}
               transition={{ 
                 opacity: { duration: 0.3, ease: "easeOut" },
-                rotateY: { duration: 1.2, ease: "easeInOut" },
-                scale: { duration: 0.4, ease: "easeOut" }
+                rotateY: { duration: 1.2, ease: "easeInOut" }
               }}
             >
             {/* Card Back */}
@@ -271,13 +269,13 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
             </motion.div>
         </div>
 
-        {/* Action Buttons - Fixed at bottom with high z-index */}
+        {/* Action Buttons - Fixed at bottom, shrink-0 prevents compression */}
         {animationStage >= 2 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
-            className="relative z-50 flex justify-center gap-3 pt-4 mt-4 border-t border-primary/20"
+            className="shrink-0 relative z-50 flex justify-center gap-2 pt-3 mt-2 border-t border-primary/20"
           >
             <Button
               size="sm"
