@@ -198,14 +198,14 @@ export default function CardRevealModal({ open, onOpenChange, card, onClose, isI
   return (
     <>
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[90vw] max-w-[500px] p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
+      <DialogContent className="w-[90vw] max-w-[500px] max-h-[90vh] overflow-hidden p-4 bg-background/95 backdrop-blur-sm border border-primary/20 shadow-2xl">
         <DialogTitle className="sr-only">Card Revealed</DialogTitle>
         <DialogDescription className="sr-only">Your drawn card is now revealed with its message and guidance.</DialogDescription>
 
         {/* Card container - taller to show full card image */}
         <div className="flex items-center justify-center" style={{ perspective: "2000px" }}>
             <motion.div 
-              className="relative w-full h-[500px]"
+              className="relative w-full h-[500px] max-h-[70vh]"
               style={{ transformStyle: "preserve-3d" }}
               initial={{ opacity: 0, rotateY: 0 }}
               animate={{ 
